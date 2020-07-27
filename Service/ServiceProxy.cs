@@ -40,7 +40,7 @@ namespace Service
             return uriBuilder.Uri;
         }
 
-        public async Task<HttpResponseMessage> Get(String path, String queryString, ServiceOptions options)
+        public async Task<HttpResponseMessage> Get(String path, String queryString = "", ServiceOptions options = null)
         {
             try
             {
