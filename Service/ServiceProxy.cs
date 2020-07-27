@@ -2,6 +2,9 @@
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Mime;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Service
@@ -32,28 +35,76 @@ namespace Service
             uriBuilder.Path = path;
             uriBuilder.Port = options?.Port ?? Options.Port;
             uriBuilder.Scheme = (options?.Protocol ?? Options.Protocol).ToString();
-            if (queryString != null)
-            {
-                uriBuilder.Query = queryString;
-            }
-
+            uriBuilder.Query = queryString;
             return uriBuilder.Uri;
         }
 
-        public async Task<HttpResponseMessage> Get(String path, String queryString = "", ServiceOptions options = null)
+        public async Task<HttpResponseMessage> Get(string path, string queryString = "", ServiceOptions options = null)
         {
             try
             {
-                Uri uri = BuildUrl(path, queryString, options);
-
-                HttpResponseMessage response = await Client.GetAsync(uri);
-                response.EnsureSuccessStatusCode();
+                var uri = BuildUrl(path, queryString, options);
+                var response = await Client.GetAsync(uri);
                 return response;
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine("\nException Caught!");
-                Console.WriteLine("Message :{0} ", e.Message);
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            }
+        }
+        
+        public async Task<HttpResponseMessage> Post(string path, string body, string queryString = "", ServiceOptions options = null)
+        {
+            try
+            {
+                var uri = BuildUrl(path, queryString, options);
+                var response = await Client.PostAsync(uri, new StringContent(body, Encoding.UTF8, MediaTypeNames.Application.Json));
+                return response;
+            }
+            catch (HttpRequestException e)
+            {
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            }
+        }
+        
+        public async Task<HttpResponseMessage> Put(string path, string body, string queryString = "", ServiceOptions options = null)
+        {
+            try
+            {
+                var uri = BuildUrl(path, queryString, options);
+                var response = await Client.PutAsync(uri, new StringContent(body, Encoding.UTF8, MediaTypeNames.Application.Json));
+                return response;
+            }
+            catch (HttpRequestException e)
+            {
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            }
+        }
+        
+        public async Task<HttpResponseMessage> Patch(string path, string body, string queryString = "", ServiceOptions options = null)
+        {
+            try
+            {
+                var uri = BuildUrl(path, queryString, options);
+                var response = await Client.PatchAsync(uri, new StringContent(body, Encoding.UTF8, MediaTypeNames.Application.Json));
+                return response;
+            }
+            catch (HttpRequestException e)
+            {
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            }
+        }    
+        
+        public async Task<HttpResponseMessage> Delete(string path, string queryString = "", ServiceOptions options = null)
+        {
+            try
+            {
+                var uri = BuildUrl(path, queryString, options);
+                var response = await Client.DeleteAsync(uri);
+                return response;
+            }
+            catch (HttpRequestException e)
+            {
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }
         }
