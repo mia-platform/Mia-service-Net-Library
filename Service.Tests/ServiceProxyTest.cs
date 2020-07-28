@@ -12,11 +12,9 @@ namespace Service.Tests
     {
         private WireMockServer _server;
         private ServiceProxy _sut;
-
         private const int SUCCESS_STATUS_CODE = 200;
         private const string SUCCESS_RESPONSE_BODY = @"{ ""msg"": ""Hello world!"" }";
-
-
+        
         [SetUp]
         public void StartMockServer()
         {
@@ -254,8 +252,6 @@ namespace Service.Tests
             Check.That(responseBody).IsEqualTo(SUCCESS_RESPONSE_BODY);
         }
         
-        
-
         [TearDown]
         public void ShutdownServer()
         {
