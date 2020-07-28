@@ -14,13 +14,8 @@ namespace CustomPlugin
 
         public static ServiceProxy GetServiceProxy(InitServiceOptions options)
         {
-            string microserviceNameKey = Environment.GetEnvironmentVariable(MICROSERVICE_GATEWAY_SERVICE_NAME_KEY);
-            if (microserviceNameKey == null)
-            {
-                return null;
-            }
-
-            return new ServiceProxy(microserviceNameKey, options);
+            var microserviceNameKey = Environment.GetEnvironmentVariable(MICROSERVICE_GATEWAY_SERVICE_NAME_KEY);
+            return string.IsNullOrEmpty(microserviceNameKey) ? null : new ServiceProxy(microserviceNameKey, options);
         }
     }
 }
