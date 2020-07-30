@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using NFluent;
 using NUnit.Framework;
+using Service.Environment;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
 using WireMock.Server;
@@ -12,6 +13,7 @@ namespace Service.Tests
     {
         private WireMockServer _server;
         private ServiceProxy _sut;
+        private MiaEnvConfiguration _miaEnvConfiguration = new MiaEnvConfiguration();
         private const int SUCCESS_STATUS_CODE = 200;
         private const string SUCCESS_RESPONSE_BODY = @"{ ""msg"": ""Hello world!"" }";
         
@@ -25,7 +27,7 @@ namespace Service.Tests
         public async Task TestGet()
         {
             var initServiceOptions = new InitServiceOptions(_server.Ports.First());
-            _sut = new ServiceProxy("localhost", initServiceOptions);
+            _sut = new ServiceProxy("localhost", initServiceOptions, _miaEnvConfiguration);
 
             _server
                 .Given(Request.Create().WithPath("/foo").UsingGet())
@@ -48,7 +50,7 @@ namespace Service.Tests
         {
             var port = _server.Ports.First();
             var initServiceOptions = new InitServiceOptions(port);
-            _sut = new ServiceProxy("localhost", initServiceOptions);
+            _sut = new ServiceProxy("localhost", initServiceOptions, _miaEnvConfiguration);
 
             _server
                 .Given(Request.Create().WithPath("/foo").WithParam("bar", "baz").UsingGet())
@@ -70,7 +72,7 @@ namespace Service.Tests
         public async Task TestPost()
         {
             var initServiceOptions = new InitServiceOptions(_server.Ports.First());
-            _sut = new ServiceProxy("localhost", initServiceOptions);
+            _sut = new ServiceProxy("localhost", initServiceOptions, _miaEnvConfiguration);
             const string body = @"{ ""foo"": ""bar"" }";
 
             _server
@@ -94,7 +96,7 @@ namespace Service.Tests
         {
             var port = _server.Ports.First();
             var initServiceOptions = new InitServiceOptions(port);
-            _sut = new ServiceProxy("localhost", initServiceOptions);
+            _sut = new ServiceProxy("localhost", initServiceOptions, _miaEnvConfiguration);
             const string body = @"{ ""foo"": ""bar"" }";
 
             _server
@@ -117,7 +119,7 @@ namespace Service.Tests
         public async Task TestPut()
         {
             var initServiceOptions = new InitServiceOptions(_server.Ports.First());
-            _sut = new ServiceProxy("localhost", initServiceOptions);
+            _sut = new ServiceProxy("localhost", initServiceOptions, _miaEnvConfiguration);
             const string body = @"{ ""foo"": ""bar"" }";
 
             _server
@@ -141,7 +143,7 @@ namespace Service.Tests
         {
             var port = _server.Ports.First();
             var initServiceOptions = new InitServiceOptions(port);
-            _sut = new ServiceProxy("localhost", initServiceOptions);
+            _sut = new ServiceProxy("localhost", initServiceOptions, _miaEnvConfiguration);
             const string body = @"{ ""foo"": ""bar"" }";
 
             _server
@@ -164,7 +166,7 @@ namespace Service.Tests
         public async Task TestPatch()
         {
             var initServiceOptions = new InitServiceOptions(_server.Ports.First());
-            _sut = new ServiceProxy("localhost", initServiceOptions);
+            _sut = new ServiceProxy("localhost", initServiceOptions, _miaEnvConfiguration);
             const string body = @"{ ""foo"": ""bar"" }";
 
             _server
@@ -188,7 +190,7 @@ namespace Service.Tests
         {
             var port = _server.Ports.First();
             var initServiceOptions = new InitServiceOptions(port);
-            _sut = new ServiceProxy("localhost", initServiceOptions);
+            _sut = new ServiceProxy("localhost", initServiceOptions, _miaEnvConfiguration);
             const string body = @"{ ""foo"": ""bar"" }";
 
             _server
@@ -211,7 +213,7 @@ namespace Service.Tests
         public async Task TestDelete()
         {
             var initServiceOptions = new InitServiceOptions(_server.Ports.First());
-            _sut = new ServiceProxy("localhost", initServiceOptions);
+            _sut = new ServiceProxy("localhost", initServiceOptions, _miaEnvConfiguration);
 
             _server
                 .Given(Request.Create().WithPath("/foo").UsingDelete())
@@ -234,7 +236,7 @@ namespace Service.Tests
         {
             var port = _server.Ports.First();
             var initServiceOptions = new InitServiceOptions(port);
-            _sut = new ServiceProxy("localhost", initServiceOptions);
+            _sut = new ServiceProxy("localhost", initServiceOptions, _miaEnvConfiguration);
 
             _server
                 .Given(Request.Create().WithPath("/foo").WithParam("bar", "baz").UsingDelete())
