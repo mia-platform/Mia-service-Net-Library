@@ -13,25 +13,27 @@ namespace Service
     public class ServiceProxy
     {
         public string ServiceName { get; }
-        public HttpHeaders Headers { get; }
+        public HttpRequestHeaders Headers { get; }
         public InitServiceOptions Options { get; }
         private static readonly HttpClient Client;
-        private readonly MiaEnvConfiguration _miaEnvConfiguration;
-
-
+        
         static ServiceProxy()
         {
             Client = new HttpClient();
         }
 
-        public ServiceProxy(string serviceName, InitServiceOptions options, MiaEnvConfiguration miaEnvConfiguration)
+        public static HttpRequestHeaders GetDefaultHeaders()
+        {
+            return Client.DefaultRequestHeaders;
+        }
+
+        public ServiceProxy(string serviceName, InitServiceOptions options, HttpRequestHeaders miaHeaders)
         {
             ServiceName = serviceName;
             Headers = options.Headers;
             Options = options;
-            _miaEnvConfiguration = miaEnvConfiguration;
         }
-
+        
         private Uri BuildUrl(string path, string queryString, InitServiceOptions options)
         {
             var uriBuilder = new UriBuilder();
