@@ -47,13 +47,13 @@ namespace CustomPlugin.Tests
         }
         
         [Test]
-        public void TestIsFromBackofficeTruthy()
+        public void TestIsFromBackOfficeTruthy()
         {
             Check.That(_miaHeadersPropagator.IsFromBackOffice()).IsEqualTo(true);
         }
         
         [Test]
-        public void TestIsFromBackofficeFalse()
+        public void TestIsFromBackOfficeFalse()
         {
             var headers = new HeaderDictionary
             {
@@ -64,7 +64,7 @@ namespace CustomPlugin.Tests
         }
         
         [Test]
-        public void TestIsFromBackofficeFalsy()
+        public void TestIsFromBackOfficeFalsy()
         {
             var headers = new HeaderDictionary
             {
@@ -75,7 +75,7 @@ namespace CustomPlugin.Tests
         }
         
         [Test]
-        public void TestIsFromBackofficeNull()
+        public void TestIsFromBackOfficeNull()
         {
             var headers = new HeaderDictionary
             {
