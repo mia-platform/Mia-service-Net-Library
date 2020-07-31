@@ -1,8 +1,6 @@
-using System;
 using System.Linq;
-using Microsoft.Extensions.Configuration;
 
-namespace Service.Environment
+namespace CustomPlugin.Environment
 {
     public class ConfigValidator
     {

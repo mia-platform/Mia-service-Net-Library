@@ -1,7 +1,7 @@
+using CustomPlugin.Environment;
 using NUnit.Framework;
-using Service.Environment;
 
-namespace Service.Tests.Environment
+namespace CustomPlugin.Tests.Environment
 {
     public class ConfigValidatorTest
     {
