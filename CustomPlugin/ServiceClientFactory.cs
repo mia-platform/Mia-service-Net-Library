@@ -32,7 +32,7 @@ namespace CustomPlugin
 
         public ServiceProxy GetDirectServiceProxy(string serviceName, InitServiceOptions options)
         {
-            return new ServiceProxy(serviceName, options, null);
+            return new ServiceProxy(serviceName, options);
         }
 
         public ServiceProxy GetServiceProxy(InitServiceOptions options)
@@ -40,7 +40,7 @@ namespace CustomPlugin
             var microserviceNameKey = _miaEnvConfiguration.MICROSERVICE_GATEWAY_SERVICE_NAME;
             return string.IsNullOrEmpty(microserviceNameKey)
                 ? null
-                : new ServiceProxy(microserviceNameKey, options, MiaHeaders);
+                : new ServiceProxy(microserviceNameKey, options);
         }
     }
 }

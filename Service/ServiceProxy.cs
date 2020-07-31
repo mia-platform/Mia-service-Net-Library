@@ -25,7 +25,7 @@ namespace Service
             return Client.DefaultRequestHeaders;
         }
 
-        public ServiceProxy(string serviceName, InitServiceOptions options, HttpRequestHeaders miaHeaders)
+        public ServiceProxy(string serviceName, InitServiceOptions options)
         {
             ServiceName = serviceName;
             Headers = options.Headers;

@@ -8,7 +8,7 @@ namespace CustomPlugin
     public class MiaHeadersPropagator
     {
         private readonly Dictionary<string, string> _headers = new Dictionary<string, string>();
-        public Dictionary<string, string> Headers => _headers;
+        internal Dictionary<string, string> Headers => _headers;
         private MiaEnvConfiguration _envConfig;
 
         public MiaHeadersPropagator(IHeaderDictionary headers, MiaEnvConfiguration envConfig)
@@ -22,7 +22,7 @@ namespace CustomPlugin
 
         public string GetUserId()
         {
-            return Headers[_envConfig.BACKOFFICE_HEADER_KEY];
+            return Headers[_envConfig.USERID_HEADER_KEY];
         }
 
         public string GetGroups()
