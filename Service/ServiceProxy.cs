@@ -31,6 +31,7 @@ namespace Service
             if (options.Headers == null) return;
             foreach (var (key, value) in options.Headers)
             {
+                Client.DefaultRequestHeaders.Remove(key);
                 Client.DefaultRequestHeaders.Add(key, value);
             }
         }
@@ -53,6 +54,7 @@ namespace Service
             if (options == null) return;
             foreach (var (key, value) in options.Headers)
             {
+                message.Headers.Remove(key);
                 message.Headers.Add(key, value);
             }
         }
