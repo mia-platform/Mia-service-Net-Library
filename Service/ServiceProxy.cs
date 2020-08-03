@@ -56,15 +56,14 @@ namespace Service
                 message.Headers.Add(key, value);
             }
         }
-
-        public async Task<HttpResponseMessage> Get(string path, string queryString = "", string body = "",
-            ServiceOptions options = null)
+        
+        private async Task<HttpResponseMessage> SendAsyncRequest(HttpMethod method, string path, string queryString, string body, ServiceOptions options)
         {
             try
             {
                 var httpRequestMessage = new HttpRequestMessage
                 {
-                    Method = HttpMethod.Get,
+                    Method = method,
                     RequestUri = BuildUrl(path, queryString, options),
                     Content = new StringContent(body, Encoding.UTF8, MediaTypeNames.Application.Json)
                 };
@@ -77,94 +76,36 @@ namespace Service
             {
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }
+        }
+
+        public async Task<HttpResponseMessage> Get(string path, string queryString = "", string body = "",
+            ServiceOptions options = null)
+        {
+            return await SendAsyncRequest(HttpMethod.Get, path, queryString, body, options);
         }
 
         public async Task<HttpResponseMessage> Post(string path, string queryString = "", string body = "",
             ServiceOptions options = null)
         {
-            try
-            {
-                var httpRequestMessage = new HttpRequestMessage
-                {
-                    Method = HttpMethod.Post,
-                    RequestUri = BuildUrl(path, queryString, options),
-                    Content = new StringContent(body, Encoding.UTF8, MediaTypeNames.Application.Json)
-                };
-
-                AddRequestHeaders(httpRequestMessage, options);
-                var response = await Client.SendAsync(httpRequestMessage);
-                return response;
-            }
-            catch (HttpRequestException e)
-            {
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
-            }
+            return await SendAsyncRequest(HttpMethod.Post, path, queryString, body, options);
         }
 
         public async Task<HttpResponseMessage> Put(string path, string queryString = "", string body = "",
             ServiceOptions options = null)
         {
-            try
-            {
-                var httpRequestMessage = new HttpRequestMessage
-                {
-                    Method = HttpMethod.Put,
-                    RequestUri = BuildUrl(path, queryString, options),
-                    Content = new StringContent(body, Encoding.UTF8, MediaTypeNames.Application.Json)
-                };
-
-                AddRequestHeaders(httpRequestMessage, options);
-                var response = await Client.SendAsync(httpRequestMessage);
-                return response;
-            }
-            catch (HttpRequestException e)
-            {
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
-            }
+            return await SendAsyncRequest(HttpMethod.Put, path, queryString, body, options);
         }
 
         public async Task<HttpResponseMessage> Patch(string path, string queryString = "", string body = "",
             ServiceOptions options = null)
         {
-            try
-            {
-                var httpRequestMessage = new HttpRequestMessage
-                {
-                    Method = HttpMethod.Patch,
-                    RequestUri = BuildUrl(path, queryString, options),
-                    Content = new StringContent(body, Encoding.UTF8, MediaTypeNames.Application.Json)
-                };
-
-                AddRequestHeaders(httpRequestMessage, options);
-                var response = await Client.SendAsync(httpRequestMessage);
-                return response;
-            }
-            catch (HttpRequestException e)
-            {
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
-            }
+            return await SendAsyncRequest(HttpMethod.Patch, path, queryString, body, options);
         }
 
         public async Task<HttpResponseMessage> Delete(string path, string queryString = "", string body = "",
             ServiceOptions options = null)
         {
-            try
-            {
-                var httpRequestMessage = new HttpRequestMessage
-                {
-                    Method = HttpMethod.Delete,
-                    RequestUri = BuildUrl(path, queryString, options),
-                    Content = new StringContent(body, Encoding.UTF8, MediaTypeNames.Application.Json)
-                };
-
-                AddRequestHeaders(httpRequestMessage, options);
-                var response = await Client.SendAsync(httpRequestMessage);
-                return response;
-            }
-            catch (HttpRequestException e)
-            {
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
-            }
+            return await SendAsyncRequest(HttpMethod.Delete, path, queryString, body, options);
         }
     }
 }
