@@ -85,6 +85,7 @@ namespace Service
             }
             catch (HttpRequestException e)
             {
+                // TODO log error
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }
         }
