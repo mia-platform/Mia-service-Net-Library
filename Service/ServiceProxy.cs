@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -28,12 +30,6 @@ namespace Service
         {
             ServiceName = serviceName;
             Options = options;
-            if (options.Headers == null) return;
-            foreach (var (key, value) in options.Headers)
-            {
-                Client.DefaultRequestHeaders.Remove(key);
-                Client.DefaultRequestHeaders.Add(key, value);
-            }
         }
 
         private Uri BuildUrl(string path, string queryString, InitServiceOptions options)
@@ -49,17 +45,30 @@ namespace Service
             return uriBuilder.Uri;
         }
 
+        private Dictionary<string, string> GetMergedHeaders(ServiceOptions options)
+        {
+            var result = Options.Headers ?? new Dictionary<string, string>();
+            if (options == null) return result;
+            foreach (var (key, value) in options.Headers)
+            {
+                result.Add(key, value);
+            }
+
+            return result;
+        }
+
         private void AddRequestHeaders(HttpRequestMessage message, ServiceOptions options)
         {
-            if (options == null) return;
-            foreach (var (key, value) in options.Headers)
+            var mergedHeaders = GetMergedHeaders(options);
+            foreach (var (key, value) in mergedHeaders)
             {
                 message.Headers.Remove(key);
                 message.Headers.Add(key, value);
             }
         }
-        
-        private async Task<HttpResponseMessage> SendAsyncRequest(HttpMethod method, string path, string queryString, string body, ServiceOptions options)
+
+        private async Task<HttpResponseMessage> SendAsyncRequest(HttpMethod method, string path, string queryString,
+            string body, ServiceOptions options)
         {
             try
             {
