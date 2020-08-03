@@ -11,10 +11,9 @@ namespace Service
     public class ServiceProxy
     {
         public string ServiceName { get; }
-        public HttpRequestHeaders Headers { get; }
         public InitServiceOptions Options { get; }
         private static readonly HttpClient Client;
-        
+
         static ServiceProxy()
         {
             Client = new HttpClient();
@@ -28,27 +27,50 @@ namespace Service
         public ServiceProxy(string serviceName, InitServiceOptions options)
         {
             ServiceName = serviceName;
-            Headers = options.Headers;
             Options = options;
+            if (options.Headers == null) return;
+            foreach (var (key, value) in options.Headers)
+            {
+                Client.DefaultRequestHeaders.Add(key, value);
+            }
         }
-        
+
         private Uri BuildUrl(string path, string queryString, InitServiceOptions options)
         {
-            var uriBuilder = new UriBuilder();
-            uriBuilder.Host = ServiceName;
-            uriBuilder.Path = path;
-            uriBuilder.Port = options?.Port ?? Options.Port;
-            uriBuilder.Scheme = (options?.Protocol ?? Options.Protocol).ToString();
-            uriBuilder.Query = queryString;
+            var uriBuilder = new UriBuilder
+            {
+                Host = ServiceName,
+                Path = path,
+                Port = options?.Port ?? Options.Port,
+                Scheme = (options?.Protocol ?? Options.Protocol).ToString(),
+                Query = queryString
+            };
             return uriBuilder.Uri;
         }
 
-        public async Task<HttpResponseMessage> Get(string path, string queryString = "", ServiceOptions options = null)
+        private void AddRequestHeaders(HttpRequestMessage message, ServiceOptions options)
+        {
+            if (options == null) return;
+            foreach (var (key, value) in options.Headers)
+            {
+                message.Headers.Add(key, value);
+            }
+        }
+
+        public async Task<HttpResponseMessage> Get(string path, string queryString = "", string body = "",
+            ServiceOptions options = null)
         {
             try
             {
-                var uri = BuildUrl(path, queryString, options);
-                var response = await Client.GetAsync(uri);
+                var httpRequestMessage = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Get,
+                    RequestUri = BuildUrl(path, queryString, options),
+                    Content = new StringContent(body, Encoding.UTF8, MediaTypeNames.Application.Json)
+                };
+
+                AddRequestHeaders(httpRequestMessage, options);
+                var response = await Client.SendAsync(httpRequestMessage);
                 return response;
             }
             catch (HttpRequestException e)
@@ -57,14 +79,20 @@ namespace Service
             }
         }
 
-        public async Task<HttpResponseMessage> Post(string path, string body, string queryString = "",
+        public async Task<HttpResponseMessage> Post(string path, string queryString = "", string body = "",
             ServiceOptions options = null)
         {
             try
             {
-                var uri = BuildUrl(path, queryString, options);
-                var response = await Client.PostAsync(uri,
-                    new StringContent(body, Encoding.UTF8, MediaTypeNames.Application.Json));
+                var httpRequestMessage = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Post,
+                    RequestUri = BuildUrl(path, queryString, options),
+                    Content = new StringContent(body, Encoding.UTF8, MediaTypeNames.Application.Json)
+                };
+
+                AddRequestHeaders(httpRequestMessage, options);
+                var response = await Client.SendAsync(httpRequestMessage);
                 return response;
             }
             catch (HttpRequestException e)
@@ -73,14 +101,20 @@ namespace Service
             }
         }
 
-        public async Task<HttpResponseMessage> Put(string path, string body, string queryString = "",
+        public async Task<HttpResponseMessage> Put(string path, string queryString = "", string body = "",
             ServiceOptions options = null)
         {
             try
             {
-                var uri = BuildUrl(path, queryString, options);
-                var response = await Client.PutAsync(uri,
-                    new StringContent(body, Encoding.UTF8, MediaTypeNames.Application.Json));
+                var httpRequestMessage = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Put,
+                    RequestUri = BuildUrl(path, queryString, options),
+                    Content = new StringContent(body, Encoding.UTF8, MediaTypeNames.Application.Json)
+                };
+
+                AddRequestHeaders(httpRequestMessage, options);
+                var response = await Client.SendAsync(httpRequestMessage);
                 return response;
             }
             catch (HttpRequestException e)
@@ -89,14 +123,20 @@ namespace Service
             }
         }
 
-        public async Task<HttpResponseMessage> Patch(string path, string body, string queryString = "",
+        public async Task<HttpResponseMessage> Patch(string path, string queryString = "", string body = "",
             ServiceOptions options = null)
         {
             try
             {
-                var uri = BuildUrl(path, queryString, options);
-                var response = await Client.PatchAsync(uri,
-                    new StringContent(body, Encoding.UTF8, MediaTypeNames.Application.Json));
+                var httpRequestMessage = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Patch,
+                    RequestUri = BuildUrl(path, queryString, options),
+                    Content = new StringContent(body, Encoding.UTF8, MediaTypeNames.Application.Json)
+                };
+
+                AddRequestHeaders(httpRequestMessage, options);
+                var response = await Client.SendAsync(httpRequestMessage);
                 return response;
             }
             catch (HttpRequestException e)
@@ -105,13 +145,20 @@ namespace Service
             }
         }
 
-        public async Task<HttpResponseMessage> Delete(string path, string queryString = "",
+        public async Task<HttpResponseMessage> Delete(string path, string queryString = "", string body = "",
             ServiceOptions options = null)
         {
             try
             {
-                var uri = BuildUrl(path, queryString, options);
-                var response = await Client.DeleteAsync(uri);
+                var httpRequestMessage = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Delete,
+                    RequestUri = BuildUrl(path, queryString, options),
+                    Content = new StringContent(body, Encoding.UTF8, MediaTypeNames.Application.Json)
+                };
+
+                AddRequestHeaders(httpRequestMessage, options);
+                var response = await Client.SendAsync(httpRequestMessage);
                 return response;
             }
             catch (HttpRequestException e)

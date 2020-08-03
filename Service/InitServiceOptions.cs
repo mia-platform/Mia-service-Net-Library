@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http.Headers;
 
 namespace Service
@@ -7,10 +8,10 @@ namespace Service
     {
         public int Port { get; set; }
         public Protocol Protocol { get; set; }
-        public HttpRequestHeaders Headers { get; set; }
+        public Dictionary<string, string> Headers { get; set; }
         public String Prefix { get; set; }
         
-        public InitServiceOptions(int port = 3000, Protocol protocol = Protocol.Http, HttpRequestHeaders headers = null, String prefix = "") {
+        public InitServiceOptions(int port = 3000, Protocol protocol = Protocol.Http, Dictionary<string, string> headers = null, string prefix = "") {
             Port = port;
             Protocol = protocol;
             Headers = headers;

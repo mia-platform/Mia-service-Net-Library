@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -62,10 +64,12 @@ namespace Service.Tests
                         .WithBody(SUCCESS_RESPONSE_BODY)
                 );
 
-            var response = await _sut.Get("/foo", "bar=baz", new ServiceOptions(port));
+            var headers = new Dictionary<string, string> {{"foo", "bar"}};
+            var response = await _sut.Get("/foo", "bar=baz", "", new ServiceOptions(port, Protocol.Http, headers));
             var statusCode = (int) response.StatusCode;
             var responseBody = await response.Content.ReadAsStringAsync();
 
+            Check.That(response.RequestMessage.Headers.GetValues("foo").First()).IsEqualTo("bar");
             Check.That(statusCode).IsEqualTo(SUCCESS_STATUS_CODE);
             Check.That(responseBody).IsEqualTo(SUCCESS_RESPONSE_BODY);
         }
@@ -85,7 +89,7 @@ namespace Service.Tests
                         .WithBody(SUCCESS_RESPONSE_BODY)
                 );
 
-            var response = await _sut.Post("/foo", body);
+            var response = await _sut.Post("/foo", "", body);
             var statusCode = (int) response.StatusCode;
             var responseBody = await response.Content.ReadAsStringAsync();
 
@@ -109,10 +113,12 @@ namespace Service.Tests
                         .WithBody(SUCCESS_RESPONSE_BODY)
                 );
 
-            var response = await _sut.Post("/foo", body, "bar=baz", new ServiceOptions(port));
+            var headers = new Dictionary<string, string> {{"foo", "bar"}};
+            var response = await _sut.Post("/foo", "bar=baz", body, new ServiceOptions(port, Protocol.Http, headers));
             var statusCode = (int) response.StatusCode;
             var responseBody = await response.Content.ReadAsStringAsync();
 
+            Check.That(response.RequestMessage.Headers.GetValues("foo").First()).IsEqualTo("bar");
             Check.That(statusCode).IsEqualTo(SUCCESS_STATUS_CODE);
             Check.That(responseBody).IsEqualTo(SUCCESS_RESPONSE_BODY);
         }
@@ -132,7 +138,7 @@ namespace Service.Tests
                         .WithBody(SUCCESS_RESPONSE_BODY)
                 );
 
-            var response = await _sut.Put("/foo", body);
+            var response = await _sut.Put("/foo", "", body);
             var statusCode = (int) response.StatusCode;
             var responseBody = await response.Content.ReadAsStringAsync();
 
@@ -156,10 +162,12 @@ namespace Service.Tests
                         .WithBody(SUCCESS_RESPONSE_BODY)
                 );
 
-            var response = await _sut.Put("/foo", body, "bar=baz", new ServiceOptions(port));
+            var headers = new Dictionary<string, string> {{"foo", "bar"}};
+            var response = await _sut.Put("/foo", "bar=baz", body, new ServiceOptions(port, Protocol.Http, headers));
             var statusCode = (int) response.StatusCode;
             var responseBody = await response.Content.ReadAsStringAsync();
 
+            Check.That(response.RequestMessage.Headers.GetValues("foo").First()).IsEqualTo("bar");
             Check.That(statusCode).IsEqualTo(SUCCESS_STATUS_CODE);
             Check.That(responseBody).IsEqualTo(SUCCESS_RESPONSE_BODY);
         }
@@ -179,7 +187,7 @@ namespace Service.Tests
                         .WithBody(SUCCESS_RESPONSE_BODY)
                 );
 
-            var response = await _sut.Patch("/foo", body);
+            var response = await _sut.Patch("/foo", "", body);
             var statusCode = (int) response.StatusCode;
             var responseBody = await response.Content.ReadAsStringAsync();
 
@@ -203,10 +211,12 @@ namespace Service.Tests
                         .WithBody(SUCCESS_RESPONSE_BODY)
                 );
 
-            var response = await _sut.Patch("/foo", body, "bar=baz", new ServiceOptions(port));
+            var headers = new Dictionary<string, string> {{"foo", "bar"}};
+            var response = await _sut.Patch("/foo", "bar=baz", body, new ServiceOptions(port, Protocol.Http, headers));
             var statusCode = (int) response.StatusCode;
             var responseBody = await response.Content.ReadAsStringAsync();
 
+            Check.That(response.RequestMessage.Headers.GetValues("foo").First()).IsEqualTo("bar");
             Check.That(statusCode).IsEqualTo(SUCCESS_STATUS_CODE);
             Check.That(responseBody).IsEqualTo(SUCCESS_RESPONSE_BODY);
         }
@@ -247,11 +257,13 @@ namespace Service.Tests
                         .WithStatusCode(SUCCESS_STATUS_CODE)
                         .WithBody(SUCCESS_RESPONSE_BODY)
                 );
-
-            var response = await _sut.Delete("/foo",  "bar=baz", new ServiceOptions(port));
+            
+            var headers = new Dictionary<string, string> {{"foo", "bar"}};
+            var response = await _sut.Delete("/foo",  "bar=baz", "", new ServiceOptions(port, Protocol.Http, headers));
             var statusCode = (int) response.StatusCode;
             var responseBody = await response.Content.ReadAsStringAsync();
 
+            Check.That(response.RequestMessage.Headers.GetValues("foo").First()).IsEqualTo("bar");
             Check.That(statusCode).IsEqualTo(SUCCESS_STATUS_CODE);
             Check.That(responseBody).IsEqualTo(SUCCESS_RESPONSE_BODY);
         }

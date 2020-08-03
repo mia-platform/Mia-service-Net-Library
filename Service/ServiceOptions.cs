@@ -1,10 +1,11 @@
+using System.Collections.Generic;
 using System.Net.Http.Headers;
 
 namespace Service
 {
-    public class ServiceOptions : InitServiceOptions
+    public class  ServiceOptions : InitServiceOptions
     {
-        public ServiceOptions(int port = 3000, Protocol protocol = Protocol.Http, HttpRequestHeaders headers = null,
+        public ServiceOptions(int port = 3000, Protocol protocol = Protocol.Http, Dictionary<string, string> headers = null,
             string prefix = "") : base(port, protocol, headers, prefix)
         {
         }
