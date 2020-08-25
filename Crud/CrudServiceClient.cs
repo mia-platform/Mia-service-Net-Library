@@ -1,14 +1,13 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Mime;
+using System.Reflection;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Crud
 {
@@ -17,7 +16,7 @@ namespace Crud
         public string ApiPath { get; set; }
         public int CrudVersion { get; set; }
         public Dictionary<string, string> MiaHeaders { get; set; }
-        
+
         private static readonly HttpClient Client;
 
         public CrudServiceClient(Dictionary<string, string> miaHeaders, string apiPath = "", int crudVersion = -1)
@@ -34,24 +33,34 @@ namespace Crud
 
         private void AddRequestHeaders(HttpRequestMessage message)
         {
-            foreach (var (key, value) in  MiaHeaders)
+            foreach (var (key, value) in MiaHeaders)
             {
                 message.Headers.Remove(key);
                 message.Headers.Add(key, value);
             }
         }
 
-        private Uri BuildUrl(string path, string queryString, string collectionName)
+        private string BuildPath(string collectionName)
         {
-            var baseUri = ApiPath;
+            var basePath = ApiPath;
             var suffix =
                 CrudVersion != -1
-                    ? $"/{CrudVersion.ToString()}/{collectionName}"
+                    ? $"/v{CrudVersion.ToString()}/{collectionName}"
                     : $"/{collectionName}";
-            return new Uri(baseUri + suffix);
+            return basePath + suffix;
         }
 
-        private async Task<HttpResponseMessage> SendAsyncRequest(HttpMethod method, string path, string collectionName, string queryString,
+        private Uri BuildUrl(string path)
+        {
+            return new Uri(path);
+        }
+
+        private static string GetCollectionName<T>()
+        {
+            return typeof(T).GetTypeInfo().GetCustomAttribute<JsonObjectAttribute>()?.Id;
+        }
+
+        private async Task<HttpResponseMessage> SendAsyncRequest(HttpMethod method, string path,
             string body)
         {
             try
@@ -59,7 +68,7 @@ namespace Crud
                 var httpRequestMessage = new HttpRequestMessage
                 {
                     Method = method,
-                    RequestUri = BuildUrl(path, queryString, collectionName),
+                    RequestUri = BuildUrl(path),
                     Content = new StringContent(body, Encoding.UTF8, MediaTypeNames.Application.Json)
                 };
 
@@ -76,19 +85,38 @@ namespace Crud
 
         public async Task<List<T>> RetrieveAll<T>()
         {
-           var response = await SendAsyncRequest(HttpMethod.Get, ApiPath,  typeof(T).Name.ToLower(), "", "");
-           var responseBody = await response.Content.ReadAsStringAsync();
-           List<T> result = null;
-           try
-           {
-               result = JsonSerializer.Deserialize<List<T>>(responseBody);
-           }
-           catch(Exception e)
-           {
-               //TODO log error
-           }
+            var path = $"{BuildPath(GetCollectionName<T>())}/";
+            var response = await SendAsyncRequest(HttpMethod.Get, path, "");
+            var responseBody = await response.Content.ReadAsStringAsync();
+            List<T> result = null;
+            try
+            {
+                result = JsonSerializer.Deserialize<List<T>>(responseBody);
+            }
+            catch (Exception e)
+            {
+                //TODO log error
+            }
 
-           return result;
+            return result;
+        }
+
+        public async Task<T> RetrieveById<T>(string id)
+        {
+            var path = $"{BuildPath(GetCollectionName<T>())}/{id}";
+            var response = await SendAsyncRequest(HttpMethod.Get, path, "");
+            var responseBody = await response.Content.ReadAsStringAsync();
+            var result = default(T);
+            try
+            {
+                result = JsonSerializer.Deserialize<T>(responseBody);
+            }
+            catch (Exception e)
+            {
+                //TODO log error
+            }
+
+            return result;
         }
     }
 }

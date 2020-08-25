@@ -9,6 +9,7 @@ namespace Crud
 {
     public interface ICrudServiceClient
     {
-        public Task<Stream> RetrieveAll<T>();
+        public Task<List<T>> RetrieveAll<T>();
+        public Task<T> RetrieveById<T>(string id);
     }
 }

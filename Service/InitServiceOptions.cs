@@ -9,7 +9,7 @@ namespace Service
         public int Port { get; set; }
         public Protocol Protocol { get; set; }
         public Dictionary<string, string> Headers { get; set; }
-        public String Prefix { get; set; }
+        public string Prefix { get; set; }
         
         public InitServiceOptions(int port = 3000, Protocol protocol = Protocol.Http, Dictionary<string, string> headers = null, string prefix = "") {
             Port = port;
