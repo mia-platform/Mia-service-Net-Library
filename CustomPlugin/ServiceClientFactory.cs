@@ -12,7 +12,7 @@ namespace CustomPlugin
     public class ServiceClientFactory
     {
         private readonly MiaEnvConfiguration _miaEnvConfiguration;
-        private static  HttpRequestHeaders _miaHeaders = ServiceProxy.GetDefaultHeaders();
+        private static HttpRequestHeaders _miaHeaders = ServiceProxy.GetDefaultHeaders();
         private static HttpRequestHeaders MiaHeaders => _miaHeaders;
 
         public static void SetMiaHeaders(MiaHeadersPropagator miaHeadersPropagator)
@@ -43,10 +43,12 @@ namespace CustomPlugin
                 ? null
                 : new ServiceProxy(microserviceNameKey, options);
         }
-        
-        public CrudServiceClient GetCrudServiceClient(MiaHeadersPropagator miaHeadersPropagator)
+
+        public CrudServiceClient GetCrudServiceClient(string apiPath, string apiSecret, int version,
+            MiaHeadersPropagator miaHeadersPropagator)
         {
-            return new CrudServiceClient(miaHeadersPropagator.Headers);;
+            return new CrudServiceClient(miaHeadersPropagator.Headers);
+            ;
         }
     }
 }

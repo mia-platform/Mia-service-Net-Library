@@ -19,11 +19,20 @@ namespace Crud
 
         private static readonly HttpClient Client;
 
-        public CrudServiceClient(Dictionary<string, string> miaHeaders, string apiPath = "", int crudVersion = -1)
+        private const string VersionPrefix = "v";
+        private const string ApiSecretHeaderKey = "secret";
+
+        public CrudServiceClient(Dictionary<string, string> miaHeaders, string apiPath = default(string),
+            string apiSecret = default(string), int crudVersion = default(int))
         {
             ApiPath = apiPath;
             CrudVersion = crudVersion;
             MiaHeaders = miaHeaders;
+            
+            if (apiSecret != default(string))
+            {
+                Client.DefaultRequestHeaders.Add(ApiSecretHeaderKey, apiSecret);
+            }
         }
 
         static CrudServiceClient()
@@ -39,13 +48,13 @@ namespace Crud
                 message.Headers.Add(key, value);
             }
         }
-
+        
         private string BuildPath(string collectionName)
         {
             var basePath = ApiPath;
             var suffix =
-                CrudVersion != -1
-                    ? $"/v{CrudVersion.ToString()}/{collectionName}"
+                CrudVersion != default(int)
+                    ? $"/{VersionPrefix}{CrudVersion.ToString()}/{collectionName}"
                     : $"/{collectionName}";
             return basePath + suffix;
         }
