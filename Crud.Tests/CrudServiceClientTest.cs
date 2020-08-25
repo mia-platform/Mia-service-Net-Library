@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http.Headers;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace Crud.Tests
         private WireMockServer _server;
         private CrudServiceClient _sut;
         private HttpRequestHeaders _httpRequestHeaders = null;
-        private const int SUCCESS_STATUS_CODE = 200;
+        private const int SuccessStatusCode = 200;
 
 
         [JsonObject("users")]
@@ -40,51 +41,35 @@ namespace Crud.Tests
             }
         }
 
-        private List<User> _successDeserializedBody = new List<User>();
-        private User _user1 = new User(1, "John", "Snow", "Learning things");
-        private User _user2 = new User(2, "Daenerys", "Targaryen", "Riding a dragon");
-
         [SetUp]
         public void StartMockServer()
         {
             _server = WireMockServer.Start();
-
-            _successDeserializedBody.Add(_user1);
-            _successDeserializedBody.Add(_user2);
         }
 
         [Test]
         public async Task TestGet()
         {
-            _sut = new CrudServiceClient(new Dictionary<string, string>(), "http://localhost:3001", "secret", 3);
-            
-            const string SUCCESS_RESPONSE_BODY = @"
-                [
-                  {
-                    ""id"": 1,
-                    ""firstname"": ""John"",
-                    ""Lastname"": ""Snow"",
-                    ""status"": ""Learning things""
-                  },
-                  {
-                    ""id"": 2,
-                    ""firstname"": ""Daenerys"",
-                    ""Lastname"": ""Targaryen"",
-                    ""status"": ""Riding a dragon""
-                  }
-                ]";
-            
+            _sut = new CrudServiceClient(new Dictionary<string, string>(), $"http://localhost:{_server.Ports.First()}", "secret", 3);
+
+            var user1 = new User(1, "John", "Snow", "Learning things");
+            var user2 = new User(2, "Daenerys", "Targaryen", "Riding a dragon");
+            var successDeserializedBody = new List<User>() {user1, user2};
+
+            const string successResponseBody =
+                @"[{""id"": 1,""firstname"": ""John"",""Lastname"": ""Snow"",""status"": ""Learning things""},{""id"": 2,""firstname"": ""Daenerys"",""Lastname"": ""Targaryen"",""status"": ""Riding a dragon""}]";
+
             _server
                 .Given(Request.Create().WithPath("/v3/users/").UsingGet())
                 .RespondWith(
                     Response.Create()
-                        .WithStatusCode(SUCCESS_STATUS_CODE)
-                        .WithBody(SUCCESS_RESPONSE_BODY)
+                        .WithStatusCode(SuccessStatusCode)
+                        .WithBody(successResponseBody)
                 );
 
             var result = await _sut.Get<User>();
 
-            Check.That(result.Count).IsEqualTo(_successDeserializedBody.Count);
+            Check.That(result.Count).IsEqualTo(successDeserializedBody.Count);
             Check.That(result[0].Lastname).IsEqualTo("Snow");
             Check.That(result[1].Lastname).IsEqualTo("Targaryen");
         }
@@ -92,31 +77,79 @@ namespace Crud.Tests
         [Test]
         public async Task TestGetById()
         {
-            _sut = new CrudServiceClient(new Dictionary<string, string>(), "http://localhost:3001");
+            _sut = new CrudServiceClient(new Dictionary<string, string>(), $"http://localhost:{_server.Ports.First()}");
 
-            const string SUCCESS_RESPONSE_BODY = @"
-                  {
-                    ""id"": 2,
-                    ""firstname"": ""Daenerys"",
-                    ""Lastname"": ""Targaryen"",
-                    ""status"": ""Riding a dragon""
-                  }";
-            
+            var user = new User(2, "Daenerys", "Targaryen", "Riding a dragon");
+
+            const string successResponseBody =
+                @"{""id"": 2,""firstname"": ""Daenerys"",""Lastname"": ""Targaryen"",""status"": ""Riding a dragon""}";
+
             _server
                 .Given(Request.Create().WithPath("/users/2").UsingGet())
                 .RespondWith(
                     Response.Create()
-                        .WithStatusCode(SUCCESS_STATUS_CODE)
-                        .WithBody(SUCCESS_RESPONSE_BODY)
+                        .WithStatusCode(SuccessStatusCode)
+                        .WithBody(successResponseBody)
                 );
 
 
             var result = await _sut.GetById<User>("2");
 
-            Check.That(result.Id).IsEqualTo(_user2.Id);
-            Check.That(result.Firstname).IsEqualTo(_user2.Firstname);
-            Check.That(result.Lastname).IsEqualTo(_user2.Lastname);
-            Check.That(result.Status).IsEqualTo(_user2.Status);
+            Check.That(result.Id).IsEqualTo(user.Id);
+            Check.That(result.Firstname).IsEqualTo(user.Firstname);
+            Check.That(result.Lastname).IsEqualTo(user.Lastname);
+            Check.That(result.Status).IsEqualTo(user.Status);
+        }
+
+        [Test]
+        public async Task TestPost()
+        {
+            _sut = new CrudServiceClient(new Dictionary<string, string>(), $"http://localhost:{_server.Ports.First()}", "secret", 3);
+
+            var newUser = new User(3, "Arya", "Stark", "Being no one");
+
+            const string successResponseBody =
+                @"{""id"":3,""firstname"":""Arya"",""Lastname"":""Stark"",""status"":""Being no one""}";
+
+            _server
+                .Given(Request.Create().WithPath("/v3/users/").UsingPost())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(SuccessStatusCode)
+                        .WithBody(successResponseBody)
+                );
+
+            var result = await _sut.Post(newUser);
+            var jsonStringResult = await result.ReadAsStringAsync();
+
+            Check.That(jsonStringResult).IsEqualTo(successResponseBody);
+        }
+
+        [Test]
+        public async Task TestPostBulk()
+        {
+            _sut = new CrudServiceClient(new Dictionary<string, string>(), $"http://localhost:{_server.Ports.First()}", "secret", 3);
+
+            var newUser1 = new User(1, "John", "Snow", "Learning things");
+            var newUser2 = new User(2, "Daenerys", "Targaryen", "Riding a dragon");
+            var newUser3 = new User(3, "Arya", "Stark", "Being no one");
+            var newUsers = new List<User> {newUser1, newUser2, newUser3};
+
+            const string successResponseBody =
+                @"{""result"":""ok""}";
+
+            _server
+                .Given(Request.Create().WithPath("/v3/users/bulk").UsingPost())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(SuccessStatusCode)
+                        .WithBody(successResponseBody)
+                );
+
+            var result = await _sut.PostBulk(newUsers);
+            var jsonStringResult = await result.ReadAsStringAsync();
+
+            Check.That(jsonStringResult).IsEqualTo(successResponseBody);
         }
 
         [TearDown]
@@ -125,4 +158,4 @@ namespace Crud.Tests
             _server.Stop();
         }
     }
-}    
+}

@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Crud
@@ -19,7 +20,8 @@ namespace Crud
 
         private static readonly HttpClient Client;
 
-        private const string VersionPrefix = "v";
+        private const string VersionLiteral = "v";
+        private const string BulkLiteral = "bulk";
         private const string ApiSecretHeaderKey = "secret";
 
         public CrudServiceClient(Dictionary<string, string> miaHeaders, string apiPath = default(string),
@@ -28,7 +30,7 @@ namespace Crud
             ApiPath = apiPath;
             CrudVersion = crudVersion;
             MiaHeaders = miaHeaders;
-            
+
             if (apiSecret != default(string) && !Client.DefaultRequestHeaders.Contains(ApiSecretHeaderKey))
             {
                 Client.DefaultRequestHeaders.Add(ApiSecretHeaderKey, apiSecret);
@@ -48,13 +50,13 @@ namespace Crud
                 message.Headers.Add(key, value);
             }
         }
-        
+
         private string BuildPath(string collectionName)
         {
             var basePath = ApiPath;
             var suffix =
                 CrudVersion != default(int)
-                    ? $"/{VersionPrefix}{CrudVersion.ToString()}/{collectionName}"
+                    ? $"/{VersionLiteral}{CrudVersion.ToString()}/{collectionName}"
                     : $"/{collectionName}";
             return basePath + suffix;
         }
@@ -80,7 +82,7 @@ namespace Crud
                     RequestUri = BuildUrl(path),
                     Content = new StringContent(body, Encoding.UTF8, MediaTypeNames.Application.Json)
                 };
-                
+
                 AddRequestHeaders(httpRequestMessage);
                 var response = await Client.SendAsync(httpRequestMessage);
                 return response;
@@ -126,6 +128,22 @@ namespace Crud
             }
 
             return result;
+        }
+
+        public async Task<HttpContent> Post<T>(T document)
+        {
+            var path = $"{BuildPath(GetCollectionName<T>())}/";
+            var body = JsonSerializer.Serialize(document);
+            var response = await SendAsyncRequest(HttpMethod.Post, path, body);
+            return response.Content;
+        }
+        
+        public async Task<HttpContent> PostBulk<T>(List<T> documents)
+        {
+            var path = $"{BuildPath(GetCollectionName<T>())}/{BulkLiteral}";
+            var body = JsonSerializer.Serialize(documents);
+            var response = await SendAsyncRequest(HttpMethod.Post, path, body);
+            return response.Content;
         }
     }
 }
