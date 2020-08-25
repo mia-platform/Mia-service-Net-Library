@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using CustomPlugin.Environment;
 using Microsoft.AspNetCore.Http;
 using Service;
+using Crud;
 
 namespace CustomPlugin
 {
@@ -41,6 +42,11 @@ namespace CustomPlugin
             return string.IsNullOrEmpty(microserviceNameKey)
                 ? null
                 : new ServiceProxy(microserviceNameKey, options);
+        }
+        
+        public CrudServiceClient GetCrudServiceClient(MiaHeadersPropagator miaHeadersPropagator)
+        {
+            return new CrudServiceClient(miaHeadersPropagator.Headers);;
         }
     }
 }
