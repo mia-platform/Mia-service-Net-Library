@@ -1,12 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Newtonsoft.Json;
 using NFluent;
 using NUnit.Framework;
@@ -59,9 +54,9 @@ namespace Crud.Tests
         }
 
         [Test]
-        public async Task TestRetrieveAll()
+        public async Task TestGet()
         {
-            _sut = new CrudServiceClient(new Dictionary<string, string>(), "http://localhost:3001");
+            _sut = new CrudServiceClient(new Dictionary<string, string>(), "http://localhost:3001", "secret", 3);
             
             const string SUCCESS_RESPONSE_BODY = @"
                 [
@@ -80,14 +75,14 @@ namespace Crud.Tests
                 ]";
             
             _server
-                .Given(Request.Create().WithPath("/users").UsingGet())
+                .Given(Request.Create().WithPath("/v3/users/").UsingGet())
                 .RespondWith(
                     Response.Create()
                         .WithStatusCode(SUCCESS_STATUS_CODE)
                         .WithBody(SUCCESS_RESPONSE_BODY)
                 );
 
-            var result = await _sut.RetrieveAll<User>();
+            var result = await _sut.Get<User>();
 
             Check.That(result.Count).IsEqualTo(_successDeserializedBody.Count);
             Check.That(result[0].Lastname).IsEqualTo("Snow");
@@ -95,7 +90,7 @@ namespace Crud.Tests
         }
 
         [Test]
-        public async Task TestRetrieveById()
+        public async Task TestGetById()
         {
             _sut = new CrudServiceClient(new Dictionary<string, string>(), "http://localhost:3001");
 
@@ -116,7 +111,7 @@ namespace Crud.Tests
                 );
 
 
-            var result = await _sut.RetrieveById<User>("2");
+            var result = await _sut.GetById<User>("2");
 
             Check.That(result.Id).IsEqualTo(_user2.Id);
             Check.That(result.Firstname).IsEqualTo(_user2.Firstname);

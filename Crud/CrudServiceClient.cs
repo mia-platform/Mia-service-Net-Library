@@ -29,7 +29,7 @@ namespace Crud
             CrudVersion = crudVersion;
             MiaHeaders = miaHeaders;
             
-            if (apiSecret != default(string))
+            if (apiSecret != default(string) && !Client.DefaultRequestHeaders.Contains(ApiSecretHeaderKey))
             {
                 Client.DefaultRequestHeaders.Add(ApiSecretHeaderKey, apiSecret);
             }
@@ -80,7 +80,7 @@ namespace Crud
                     RequestUri = BuildUrl(path),
                     Content = new StringContent(body, Encoding.UTF8, MediaTypeNames.Application.Json)
                 };
-
+                
                 AddRequestHeaders(httpRequestMessage);
                 var response = await Client.SendAsync(httpRequestMessage);
                 return response;
@@ -92,7 +92,7 @@ namespace Crud
             }
         }
 
-        public async Task<List<T>> RetrieveAll<T>()
+        public async Task<List<T>> Get<T>()
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/";
             var response = await SendAsyncRequest(HttpMethod.Get, path, "");
@@ -110,7 +110,7 @@ namespace Crud
             return result;
         }
 
-        public async Task<T> RetrieveById<T>(string id)
+        public async Task<T> GetById<T>(string id)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/{id}";
             var response = await SendAsyncRequest(HttpMethod.Get, path, "");
