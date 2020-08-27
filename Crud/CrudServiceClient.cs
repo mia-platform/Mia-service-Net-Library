@@ -22,6 +22,10 @@ namespace Crud
 
         private const string VersionLiteral = "v";
         private const string BulkLiteral = "bulk";
+        private const string ValidateLiteral = "validate";
+        private const string UpsertOneLiteral = "upsert-one";
+        private const string CountLiteral = "count";
+        private const string ExportLiteral = "export";
         private const string ApiSecretHeaderKey = "secret";
 
         public CrudServiceClient(Dictionary<string, string> miaHeaders, string apiPath = default(string),
@@ -130,6 +134,31 @@ namespace Crud
             return result;
         }
 
+        public async Task<int> Count<T>()
+        {
+            var path = $"{BuildPath(GetCollectionName<T>())}/{CountLiteral}";
+            var response = await SendAsyncRequest(HttpMethod.Get, path, "");
+            var count = await response.Content.ReadAsStringAsync();
+            var result = default(int);
+            try
+            {
+                result = int.Parse(count);
+            }
+            catch (Exception e)
+            {
+                //TODO log error
+            }
+
+            return result;
+        }
+        
+        public async Task<HttpContent> Export<T>()
+        {
+            var path = $"{BuildPath(GetCollectionName<T>())}/{ExportLiteral}";
+            var response = await SendAsyncRequest(HttpMethod.Get, path, "");
+            return response.Content;
+        }
+
         public async Task<HttpContent> Post<T>(T document)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/";
@@ -137,12 +166,51 @@ namespace Crud
             var response = await SendAsyncRequest(HttpMethod.Post, path, body);
             return response.Content;
         }
-        
+
         public async Task<HttpContent> PostBulk<T>(List<T> documents)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/{BulkLiteral}";
             var body = JsonSerializer.Serialize(documents);
             var response = await SendAsyncRequest(HttpMethod.Post, path, body);
+            return response.Content;
+        }
+
+        public async Task<HttpStatusCode> PostValidate<T>(T document)
+        {
+            var path = $"{BuildPath(GetCollectionName<T>())}/{ValidateLiteral}";
+            var response = await SendAsyncRequest(HttpMethod.Post, path, "");
+            return response.StatusCode;
+        }
+
+        public async Task<HttpContent> UpsertOne<T>(T document)
+        {
+            var path = $"{BuildPath(GetCollectionName<T>())}/{UpsertOneLiteral}";
+            var body = JsonSerializer.Serialize(document);
+            var response = await SendAsyncRequest(HttpMethod.Post, path, body);
+            return response.Content;
+        }
+
+        public async Task<HttpContent> Patch<T>(JObject patchBody)
+        {
+            var path = $"{BuildPath(GetCollectionName<T>())}/";
+            var body = patchBody.ToString();
+            var response = await SendAsyncRequest(HttpMethod.Patch, path, body);
+            return response.Content;
+        }
+
+        public async Task<HttpContent> PatchById<T>(string id, JObject patchBody)
+        {
+            var path = $"{BuildPath(GetCollectionName<T>())}/{id}";
+            var body = patchBody.ToString();
+            var response = await SendAsyncRequest(HttpMethod.Patch, path, body);
+            return response.Content;
+        }
+
+        public async Task<HttpContent> PatchBulk<T>(JArray patchBody)
+        {
+            var path = $"{BuildPath(GetCollectionName<T>())}/{BulkLiteral}";
+            var body = patchBody.ToString();
+            var response = await SendAsyncRequest(HttpMethod.Patch, path, body);
             return response.Content;
         }
     }

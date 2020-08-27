@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -18,12 +19,13 @@ namespace Crud
         public Task<HttpContent> Post<T>(T document);
         public Task Delete<T>();
         public Task DeleteById<T>(string id);
-        public Task<T> Patch<T>(JObject body);
-        public Task<T> PatchById<T>(JObject body);
-        public Task Export<T>();
+        public Task<HttpContent> Patch<T>(JObject body);
+        public Task<HttpContent> PatchById<T>(string id, JObject body);
+        public Task<HttpContent> Export<T>();
         public Task<HttpStatusCode> PostValidate<T>();
         public Task<int> Count<T>();
-        public Task<T> UpsertOne<T>(T document);
+        public Task<HttpContent> UpsertOne<T>(T document);
         public Task<HttpContent> PostBulk<T>(List<T> documents);
+        public Task<HttpContent> PatchBulk<T>(JArray body);
     }
 }

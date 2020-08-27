@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using NFluent;
 using NUnit.Framework;
 using WireMock.RequestBuilders;
@@ -17,7 +19,7 @@ namespace Crud.Tests
         private WireMockServer _server;
         private CrudServiceClient _sut;
         private HttpRequestHeaders _httpRequestHeaders = null;
-        private const int SuccessStatusCode = 200;
+        private const HttpStatusCode SuccessStatusCode = HttpStatusCode.OK;
 
 
         [JsonObject("users")]
@@ -50,7 +52,8 @@ namespace Crud.Tests
         [Test]
         public async Task TestGet()
         {
-            _sut = new CrudServiceClient(new Dictionary<string, string>(), $"http://localhost:{_server.Ports.First()}", "secret", 3);
+            _sut = new CrudServiceClient(new Dictionary<string, string>(), $"http://localhost:{_server.Ports.First()}",
+                "secret", 3);
 
             var user1 = new User(1, "John", "Snow", "Learning things");
             var user2 = new User(2, "Daenerys", "Targaryen", "Riding a dragon");
@@ -100,11 +103,53 @@ namespace Crud.Tests
             Check.That(result.Lastname).IsEqualTo(user.Lastname);
             Check.That(result.Status).IsEqualTo(user.Status);
         }
+        
+        [Test]
+        public async Task TestCount()
+        {
+            _sut = new CrudServiceClient(new Dictionary<string, string>(), $"http://localhost:{_server.Ports.First()}");
+
+            _server
+                .Given(Request.Create().WithPath("/users/count").UsingGet())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(SuccessStatusCode)
+                        .WithBody("42")
+                );
+
+
+            var result = await _sut.Count<User>();
+
+            Check.That(result).IsEqualTo(42);
+        }
+        
+        [Test]
+        public async Task TestExport()
+        {
+            _sut = new CrudServiceClient(new Dictionary<string, string>(), $"http://localhost:{_server.Ports.First()}");
+
+            const string successResponseBody =
+                @"{""result"":""ok""}";
+                
+            _server
+                .Given(Request.Create().WithPath("/users/export").UsingGet())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(SuccessStatusCode)
+                        .WithBody(successResponseBody)
+                );
+            
+            var result = await _sut.Export<User>();
+            var jsonStringResult = await result.ReadAsStringAsync();
+            
+            Check.That(jsonStringResult).IsEqualTo(successResponseBody);
+        }
 
         [Test]
         public async Task TestPost()
         {
-            _sut = new CrudServiceClient(new Dictionary<string, string>(), $"http://localhost:{_server.Ports.First()}", "secret", 3);
+            _sut = new CrudServiceClient(new Dictionary<string, string>(), $"http://localhost:{_server.Ports.First()}",
+                "secret", 3);
 
             var newUser = new User(3, "Arya", "Stark", "Being no one");
 
@@ -128,7 +173,8 @@ namespace Crud.Tests
         [Test]
         public async Task TestPostBulk()
         {
-            _sut = new CrudServiceClient(new Dictionary<string, string>(), $"http://localhost:{_server.Ports.First()}", "secret", 3);
+            _sut = new CrudServiceClient(new Dictionary<string, string>(), $"http://localhost:{_server.Ports.First()}",
+                "secret", 3);
 
             var newUser1 = new User(1, "John", "Snow", "Learning things");
             var newUser2 = new User(2, "Daenerys", "Targaryen", "Riding a dragon");
@@ -151,6 +197,138 @@ namespace Crud.Tests
 
             Check.That(jsonStringResult).IsEqualTo(successResponseBody);
         }
+
+
+        [Test]
+        public async Task TestPostValidate()
+        {
+            _sut = new CrudServiceClient(new Dictionary<string, string>(), $"http://localhost:{_server.Ports.First()}",
+                "secret", 3);
+
+            var newUser = new User(3, "Arya", "Stark", "Being no one");
+
+            const string successResponseBody =
+                @"{""result"":""ok""}";
+
+            _server
+                .Given(Request.Create().WithPath("/v3/users/validate").UsingPost())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(SuccessStatusCode)
+                        .WithBody(successResponseBody)
+                );
+
+            var result = await _sut.PostValidate<User>(newUser);
+
+            Check.That(result).IsEqualTo(SuccessStatusCode);
+        }
+
+        [Test]
+        public async Task TestUpsertOne()
+        {
+            _sut = new CrudServiceClient(new Dictionary<string, string>(), $"http://localhost:{_server.Ports.First()}",
+                "secret", 3);
+
+            var newUser = new User(3, "Arya", "Stark", "Being no one");
+
+            const string successResponseBody =
+                @"{""result"":""ok""}";
+
+            _server
+                .Given(Request.Create().WithPath("/v3/users/upsert-one").UsingPost())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(SuccessStatusCode)
+                        .WithBody(successResponseBody)
+                );
+
+            var result = await _sut.UpsertOne<User>(newUser);
+            var jsonStringResult = await result.ReadAsStringAsync();
+
+            Check.That(jsonStringResult).IsEqualTo(successResponseBody);
+        }
+
+        [Test]
+        public async Task TestPatch()
+        {
+            _sut = new CrudServiceClient(new Dictionary<string, string>(), $"http://localhost:{_server.Ports.First()}",
+                "secret", 3);
+
+            var requestBody = new JObject();
+            requestBody.Add("foo", "bar");
+
+            const string successResponseBody =
+                @"{""result"":""ok""}";
+
+            _server
+                .Given(Request.Create().WithPath("/v3/users/").WithBody(requestBody.ToString()).UsingPatch())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(SuccessStatusCode)
+                        .WithBody(successResponseBody)
+                );
+
+
+            var result = await _sut.Patch<User>(requestBody);
+            var jsonStringResult = await result.ReadAsStringAsync();
+
+            Check.That(jsonStringResult).IsEqualTo(successResponseBody);
+        }
+        
+        [Test]
+        public async Task TestPatchById()
+        {
+            _sut = new CrudServiceClient(new Dictionary<string, string>(), $"http://localhost:{_server.Ports.First()}",
+                "secret", 3);
+
+            var requestBody = new JObject {{"foo", "bar"}};
+
+            const string successResponseBody =
+                @"{""result"":""ok""}";
+
+            _server
+                .Given(Request.Create().WithPath("/v3/users/42").WithBody(requestBody.ToString()).UsingPatch())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(SuccessStatusCode)
+                        .WithBody(successResponseBody)
+                );
+
+
+            var result = await _sut.PatchById<User>("42", requestBody);
+            var jsonStringResult = await result.ReadAsStringAsync();
+
+            Check.That(jsonStringResult).IsEqualTo(successResponseBody);
+        }
+
+        [Test]
+        public async Task TestPatchBulk()
+        {
+            _sut = new CrudServiceClient(new Dictionary<string, string>(), $"http://localhost:{_server.Ports.First()}",
+                "secret", 3);
+
+            var patch1 = new JObject {{"foo", "bar"}};
+            var patch2 = new JObject {{"baz", "bam"}};
+            var requestBody = new JArray {patch1, patch2};
+
+            const string successResponseBody =
+                @"{""result"":""ok""}";
+
+            _server
+                .Given(Request.Create().WithPath("/v3/users/bulk").WithBody(requestBody.ToString()).UsingPatch())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(SuccessStatusCode)
+                        .WithBody(successResponseBody)
+                );
+
+
+            var result = await _sut.PatchBulk<User>(requestBody);
+            var jsonStringResult = await result.ReadAsStringAsync();
+
+            Check.That(jsonStringResult).IsEqualTo(successResponseBody);
+        }
+
 
         [TearDown]
         public void ShutdownServer()
