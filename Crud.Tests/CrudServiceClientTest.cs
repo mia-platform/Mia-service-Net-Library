@@ -328,6 +328,54 @@ namespace Crud.Tests
 
             Check.That(jsonStringResult).IsEqualTo(successResponseBody);
         }
+        
+        [Test]
+        public async Task TestDelete()
+        {
+            _sut = new CrudServiceClient(new Dictionary<string, string>(), $"http://localhost:{_server.Ports.First()}",
+                "secret", 3);
+
+            const string successResponseBody =
+                @"{""result"":""ok""}";
+
+            _server
+                .Given(Request.Create().WithPath("/v3/users/").UsingDelete())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(SuccessStatusCode)
+                        .WithBody(successResponseBody)
+                );
+
+
+            var result = await _sut.Delete<User>();
+            var jsonStringResult = await result.ReadAsStringAsync();
+
+            Check.That(jsonStringResult).IsEqualTo(successResponseBody);
+        }
+        
+        [Test]
+        public async Task TestDeleteById()
+        {
+            _sut = new CrudServiceClient(new Dictionary<string, string>(), $"http://localhost:{_server.Ports.First()}",
+                "secret", 3);
+
+            const string successResponseBody =
+                @"{""result"":""ok""}";
+
+            _server
+                .Given(Request.Create().WithPath("/v3/users/42").UsingDelete())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(SuccessStatusCode)
+                        .WithBody(successResponseBody)
+                );
+
+
+            var result = await _sut.DeleteById<User>("42");
+            var jsonStringResult = await result.ReadAsStringAsync();
+
+            Check.That(jsonStringResult).IsEqualTo(successResponseBody);
+        }
 
 
         [TearDown]

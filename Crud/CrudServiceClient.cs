@@ -213,5 +213,19 @@ namespace Crud
             var response = await SendAsyncRequest(HttpMethod.Patch, path, body);
             return response.Content;
         }
+        
+        public async Task<HttpContent> Delete<T>()
+        {
+            var path = $"{BuildPath(GetCollectionName<T>())}/";
+            var response = await SendAsyncRequest(HttpMethod.Delete, path, "");
+            return response.Content;
+        }
+
+        public async Task<HttpContent> DeleteById<T>(string id)
+        {
+            var path = $"{BuildPath(GetCollectionName<T>())}/{id}";
+            var response = await SendAsyncRequest(HttpMethod.Delete, path, "");
+            return response.Content;
+        }
     }
 }
