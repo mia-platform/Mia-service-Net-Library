@@ -22,13 +22,15 @@ namespace Service
         }
 
 
-        public ServiceProxy(string serviceName, InitServiceOptions initOptions)
+        public ServiceProxy(Dictionary<string, string> miaHeaders, string serviceName, InitServiceOptions initOptions)
         {
             ServiceName = serviceName;
             InitOptions = initOptions;
+            
+            AddMiaHeaders(miaHeaders);
         }
 
-        public void AddMiaHeaders(Dictionary<string, string> miaHeaders)
+        private void AddMiaHeaders(Dictionary<string, string> miaHeaders)
         {
             foreach (var (key, value) in miaHeaders)
             {

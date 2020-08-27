@@ -28,21 +28,15 @@ namespace CustomPlugin
 
         public ServiceProxy GetDirectServiceProxy(string serviceName, InitServiceOptions options)
         {
-            var proxy = new ServiceProxy(serviceName, options);
-            proxy.AddMiaHeaders(_miaHeaders);
-            return proxy;
+            return new ServiceProxy(_miaHeaders, serviceName, options);
         }
 
         public ServiceProxy GetServiceProxy(InitServiceOptions options)
         {
             var microserviceNameKey = _miaEnvConfiguration.MICROSERVICE_GATEWAY_SERVICE_NAME;
-            var proxy = string.IsNullOrEmpty(microserviceNameKey)
+            return string.IsNullOrEmpty(microserviceNameKey)
                 ? null
-                : new ServiceProxy(microserviceNameKey, options);
-
-            if (proxy == null) return null;
-            proxy.AddMiaHeaders(_miaHeaders);
-            return proxy;
+                : new ServiceProxy(_miaHeaders, microserviceNameKey, options);
         }
 
         public CrudServiceClient GetCrudServiceClient(
