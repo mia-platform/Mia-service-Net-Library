@@ -33,8 +33,22 @@ namespace Crud
         {
             ApiPath = apiPath;
             CrudVersion = crudVersion;
-            MiaHeaders = miaHeaders;
 
+            AddSecretHeader(apiSecret);
+            AddMiaHeaders(miaHeaders);
+        }
+
+        private static void AddMiaHeaders(Dictionary<string, string> miaHeaders)
+        {
+            foreach (var (key, value) in miaHeaders)
+            {
+                Client.DefaultRequestHeaders.Remove(key);
+                Client.DefaultRequestHeaders.Add(key, value);
+            }
+        }
+
+        private static void AddSecretHeader(string apiSecret)
+        {
             if (apiSecret != default(string) && !Client.DefaultRequestHeaders.Contains(ApiSecretHeaderKey))
             {
                 Client.DefaultRequestHeaders.Add(ApiSecretHeaderKey, apiSecret);
@@ -44,15 +58,6 @@ namespace Crud
         static CrudServiceClient()
         {
             Client = new HttpClient();
-        }
-
-        private void AddRequestHeaders(HttpRequestMessage message)
-        {
-            foreach (var (key, value) in MiaHeaders)
-            {
-                message.Headers.Remove(key);
-                message.Headers.Add(key, value);
-            }
         }
 
         private string BuildPath(string collectionName)
@@ -87,7 +92,6 @@ namespace Crud
                     Content = new StringContent(body, Encoding.UTF8, MediaTypeNames.Application.Json)
                 };
 
-                AddRequestHeaders(httpRequestMessage);
                 var response = await Client.SendAsync(httpRequestMessage);
                 return response;
             }

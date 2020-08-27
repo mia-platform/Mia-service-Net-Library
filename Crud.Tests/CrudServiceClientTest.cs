@@ -20,8 +20,7 @@ namespace Crud.Tests
         private CrudServiceClient _sut;
         private HttpRequestHeaders _httpRequestHeaders = null;
         private const HttpStatusCode SuccessStatusCode = HttpStatusCode.OK;
-
-
+        
         [JsonObject("users")]
         private class User
         {
