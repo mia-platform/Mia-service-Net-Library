@@ -57,7 +57,7 @@ namespace Service
                 Path = path,
                 Port = options?.Port ?? InitOptions.Port,
                 Scheme = (options?.Protocol ?? InitOptions.Protocol).ToString(),
-                Query = queryString
+                Query = queryString,
             };
             return uriBuilder.Uri;
         }

@@ -14,7 +14,6 @@ namespace CustomPlugin
     {
         private readonly MiaEnvConfiguration _miaEnvConfiguration;
         private static Dictionary<string, string> _miaHeaders;
-        private static Dictionary<string, string> MiaHeaders => _miaHeaders;
 
         public static void SetMiaHeaders(MiaHeadersPropagator miaHeadersPropagator)
         {
