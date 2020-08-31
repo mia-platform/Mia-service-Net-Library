@@ -6,6 +6,7 @@ using System.Net.Mime;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Crud.library;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using JsonSerializer = System.Text.Json.JsonSerializer;
@@ -197,26 +198,26 @@ namespace Crud
             return response.Content;
         }
 
-        public async Task<HttpContent> Patch<T>(JObject patchBody, string queryString = "")
+        public async Task<HttpContent> Patch<T>(PatchUpdateSection patchBody, string queryString = "")
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/";
-            var body = patchBody.ToString();
+            var body = JsonConvert.SerializeObject(patchBody);
             var response = await SendAsyncRequest(HttpMethod.Patch, path, queryString, body);
             return response.Content;
         }
 
-        public async Task<HttpContent> PatchById<T>(string id, JObject patchBody, string queryString = "")
+        public async Task<HttpContent> PatchById<T>(string id, PatchUpdateSection patchBody, string queryString = "")
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/{id}";
-            var body = patchBody.ToString();
+            var body = JsonConvert.SerializeObject(patchBody);
             var response = await SendAsyncRequest(HttpMethod.Patch, path, queryString, body);
             return response.Content;
         }
 
-        public async Task<HttpContent> PatchBulk<T>(JArray patchBody, string queryString = "")
+        public async Task<HttpContent> PatchBulk<T>(PatchBulkBody patchBody, string queryString = "")
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/{BulkLiteral}";
-            var body = patchBody.ToString();
+            var body = JsonConvert.SerializeObject(patchBody);
             var response = await SendAsyncRequest(HttpMethod.Patch, path, queryString, body);
             return response.Content;
         }

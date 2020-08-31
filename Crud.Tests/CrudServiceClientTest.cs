@@ -4,6 +4,8 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Crud.library;
+using Crud.library.enums;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NFluent;
@@ -20,7 +22,7 @@ namespace Crud.Tests
         private CrudServiceClient _sut;
         private HttpRequestHeaders _httpRequestHeaders = null;
         private const HttpStatusCode SuccessStatusCode = HttpStatusCode.OK;
-        
+
         [JsonObject("users")]
         private class User
         {
@@ -102,7 +104,7 @@ namespace Crud.Tests
             Check.That(result.Lastname).IsEqualTo(user.Lastname);
             Check.That(result.Status).IsEqualTo(user.Status);
         }
-        
+
         [Test]
         public async Task TestCount()
         {
@@ -121,7 +123,7 @@ namespace Crud.Tests
 
             Check.That(result).IsEqualTo(42);
         }
-        
+
         [Test]
         public async Task TestExport()
         {
@@ -129,7 +131,7 @@ namespace Crud.Tests
 
             const string successResponseBody =
                 @"{""result"":""ok""}";
-                
+
             _server
                 .Given(Request.Create().WithPath("/users/export").UsingGet())
                 .RespondWith(
@@ -137,10 +139,10 @@ namespace Crud.Tests
                         .WithStatusCode(SuccessStatusCode)
                         .WithBody(successResponseBody)
                 );
-            
+
             var result = await _sut.Export<User>();
             var jsonStringResult = await result.ReadAsStringAsync();
-            
+
             Check.That(jsonStringResult).IsEqualTo(successResponseBody);
         }
 
@@ -253,14 +255,14 @@ namespace Crud.Tests
             _sut = new CrudServiceClient(new Dictionary<string, string>(), $"http://localhost:{_server.Ports.First()}",
                 "secret", 3);
 
-            var requestBody = new JObject();
-            requestBody.Add("foo", "bar");
+            var updateMapper = new Dictionary<string, JToken> {{"Lastname", "Targaryen"}};
+            var requestBody = new PatchUpdateSection {[PatchCodingKey.Set] = updateMapper};
 
             const string successResponseBody =
                 @"{""result"":""ok""}";
 
             _server
-                .Given(Request.Create().WithPath("/v3/users/").WithBody(requestBody.ToString()).UsingPatch())
+                .Given(Request.Create().WithPath("/v3/users/").WithBody(JsonConvert.SerializeObject(requestBody)).UsingPatch())
                 .RespondWith(
                     Response.Create()
                         .WithStatusCode(SuccessStatusCode)
@@ -273,20 +275,21 @@ namespace Crud.Tests
 
             Check.That(jsonStringResult).IsEqualTo(successResponseBody);
         }
-        
+
         [Test]
         public async Task TestPatchById()
         {
             _sut = new CrudServiceClient(new Dictionary<string, string>(), $"http://localhost:{_server.Ports.First()}",
                 "secret", 3);
 
-            var requestBody = new JObject {{"foo", "bar"}};
+            var requestBody = new PatchUpdateSection
+                {[PatchCodingKey.Set] = new Dictionary<string, JToken> {{"Lastname", "Targaryen"}}};
 
             const string successResponseBody =
                 @"{""result"":""ok""}";
 
             _server
-                .Given(Request.Create().WithPath("/v3/users/42").WithBody(requestBody.ToString()).UsingPatch())
+                .Given(Request.Create().WithPath("/v3/users/42").WithBody(JsonConvert.SerializeObject(requestBody)).UsingPatch())
                 .RespondWith(
                     Response.Create()
                         .WithStatusCode(SuccessStatusCode)
@@ -306,15 +309,25 @@ namespace Crud.Tests
             _sut = new CrudServiceClient(new Dictionary<string, string>(), $"http://localhost:{_server.Ports.First()}",
                 "secret", 3);
 
-            var patch1 = new JObject {{"foo", "bar"}};
-            var patch2 = new JObject {{"baz", "bam"}};
-            var requestBody = new JArray {patch1, patch2};
+            var patchItem1 = new PatchItemSection
+            {
+                PatchFilterSection = new PatchFilterSection {["foo"] = new JObject {{"foo", "bar"}}},
+                PatchUpdateSection = new PatchUpdateSection {[PatchCodingKey.Set] = new Dictionary<string, JToken> {{"foo", "bar"}}}
+            };
+
+            var patchItem2 = new PatchItemSection
+            {
+                PatchFilterSection = new PatchFilterSection {["baz"] = new JObject {{"foo", "bar"}}},
+                PatchUpdateSection = new PatchUpdateSection {[PatchCodingKey.Set] = new Dictionary<string, JToken> {{"foo", "bar"}}}
+            };
+            
+            var requestBody = new PatchBulkBody {patchItem1, patchItem2};
 
             const string successResponseBody =
                 @"{""result"":""ok""}";
 
             _server
-                .Given(Request.Create().WithPath("/v3/users/bulk").WithBody(requestBody.ToString()).UsingPatch())
+                .Given(Request.Create().WithPath("/v3/users/bulk").WithBody(JsonConvert.SerializeObject(requestBody)).UsingPatch())
                 .RespondWith(
                     Response.Create()
                         .WithStatusCode(SuccessStatusCode)
@@ -327,7 +340,7 @@ namespace Crud.Tests
 
             Check.That(jsonStringResult).IsEqualTo(successResponseBody);
         }
-        
+
         [Test]
         public async Task TestDelete()
         {
@@ -351,7 +364,7 @@ namespace Crud.Tests
 
             Check.That(jsonStringResult).IsEqualTo(successResponseBody);
         }
-        
+
         [Test]
         public async Task TestDeleteById()
         {
