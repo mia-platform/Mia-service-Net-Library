@@ -25,12 +25,12 @@ namespace CustomPlugin
             _miaEnvConfiguration = miaEnvConfiguration;
         }
 
-        public ServiceProxy GetDirectServiceProxy(string serviceName, InitServiceOptions options)
+        public IServiceProxy GetDirectServiceProxy(string serviceName, InitServiceOptions options)
         {
             return new ServiceProxy(_miaHeaders, serviceName, options);
         }
 
-        public ServiceProxy GetServiceProxy(InitServiceOptions options)
+        public IServiceProxy GetServiceProxy(InitServiceOptions options)
         {
             var microserviceNameKey = _miaEnvConfiguration.MICROSERVICE_GATEWAY_SERVICE_NAME;
             return string.IsNullOrEmpty(microserviceNameKey)
