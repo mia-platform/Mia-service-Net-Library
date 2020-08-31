@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Service
 {
-    public class ServiceProxy
+    public class ServiceProxy : IServiceProxy
     {
         public string ServiceName { get; }
         public InitServiceOptions InitOptions { get; }

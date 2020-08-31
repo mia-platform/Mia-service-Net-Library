@@ -38,7 +38,7 @@ namespace CustomPlugin
                 : new ServiceProxy(_miaHeaders, microserviceNameKey, options);
         }
 
-        public CrudServiceClient GetCrudServiceClient(
+        public ICrudServiceClient GetCrudServiceClient(
             string apiPath = default(string),
             string apiSecret = default(string), int crudVersion = default(int))
         {

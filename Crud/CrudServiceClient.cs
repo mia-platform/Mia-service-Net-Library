@@ -12,7 +12,7 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Crud
 {
-    public class CrudServiceClient
+    public class CrudServiceClient : ICrudServiceClient
     {
         public string ApiPath { get; set; }
         public int CrudVersion { get; set; }

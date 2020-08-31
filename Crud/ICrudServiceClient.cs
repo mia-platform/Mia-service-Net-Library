@@ -20,12 +20,12 @@ namespace Crud
         public Task<HttpContent> Export<T>(string queryString = "");
         public Task<HttpContent> Post<T>(T document, string queryString = "");
         public Task<HttpContent> PostBulk<T>(List<T> documents, string queryString = "");
-        public Task<HttpStatusCode> PostValidate<T>(string queryString = "");
+        public Task<HttpStatusCode> PostValidate<T>(T document, string queryString = "");
         public Task<HttpContent> UpsertOne<T>(T document, string queryString = "");
         public Task<HttpContent> Patch<T>(JObject body, string queryString = "");
         public Task<HttpContent> PatchById<T>(string id, JObject body, string queryString = "");
         public Task<HttpContent> PatchBulk<T>(JArray body, string queryString = "");
-        public Task Delete<T>(string queryString = "");
-        public Task DeleteById<T>(string id, string queryString = "");
+        public Task<HttpContent> Delete<T>(string queryString = "");
+        public Task<HttpContent> DeleteById<T>(string id, string queryString = "");
     }
 }
