@@ -11,7 +11,6 @@ using Crud.library;
 using Crud.library.enums;
 using Microsoft.AspNetCore.Http.Extensions;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Crud
