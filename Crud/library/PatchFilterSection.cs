@@ -3,7 +3,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Crud.library
 {
-    public class PatchFilterSection : Dictionary<string, JToken>
+    public class PatchFilterSection : Dictionary<string, object>
     {
         
     }

@@ -218,7 +218,7 @@ namespace Crud
             return response.Content;
         }
 
-        public async Task<HttpContent> Patch<T>(Dictionary<PatchCodingKey, Dictionary<string, JToken>> patchBody,
+        public async Task<HttpContent> Patch<T>(Dictionary<PatchCodingKey, Dictionary<string, object>> patchBody,
             List<KeyValuePair<string, string>> query = null)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/";
@@ -229,7 +229,7 @@ namespace Crud
         }
 
         public async Task<HttpContent> PatchById<T>(string id,
-            Dictionary<PatchCodingKey, Dictionary<string, JToken>> patchBody,
+            Dictionary<PatchCodingKey, Dictionary<string, object>> patchBody,
             List<KeyValuePair<string, string>> query = null)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/{id}";

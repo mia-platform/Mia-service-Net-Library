@@ -25,10 +25,10 @@ namespace Crud
         public Task<HttpStatusCode> PostValidate<T>(T document, List<KeyValuePair<string, string>> query);
         public Task<HttpContent> UpsertOne<T>(T document, List<KeyValuePair<string, string>> query);
 
-        public Task<HttpContent> Patch<T>(Dictionary<PatchCodingKey, Dictionary<string, JToken>> body,
+        public Task<HttpContent> Patch<T>(Dictionary<PatchCodingKey, Dictionary<string, object>> body,
             List<KeyValuePair<string, string>> query);
 
-        public Task<HttpContent> PatchById<T>(string id, Dictionary<PatchCodingKey, Dictionary<string, JToken>> body,
+        public Task<HttpContent> PatchById<T>(string id, Dictionary<PatchCodingKey, Dictionary<string, object>> body,
             List<KeyValuePair<string, string>> query);
 
         public Task<HttpContent> PatchBulk<T>(PatchBulkBody body, List<KeyValuePair<string, string>> query);

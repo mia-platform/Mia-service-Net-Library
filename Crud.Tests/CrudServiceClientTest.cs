@@ -258,7 +258,7 @@ namespace Crud.Tests
             _sut = new CrudServiceClient(new Dictionary<string, string>(), $"http://localhost:{_server.Ports.First()}",
                 "secret", 3);
 
-            var updateMapper = new Dictionary<string, JToken> {{"Lastname", "Targaryen"}};
+            var updateMapper = new Dictionary<string, object> {{"Lastname", "Targaryen"}};
             var requestBody = new PatchUpdateSection {[PatchCodingKey.Set] = updateMapper};
 
             const string successResponseBody =
@@ -286,7 +286,7 @@ namespace Crud.Tests
                 "secret", 3);
 
             var requestBody = new PatchUpdateSection
-                {[PatchCodingKey.Set] = new Dictionary<string, JToken> {{"Lastname", "Targaryen"}}};
+                {[PatchCodingKey.Set] = new Dictionary<string, object> {{"Lastname", "Targaryen"}}};
 
             const string successResponseBody =
                 @"{""result"":""ok""}";
@@ -315,13 +315,13 @@ namespace Crud.Tests
             var patchItem1 = new PatchItemSection
             {
                 PatchFilterSection = new PatchFilterSection {["foo"] = new JObject {{"foo", "bar"}}},
-                PatchUpdateSection = new PatchUpdateSection {[PatchCodingKey.Set] = new Dictionary<string, JToken> {{"foo", "bar"}}}
+                PatchUpdateSection = new PatchUpdateSection {[PatchCodingKey.Set] = new Dictionary<string, object> {{"foo", "bar"}}}
             };
 
             var patchItem2 = new PatchItemSection
             {
                 PatchFilterSection = new PatchFilterSection {["baz"] = new JObject {{"foo", "bar"}}},
-                PatchUpdateSection = new PatchUpdateSection {[PatchCodingKey.Set] = new Dictionary<string, JToken> {{"foo", "bar"}}}
+                PatchUpdateSection = new PatchUpdateSection {[PatchCodingKey.Set] = new Dictionary<string, object> {{"foo", "bar"}}}
             };
             
             var requestBody = new PatchBulkBody {patchItem1, patchItem2};

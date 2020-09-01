@@ -9,8 +9,8 @@ namespace Crud.library
     public class PatchItemSection
     {
         [JsonProperty("filter")] 
-        public  Dictionary<string, JToken> PatchFilterSection { get; set; }
+        public  Dictionary<string, object> PatchFilterSection { get; set; }
         [JsonProperty("update")] 
-        public Dictionary<PatchCodingKey, Dictionary<string, JToken>> PatchUpdateSection { get; set; }
+        public Dictionary<PatchCodingKey, Dictionary<string, object>> PatchUpdateSection { get; set; }
     }
 }
