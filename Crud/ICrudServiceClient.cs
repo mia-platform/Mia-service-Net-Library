@@ -16,23 +16,23 @@ namespace Crud
 {
     public interface ICrudServiceClient
     {
-        public Task<List<T>> Get<T>(string queryString = "");
-        public Task<T> GetById<T>(string id, string queryString = "");
-        public Task<int> Count<T>(string queryString = "");
-        public Task<HttpContent> Export<T>(string queryString = "");
-        public Task<HttpContent> Post<T>(T document, string queryString = "");
-        public Task<HttpContent> PostBulk<T>(List<T> documents, string queryString = "");
-        public Task<HttpStatusCode> PostValidate<T>(T document, string queryString = "");
-        public Task<HttpContent> UpsertOne<T>(T document, string queryString = "");
+        public Task<List<T>> Get<T>(List<KeyValuePair<string, string>> query);
+        public Task<T> GetById<T>(string id, List<KeyValuePair<string, string>> query);
+        public Task<int> Count<T>(List<KeyValuePair<string, string>> query);
+        public Task<HttpContent> Export<T>(List<KeyValuePair<string, string>> query);
+        public Task<HttpContent> Post<T>(T document, List<KeyValuePair<string, string>> query);
+        public Task<HttpContent> PostBulk<T>(List<T> documents, List<KeyValuePair<string, string>> query);
+        public Task<HttpStatusCode> PostValidate<T>(T document, List<KeyValuePair<string, string>> query);
+        public Task<HttpContent> UpsertOne<T>(T document, List<KeyValuePair<string, string>> query);
 
         public Task<HttpContent> Patch<T>(Dictionary<PatchCodingKey, Dictionary<string, JToken>> body,
-            string queryString = "");
+            List<KeyValuePair<string, string>> query);
 
         public Task<HttpContent> PatchById<T>(string id, Dictionary<PatchCodingKey, Dictionary<string, JToken>> body,
-            string queryString = "");
+            List<KeyValuePair<string, string>> query);
 
-        public Task<HttpContent> PatchBulk<T>(PatchBulkBody body, string queryString = "");
-        public Task<HttpContent> Delete<T>(string queryString = "");
-        public Task<HttpContent> DeleteById<T>(string id, string queryString = "");
+        public Task<HttpContent> PatchBulk<T>(PatchBulkBody body, List<KeyValuePair<string, string>> query);
+        public Task<HttpContent> Delete<T>(List<KeyValuePair<string, string>> query);
+        public Task<HttpContent> DeleteById<T>(string id, List<KeyValuePair<string, string>> query);
     }
 }
