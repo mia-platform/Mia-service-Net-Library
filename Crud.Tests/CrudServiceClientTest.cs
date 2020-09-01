@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -20,7 +21,6 @@ namespace Crud.Tests
     {
         private WireMockServer _server;
         private CrudServiceClient _sut;
-        private HttpRequestHeaders _httpRequestHeaders = null;
         private const HttpStatusCode SuccessStatusCode = HttpStatusCode.OK;
 
         [JsonObject("users")]
@@ -63,15 +63,18 @@ namespace Crud.Tests
             const string successResponseBody =
                 @"[{""id"": 1,""firstname"": ""John"",""Lastname"": ""Snow"",""status"": ""Learning things""},{""id"": 2,""firstname"": ""Daenerys"",""Lastname"": ""Targaryen"",""status"": ""Riding a dragon""}]";
 
+            var queryParam = new KeyValuePair<string, string>("foo", "bar");
+            var query = new List<KeyValuePair<string, string>> {queryParam};
+
             _server
-                .Given(Request.Create().WithPath("/v3/users/").UsingGet())
+                .Given(Request.Create().WithPath("/v3/users/").WithParam("foo", "bar").UsingGet())
                 .RespondWith(
                     Response.Create()
                         .WithStatusCode(SuccessStatusCode)
                         .WithBody(successResponseBody)
                 );
 
-            var result = await _sut.Get<User>();
+            var result = await _sut.Get<User>(query);
 
             Check.That(result.Count).IsEqualTo(successDeserializedBody.Count);
             Check.That(result[0].Lastname).IsEqualTo("Snow");

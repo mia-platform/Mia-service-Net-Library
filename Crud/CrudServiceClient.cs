@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Mime;
@@ -23,6 +24,8 @@ namespace Crud
 
         private static readonly HttpClient Client;
 
+        public List<KeyValuePair<string, string>> DefaultQuery = new List<KeyValuePair<string, string>>();
+
         private const string VersionLiteral = "v";
         private const string BulkLiteral = "bulk";
         private const string ValidateLiteral = "validate";
@@ -30,6 +33,7 @@ namespace Crud
         private const string CountLiteral = "count";
         private const string ExportLiteral = "export";
         private const string ApiSecretHeaderKey = "secret";
+
 
         public CrudServiceClient(Dictionary<string, string> miaHeaders, string apiPath = default(string),
             string apiSecret = default(string), int crudVersion = default(int))
@@ -79,6 +83,11 @@ namespace Crud
             return uriBuilder.Uri;
         }
 
+        private string BuildQueryString(IReadOnlyCollection<KeyValuePair<string, string>> query)
+        {
+            return query == null ? new QueryBuilder(DefaultQuery).ToQueryString().ToString() : new QueryBuilder(DefaultQuery.Concat(query)).ToQueryString().ToString();
+        }
+
         private static string GetCollectionName<T>()
         {
             return typeof(T).GetTypeInfo().GetCustomAttribute<JsonObjectAttribute>()?.Id;
@@ -107,10 +116,10 @@ namespace Crud
             }
         }
 
-        public async Task<List<T>> Get<T>( List<KeyValuePair<string, string>> query)
+        public async Task<List<T>> Get<T>(List<KeyValuePair<string, string>> query = null)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/";
-            var queryString = new QueryBuilder(query).ToQueryString().ToString();
+            var queryString = BuildQueryString(query);
             var response = await SendAsyncRequest(HttpMethod.Get, path, queryString);
             var responseBody = await response.Content.ReadAsStringAsync();
             List<T> result = null;
@@ -126,10 +135,10 @@ namespace Crud
             return result;
         }
 
-        public async Task<T> GetById<T>(string id,  List<KeyValuePair<string, string>> query)
+        public async Task<T> GetById<T>(string id, List<KeyValuePair<string, string>> query = null)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/{id}";
-            var queryString = new QueryBuilder(query).ToQueryString().ToString();
+            var queryString = BuildQueryString(query);
             var response = await SendAsyncRequest(HttpMethod.Get, path, queryString);
             var responseBody = await response.Content.ReadAsStringAsync();
             var result = default(T);
@@ -145,10 +154,10 @@ namespace Crud
             return result;
         }
 
-        public async Task<int> Count<T>( List<KeyValuePair<string, string>> query)
+        public async Task<int> Count<T>(List<KeyValuePair<string, string>> query = null)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/{CountLiteral}";
-            var queryString = new QueryBuilder(query).ToQueryString().ToString();
+            var queryString = BuildQueryString(query);
             var response = await SendAsyncRequest(HttpMethod.Get, path, queryString);
             var count = await response.Content.ReadAsStringAsync();
             var result = default(int);
@@ -164,89 +173,94 @@ namespace Crud
             return result;
         }
 
-        public async Task<HttpContent> Export<T>( List<KeyValuePair<string, string>> query)
+        public async Task<HttpContent> Export<T>(List<KeyValuePair<string, string>> query = null)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/{ExportLiteral}";
-            var queryString = new QueryBuilder(query).ToQueryString().ToString();;
+            var queryString = BuildQueryString(query);
+            ;
             var response = await SendAsyncRequest(HttpMethod.Get, path, queryString);
             return response.Content;
         }
 
-        public async Task<HttpContent> Post<T>(T document,  List<KeyValuePair<string, string>> query)
+        public async Task<HttpContent> Post<T>(T document, List<KeyValuePair<string, string>> query = null)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/";
             var body = JsonSerializer.Serialize(document);
-            var queryString = new QueryBuilder(query).ToQueryString().ToString();
+            var queryString = BuildQueryString(query);
             var response = await SendAsyncRequest(HttpMethod.Post, path, queryString, body);
             return response.Content;
         }
 
-        public async Task<HttpContent> PostBulk<T>(List<T> documents,  List<KeyValuePair<string, string>> query)
+        public async Task<HttpContent> PostBulk<T>(List<T> documents, List<KeyValuePair<string, string>> query = null)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/{BulkLiteral}";
             var body = JsonSerializer.Serialize(documents);
-            var queryString = new QueryBuilder(query).ToQueryString().ToString();
+            var queryString = BuildQueryString(query);
             var response = await SendAsyncRequest(HttpMethod.Post, path, queryString, body);
             return response.Content;
         }
 
-        public async Task<HttpStatusCode> PostValidate<T>(T document,  List<KeyValuePair<string, string>> query)
+        public async Task<HttpStatusCode> PostValidate<T>(T document, List<KeyValuePair<string, string>> query = null)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/{ValidateLiteral}";
             var body = JsonSerializer.Serialize(document);
-            var queryString = new QueryBuilder(query).ToQueryString().ToString();
+            var queryString = BuildQueryString(query);
             var response = await SendAsyncRequest(HttpMethod.Post, path, queryString, body);
             return response.StatusCode;
         }
 
-        public async Task<HttpContent> UpsertOne<T>(T document,  List<KeyValuePair<string, string>> query)
+        public async Task<HttpContent> UpsertOne<T>(T document, List<KeyValuePair<string, string>> query = null)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/{UpsertOneLiteral}";
             var body = JsonSerializer.Serialize(document);
-            var queryString = new QueryBuilder(query).ToQueryString().ToString();
+            var queryString = BuildQueryString(query);
             var response = await SendAsyncRequest(HttpMethod.Post, path, queryString, body);
             return response.Content;
         }
 
-        public async Task<HttpContent> Patch<T>(Dictionary<PatchCodingKey, Dictionary<string, JToken>> patchBody,  List<KeyValuePair<string, string>> query)
+        public async Task<HttpContent> Patch<T>(Dictionary<PatchCodingKey, Dictionary<string, JToken>> patchBody,
+            List<KeyValuePair<string, string>> query = null)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/";
             var body = JsonConvert.SerializeObject(patchBody);
-            var queryString = new QueryBuilder(query).ToQueryString().ToString();
+            var queryString = BuildQueryString(query);
             var response = await SendAsyncRequest(HttpMethod.Patch, path, queryString, body);
             return response.Content;
         }
 
-        public async Task<HttpContent> PatchById<T>(string id, Dictionary<PatchCodingKey, Dictionary<string, JToken>> patchBody,  List<KeyValuePair<string, string>> query)
+        public async Task<HttpContent> PatchById<T>(string id,
+            Dictionary<PatchCodingKey, Dictionary<string, JToken>> patchBody,
+            List<KeyValuePair<string, string>> query = null)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/{id}";
             var body = JsonConvert.SerializeObject(patchBody);
-            var queryString = new QueryBuilder(query).ToQueryString().ToString();
+            var queryString = BuildQueryString(query);
             var response = await SendAsyncRequest(HttpMethod.Patch, path, queryString, body);
             return response.Content;
         }
 
-        public async Task<HttpContent> PatchBulk<T>(PatchBulkBody patchBody,  List<KeyValuePair<string, string>> query)
+        public async Task<HttpContent> PatchBulk<T>(PatchBulkBody patchBody,
+            List<KeyValuePair<string, string>> query = null)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/{BulkLiteral}";
             var body = JsonConvert.SerializeObject(patchBody);
-            var queryString = new QueryBuilder(query).ToQueryString().ToString();
+            var queryString = BuildQueryString(query);
             var response = await SendAsyncRequest(HttpMethod.Patch, path, queryString, body);
             return response.Content;
         }
 
-        public async Task<HttpContent> Delete<T>( List<KeyValuePair<string, string>> query)
+        public async Task<HttpContent> Delete<T>(List<KeyValuePair<string, string>> query = null)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/";
-            var queryString = new QueryBuilder(query).ToQueryString().ToString();
+            var queryString = BuildQueryString(query);
             var response = await SendAsyncRequest(HttpMethod.Delete, path, queryString);
             return response.Content;
         }
 
-        public async Task<HttpContent> DeleteById<T>(string id,  List<KeyValuePair<string, string>> query)
+        public async Task<HttpContent> DeleteById<T>(string id, List<KeyValuePair<string, string>> query = null)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/{id}";
-            var queryString = new QueryBuilder(query).ToQueryString().ToString();
+            var queryString = BuildQueryString(query);
             var response = await SendAsyncRequest(HttpMethod.Delete, path, queryString);
             return response.Content;
         }
