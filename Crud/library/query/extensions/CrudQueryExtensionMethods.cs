@@ -1,13 +1,17 @@
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using Crud.library.enums;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Crud.library.query.Extensions
 {
     public static class CrudQueryExtensionMethods
     {
+        public static void AddIdParam(
+            this List<KeyValuePair<string, string>> query, string id)
+        {
+            query.Add(new KeyValuePair<string, string>("_id", id));
+        }      
+        
         public static void AddCreatorIdParam(
             this List<KeyValuePair<string, string>> query, string value)
         {
@@ -44,6 +48,31 @@ namespace Crud.library.query.Extensions
             this List<KeyValuePair<string, string>> query, State state)
         {
             query.Add(new KeyValuePair<string, string>(Parameters.State.Value, state.Value));
+        } 
+        
+        public static void AddPropertiesParam(
+            this List<KeyValuePair<string, string>> query, List<string> value)
+        {
+            var properties = JsonConvert.SerializeObject(value);
+            query.Add(new KeyValuePair<string, string>(Parameters.Properties.Value, properties));
+        } 
+        
+        public static void AddLimitParam(
+            this List<KeyValuePair<string, string>> query, int value)
+        {
+            query.Add(new KeyValuePair<string, string>(Parameters.Limit.Value, value.ToString()));
+        } 
+        
+        public static void AddSkipParam(
+            this List<KeyValuePair<string, string>> query, int value)
+        {
+            query.Add(new KeyValuePair<string, string>(Parameters.Skip.Value, value.ToString()));
+        } 
+        
+        public static void AddSortParam(
+            this List<KeyValuePair<string, string>> query, string value)
+        {
+            query.Add(new KeyValuePair<string, string>(Parameters.Sort.Value, value));
         } 
     }
 }
