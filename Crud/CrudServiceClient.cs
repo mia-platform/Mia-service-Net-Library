@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Crud.library;
+using Crud.library.enums;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using JsonSerializer = System.Text.Json.JsonSerializer;
@@ -198,7 +199,7 @@ namespace Crud
             return response.Content;
         }
 
-        public async Task<HttpContent> Patch<T>(PatchUpdateSection patchBody, string queryString = "")
+        public async Task<HttpContent> Patch<T>(Dictionary<PatchCodingKey, Dictionary<string, JToken>> patchBody, string queryString = "")
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/";
             var body = JsonConvert.SerializeObject(patchBody);
@@ -206,7 +207,7 @@ namespace Crud
             return response.Content;
         }
 
-        public async Task<HttpContent> PatchById<T>(string id, PatchUpdateSection patchBody, string queryString = "")
+        public async Task<HttpContent> PatchById<T>(string id, Dictionary<PatchCodingKey, Dictionary<string, JToken>> patchBody, string queryString = "")
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/{id}";
             var body = JsonConvert.SerializeObject(patchBody);

@@ -24,8 +24,13 @@ namespace Crud
         public Task<HttpContent> PostBulk<T>(List<T> documents, string queryString = "");
         public Task<HttpStatusCode> PostValidate<T>(T document, string queryString = "");
         public Task<HttpContent> UpsertOne<T>(T document, string queryString = "");
-        public Task<HttpContent> Patch<T>(PatchUpdateSection body, string queryString = "");
-        public Task<HttpContent> PatchById<T>(string id, PatchUpdateSection body, string queryString = "");
+
+        public Task<HttpContent> Patch<T>(Dictionary<PatchCodingKey, Dictionary<string, JToken>> body,
+            string queryString = "");
+
+        public Task<HttpContent> PatchById<T>(string id, Dictionary<PatchCodingKey, Dictionary<string, JToken>> body,
+            string queryString = "");
+
         public Task<HttpContent> PatchBulk<T>(PatchBulkBody body, string queryString = "");
         public Task<HttpContent> Delete<T>(string queryString = "");
         public Task<HttpContent> DeleteById<T>(string id, string queryString = "");
