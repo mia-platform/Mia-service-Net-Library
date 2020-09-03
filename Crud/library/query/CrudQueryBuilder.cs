@@ -45,9 +45,9 @@ namespace Crud.library.query
             return this;
         }
 
-        public CrudQueryBuilder MongoQuery(Dictionary<string, Dictionary<MongoOperator, object>> value)
+        public CrudQueryBuilder MongoQuery(MongoQueryBuilder mongoQueryBuilder)
         {
-            _query.AddMongoQueryParam(value);
+            _query.AddMongoQueryParam(mongoQueryBuilder.Build());
             return this;
         }
 

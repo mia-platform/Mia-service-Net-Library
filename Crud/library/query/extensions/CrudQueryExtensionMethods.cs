@@ -38,7 +38,7 @@ namespace Crud.library.query.Extensions
         }
 
         public static void AddMongoQueryParam(
-            this Dictionary<string, string> query, Dictionary<string, Dictionary<MongoOperator, object>> value)
+            this Dictionary<string, string> query, Dictionary<string, object> value)
         {
             var mongoQuery = JsonConvert.SerializeObject(value);
             query.Add(Parameters.Query.Value, mongoQuery);
