@@ -11,7 +11,6 @@ using Crud.library;
 using Crud.library.enums;
 using Microsoft.AspNetCore.Http.Extensions;
 using Newtonsoft.Json;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Crud
 {
@@ -89,7 +88,7 @@ namespace Crud
 
         private static string GetCollectionName<T>()
         {
-            return typeof(T).GetTypeInfo().GetCustomAttribute<JsonObjectAttribute>()?.Id;
+            return typeof(T).GetTypeInfo().GetCustomAttribute<CollectionName>()?.Value;
         }
 
         private async Task<HttpResponseMessage> SendAsyncRequest(HttpMethod method, string path,
@@ -124,7 +123,7 @@ namespace Crud
             List<T> result = null;
             try
             {
-                result = JsonSerializer.Deserialize<List<T>>(responseBody);
+                result = JsonConvert.DeserializeObject<List<T>>(responseBody);
             }
             catch (Exception e)
             {
@@ -143,7 +142,7 @@ namespace Crud
             var result = default(T);
             try
             {
-                result = JsonSerializer.Deserialize<T>(responseBody);
+                result = JsonConvert.DeserializeObject<T>(responseBody);
             }
             catch (Exception e)
             {
@@ -184,7 +183,7 @@ namespace Crud
         public async Task<HttpContent> Post<T>(T document, Dictionary<string, string> query = null)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/";
-            var body = JsonSerializer.Serialize(document);
+            var body = JsonConvert.SerializeObject(document);
             var queryString = BuildQueryString(query);
             var response = await SendAsyncRequest(HttpMethod.Post, path, queryString, body);
             return response.Content;
@@ -193,7 +192,7 @@ namespace Crud
         public async Task<HttpContent> PostBulk<T>(List<T> documents, Dictionary<string, string> query = null)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/{BulkLiteral}";
-            var body = JsonSerializer.Serialize(documents);
+            var body = JsonConvert.SerializeObject(documents);
             var queryString = BuildQueryString(query);
             var response = await SendAsyncRequest(HttpMethod.Post, path, queryString, body);
             return response.Content;
@@ -202,7 +201,7 @@ namespace Crud
         public async Task<HttpStatusCode> PostValidate<T>(T document, Dictionary<string, string> query = null)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/{ValidateLiteral}";
-            var body = JsonSerializer.Serialize(document);
+            var body = JsonConvert.SerializeObject(document);
             var queryString = BuildQueryString(query);
             var response = await SendAsyncRequest(HttpMethod.Post, path, queryString, body);
             return response.StatusCode;
@@ -211,7 +210,7 @@ namespace Crud
         public async Task<HttpContent> UpsertOne<T>(T document, Dictionary<string, string> query = null)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/{UpsertOneLiteral}";
-            var body = JsonSerializer.Serialize(document);
+            var body = JsonConvert.SerializeObject(document);
             var queryString = BuildQueryString(query);
             var response = await SendAsyncRequest(HttpMethod.Post, path, queryString, body);
             return response.Content;

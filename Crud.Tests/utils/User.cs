@@ -1,15 +1,16 @@
 using System.Text.Json.Serialization;
+using Crud.library;
 using Newtonsoft.Json;
 
 namespace Crud.Tests.utils
 {
-    [JsonObject("users")]
+    [CollectionName("users")]
     internal class User
     {
-        [JsonPropertyName("id")] public int Id { get; set; }
-        [JsonPropertyName("firstname")] public string Firstname { get; set; }
-        [JsonPropertyName("Lastname")] public string Lastname { get; set; }
-        [JsonPropertyName("status")] public string Status { get; set; }
+        public int Id { get; set; }
+        public string Firstname { get; set; }
+        public string Lastname { get; set; }
+        public string Status { get; set; }
 
         public User()
         {
@@ -23,5 +24,4 @@ namespace Crud.Tests.utils
             Status = status;
         }
     }
-
 }
