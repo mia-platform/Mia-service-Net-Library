@@ -22,25 +22,25 @@ namespace Crud.library.query
             return this;
         }
         
-        public MongoQueryBuilder Greater(string key, double value)
+        public MongoQueryBuilder Greater(string key, object value)
         {
             _query.AddGreaterExpression(key, value);
             return this;
         }
         
-        public MongoQueryBuilder GreaterOrEquals(string key, double value)
+        public MongoQueryBuilder GreaterOrEquals(string key, object value)
         {
             _query.AddGreaterOrEqualsExpression(key, value);
             return this;
         }
         
-        public MongoQueryBuilder Less(string key, double value)
+        public MongoQueryBuilder Less(string key, object value)
         {
             _query.AddLessExpression(key, value);
             return this;
         }
 
-        public MongoQueryBuilder LessOrEquals(string key, double value)
+        public MongoQueryBuilder LessOrEquals(string key, object value)
         {
             _query.AddLessOrEqualsExpression(key, value);
             return this;

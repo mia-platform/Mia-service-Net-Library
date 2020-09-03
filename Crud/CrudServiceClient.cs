@@ -23,7 +23,7 @@ namespace Crud
 
         private static readonly HttpClient Client;
 
-        public List<KeyValuePair<string, string>> DefaultQuery = new List<KeyValuePair<string, string>>();
+        public Dictionary<string, string> DefaultQuery = new Dictionary<string, string>();
 
         private const string VersionLiteral = "v";
         private const string BulkLiteral = "bulk";
@@ -115,7 +115,7 @@ namespace Crud
             }
         }
 
-        public async Task<List<T>> Get<T>(List<KeyValuePair<string, string>> query = null)
+        public async Task<List<T>> Get<T>(Dictionary<string, string> query = null)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/";
             var queryString = BuildQueryString(query);
@@ -134,7 +134,7 @@ namespace Crud
             return result;
         }
 
-        public async Task<T> GetById<T>(string id, List<KeyValuePair<string, string>> query = null)
+        public async Task<T> GetById<T>(string id, Dictionary<string, string> query = null)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/{id}";
             var queryString = BuildQueryString(query);
@@ -153,7 +153,7 @@ namespace Crud
             return result;
         }
 
-        public async Task<int> Count<T>(List<KeyValuePair<string, string>> query = null)
+        public async Task<int> Count<T>(Dictionary<string, string> query = null)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/{CountLiteral}";
             var queryString = BuildQueryString(query);
@@ -172,7 +172,7 @@ namespace Crud
             return result;
         }
 
-        public async Task<HttpContent> Export<T>(List<KeyValuePair<string, string>> query = null)
+        public async Task<HttpContent> Export<T>(Dictionary<string, string> query = null)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/{ExportLiteral}";
             var queryString = BuildQueryString(query);
@@ -181,7 +181,7 @@ namespace Crud
             return response.Content;
         }
 
-        public async Task<HttpContent> Post<T>(T document, List<KeyValuePair<string, string>> query = null)
+        public async Task<HttpContent> Post<T>(T document, Dictionary<string, string> query = null)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/";
             var body = JsonSerializer.Serialize(document);
@@ -190,7 +190,7 @@ namespace Crud
             return response.Content;
         }
 
-        public async Task<HttpContent> PostBulk<T>(List<T> documents, List<KeyValuePair<string, string>> query = null)
+        public async Task<HttpContent> PostBulk<T>(List<T> documents, Dictionary<string, string> query = null)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/{BulkLiteral}";
             var body = JsonSerializer.Serialize(documents);
@@ -199,7 +199,7 @@ namespace Crud
             return response.Content;
         }
 
-        public async Task<HttpStatusCode> PostValidate<T>(T document, List<KeyValuePair<string, string>> query = null)
+        public async Task<HttpStatusCode> PostValidate<T>(T document, Dictionary<string, string> query = null)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/{ValidateLiteral}";
             var body = JsonSerializer.Serialize(document);
@@ -208,7 +208,7 @@ namespace Crud
             return response.StatusCode;
         }
 
-        public async Task<HttpContent> UpsertOne<T>(T document, List<KeyValuePair<string, string>> query = null)
+        public async Task<HttpContent> UpsertOne<T>(T document, Dictionary<string, string> query = null)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/{UpsertOneLiteral}";
             var body = JsonSerializer.Serialize(document);
@@ -218,7 +218,7 @@ namespace Crud
         }
 
         public async Task<HttpContent> Patch<T>(Dictionary<PatchCodingKey, Dictionary<string, object>> patchBody,
-            List<KeyValuePair<string, string>> query = null)
+            Dictionary<string, string> query = null)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/";
             var body = JsonConvert.SerializeObject(patchBody);
@@ -229,7 +229,7 @@ namespace Crud
 
         public async Task<HttpContent> PatchById<T>(string id,
             Dictionary<PatchCodingKey, Dictionary<string, object>> patchBody,
-            List<KeyValuePair<string, string>> query = null)
+            Dictionary<string, string> query = null)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/{id}";
             var body = JsonConvert.SerializeObject(patchBody);
@@ -239,7 +239,7 @@ namespace Crud
         }
 
         public async Task<HttpContent> PatchBulk<T>(PatchBulkBody patchBody,
-            List<KeyValuePair<string, string>> query = null)
+            Dictionary<string, string> query = null)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/{BulkLiteral}";
             var body = JsonConvert.SerializeObject(patchBody);
@@ -248,7 +248,7 @@ namespace Crud
             return response.Content;
         }
 
-        public async Task<HttpContent> Delete<T>(List<KeyValuePair<string, string>> query = null)
+        public async Task<HttpContent> Delete<T>(Dictionary<string, string> query = null)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/";
             var queryString = BuildQueryString(query);
@@ -256,7 +256,7 @@ namespace Crud
             return response.Content;
         }
 
-        public async Task<HttpContent> DeleteById<T>(string id, List<KeyValuePair<string, string>> query = null)
+        public async Task<HttpContent> DeleteById<T>(string id, Dictionary<string, string> query = null)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/{id}";
             var queryString = BuildQueryString(query);

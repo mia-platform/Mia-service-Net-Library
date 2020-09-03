@@ -22,30 +22,30 @@ namespace Crud.library.query.Extensions
         }
 
         public static void AddGreaterExpression(
-            this Dictionary<string, object> query, string key, double value)
+            this Dictionary<string, object> query, string key, object value)
         {
-            var queryOperation = new Dictionary<string, double> {{MongoOperator.GreaterThan.Value, value}};
+            var queryOperation = new Dictionary<string, object> {{MongoOperator.GreaterThan.Value, value}};
             query[key] = queryOperation;
         }
 
         public static void AddGreaterOrEqualsExpression(
-            this Dictionary<string, object> query, string key, double value)
+            this Dictionary<string, object> query, string key, object value)
         {
-            var queryOperation = new Dictionary<string, double> {{MongoOperator.GreaterThanEquals.Value, value}};
+            var queryOperation = new Dictionary<string, object> {{MongoOperator.GreaterThanEquals.Value, value}};
             query[key] = queryOperation;
         }
 
         public static void AddLessExpression(
-            this Dictionary<string, object> query, string key, double value)
+            this Dictionary<string, object> query, string key, object value)
         {
-            var queryOperation = new Dictionary<string, double> {{MongoOperator.LessThan.Value, value}};
+            var queryOperation = new Dictionary<string, object> {{MongoOperator.LessThan.Value, value}};
             query[key] = queryOperation;
         }
 
         public static void AddLessOrEqualsExpression(
-            this Dictionary<string, object> query, string key, double value)
+            this Dictionary<string, object> query, string key, object value)
         {
-            var queryOperation = new Dictionary<string, double> {{MongoOperator.LessThanEquals.Value, value}};
+            var queryOperation = new Dictionary<string, object> {{MongoOperator.LessThanEquals.Value, value}};
             query[key] = queryOperation;
         }
 

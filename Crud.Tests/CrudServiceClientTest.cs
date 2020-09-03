@@ -41,8 +41,7 @@ namespace Crud.Tests
             const string successResponseBody =
                 @"[{""id"": 1,""firstname"": ""John"",""Lastname"": ""Snow"",""status"": ""Learning things""},{""id"": 2,""firstname"": ""Daenerys"",""Lastname"": ""Targaryen"",""status"": ""Riding a dragon""}]";
 
-            var queryParam = new KeyValuePair<string, string>("foo", "bar");
-            var query = new List<KeyValuePair<string, string>> {queryParam};
+            var query = new Dictionary<string, string>{{"foo", "bar"}};
 
             _server
                 .Given(Request.Create().WithPath("/v3/users/").WithParam("foo", "bar").UsingGet())

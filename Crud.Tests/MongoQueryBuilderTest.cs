@@ -1,11 +1,8 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Crud.library.query;
 using Crud.Tests.utils;
-using Microsoft.AspNetCore.Http.Extensions;
-using Newtonsoft.Json;
 using NFluent;
 using NUnit.Framework;
 
@@ -59,7 +56,7 @@ namespace Crud.Tests
         public void TestGreater()
         {
             var query = _qb.Greater("foo", 42).Build();
-            var result = (Dictionary<string, double>) query["foo"];
+            var result = (Dictionary<string, object>) query["foo"];
             Check.That(result["$gt"]).IsEqualTo(42);
         }
 
@@ -67,7 +64,7 @@ namespace Crud.Tests
         public void TestGreaterOrEquals()
         {
             var query = _qb.GreaterOrEquals("foo", 42).Build();
-            var result = (Dictionary<string, double>) query["foo"];
+            var result = (Dictionary<string, object>) query["foo"];
             Check.That(result["$gte"]).IsEqualTo(42);
         }
 
@@ -75,7 +72,7 @@ namespace Crud.Tests
         public void TestLess()
         {
             var query = _qb.Less("foo", 42).Build();
-            var result = (Dictionary<string, double>) query["foo"];
+            var result = (Dictionary<string, object>) query["foo"];
             Check.That(result["$lt"]).IsEqualTo(42);
         }
 
@@ -83,7 +80,7 @@ namespace Crud.Tests
         public void TestLessOrEquals()
         {
             var query = _qb.LessOrEquals("foo", 42).Build();
-            var result = (Dictionary<string, double>) query["foo"];
+            var result = (Dictionary<string, object>) query["foo"];
             Check.That(result["$lte"]).IsEqualTo(42);
         }
 
@@ -168,7 +165,7 @@ namespace Crud.Tests
             var query = _qb.Not(queryToNegate);
             
             var result = (Dictionary<string, object>) query.Build()["$not"];
-            var innerQuery = (Dictionary<string, double>) result["foo"];
+            var innerQuery = (Dictionary<string, object>) result["foo"];
             
             Check.That(innerQuery["$gte"]).IsEqualTo(42);
         }
