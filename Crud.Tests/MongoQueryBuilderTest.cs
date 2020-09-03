@@ -123,5 +123,54 @@ namespace Crud.Tests
             Check.That(secondQueryOperation.Keys.First()).IsEqualTo("$ne");
             Check.That(secondQueryOperation["$ne"]).IsEqualTo("bar");
         }
+        
+        [Test]
+        public void TestOr()
+        {
+            var values = new List<string> {"bar", "baz", "bam"};
+            var qb1 = new MongoQueryBuilder().NotIn("foo", values);
+            var qb2 = new MongoQueryBuilder().Equals("foo", "bum");
+            var queryBuilders = new List<MongoQueryBuilder> {qb1, qb2};
+
+            var globalQuery = _qb.Or(queryBuilders).Build();
+            var queries = (List<Dictionary<string, object>>) globalQuery["$or"];
+            var firstQueryOperation = (Dictionary<string, IList>) queries[0]["foo"];
+            var secondQueryOperation = (string) queries[1]["foo"];
+
+            Check.That(firstQueryOperation.Keys.First()).IsEqualTo("$nin");
+            Check.That(firstQueryOperation["$nin"]).IsEqualTo(values);
+            Check.That(secondQueryOperation).IsEqualTo("bum");
+        }
+        
+        [Test]
+        public void TestNor()
+        {
+            var values = new List<string> {"bar", "baz", "bam"};
+            var qb1 = new MongoQueryBuilder().In("foo", values);
+            var qb2 = new MongoQueryBuilder().NotEquals("bar", 42);
+            var queryBuilders = new List<MongoQueryBuilder> {qb1, qb2};
+
+            var globalQuery = _qb.Nor(queryBuilders).Build();
+            var queries = (List<Dictionary<string, object>>) globalQuery["$nor"];
+            var firstQueryOperation = (Dictionary<string, IList>) queries[0]["foo"];
+            var secondQueryOperation = (Dictionary<string, object>) queries[1]["bar"];
+
+            Check.That(firstQueryOperation.Keys.First()).IsEqualTo("$in");
+            Check.That(firstQueryOperation["$in"]).IsEqualTo(values);
+            Check.That(secondQueryOperation.Keys.First()).IsEqualTo("$ne");
+            Check.That(secondQueryOperation["$ne"]).IsEqualTo(42);
+        }
+        
+        [Test]
+        public void TestNot()
+        {
+            var queryToNegate = new MongoQueryBuilder().GreaterOrEquals("foo", 42);
+            var query = _qb.Not(queryToNegate);
+            
+            var result = (Dictionary<string, object>) query.Build()["$not"];
+            var innerQuery = (Dictionary<string, double>) result["foo"];
+            
+            Check.That(innerQuery["$gte"]).IsEqualTo(42);
+        }
     }
 }

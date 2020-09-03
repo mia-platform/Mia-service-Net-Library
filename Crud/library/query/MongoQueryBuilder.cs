@@ -63,6 +63,24 @@ namespace Crud.library.query
             _query.AddAndExpression(queryBuilders);
             return this;
         }
+        
+        public MongoQueryBuilder Or(IEnumerable<MongoQueryBuilder> queryBuilders)
+        {
+            _query.AddOrExpression(queryBuilders);
+            return this;
+        }
+        
+        public MongoQueryBuilder Nor(IEnumerable<MongoQueryBuilder> queryBuilders)
+        {
+            _query.AddNorExpression(queryBuilders);
+            return this;
+        }
+        
+        public MongoQueryBuilder Not(MongoQueryBuilder queryBuilder)
+        {
+            _query.AddNotExpression(queryBuilder);
+            return this;
+        }
 
         public MongoQueryBuilder()
         {

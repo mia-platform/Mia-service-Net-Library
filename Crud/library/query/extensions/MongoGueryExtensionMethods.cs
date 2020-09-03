@@ -70,5 +70,28 @@ namespace Crud.library.query.Extensions
             var queries = mongoQueryBuilders.Select(qb => qb.Build()).ToList();
             query[MongoOperator.And.Value] = queries;
         }
+        
+        public static void AddOrExpression(
+            this Dictionary<string, object> query, IEnumerable<MongoQueryBuilder> queryBuilders)
+        {
+            var mongoQueryBuilders = queryBuilders.ToList();
+            var queries = mongoQueryBuilders.Select(qb => qb.Build()).ToList();
+            query[MongoOperator.Or.Value] = queries;
+        }
+        
+        public static void AddNorExpression(
+            this Dictionary<string, object> query, IEnumerable<MongoQueryBuilder> queryBuilders)
+        {
+            var mongoQueryBuilders = queryBuilders.ToList();
+            var queries = mongoQueryBuilders.Select(qb => qb.Build()).ToList();
+            query[MongoOperator.Nor.Value] = queries;
+        }
+        
+        public static void AddNotExpression(
+            this Dictionary<string, object> query, MongoQueryBuilder queryBuilder)
+        {
+            var builtQuery = queryBuilder.Build();
+            query[MongoOperator.Not.Value] = builtQuery;
+        }
     }
 }
