@@ -87,14 +87,9 @@ namespace Crud.library.query
             return this;
         }
 
-        public Dictionary<string, string> GetQuery()
-        {
-            return _query;
-        }
-
         public Dictionary<string, string> Build()
         {
-            return GetQuery();
+            return _query;
         }
 
         public override string ToString()
