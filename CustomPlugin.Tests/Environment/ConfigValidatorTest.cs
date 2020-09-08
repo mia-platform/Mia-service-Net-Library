@@ -10,12 +10,12 @@ namespace CustomPlugin.Tests.Environment
         {
             var config = new MiaEnvConfiguration
             {
-                USERID_HEADER_KEY = "userid",
-                GROUPS_HEADER_KEY = "usergroups",
-                CLIENTTYPE_HEADER_KEY = "clienttype",
-                BACKOFFICE_HEADER_KEY = "isbackoffice",
-                MICROSERVICE_GATEWAY_SERVICE_NAME = "microservice-gateway",
-                CRUD_PATH = "crud-path"
+                UserIdHeaderKey = "userid",
+                GroupsHeaderKey = "usergroups",
+                ClientTypeHeaderKey = "clienttype",
+                BackOfficeHeaderKey = "isbackoffice",
+                MicroserviceGatewayServiceName = "microservice-gateway",
+                CrudPath = "crud-path"
             };
 
             Assert.DoesNotThrow(() => ConfigValidator.ValidateConfig(config));
@@ -34,11 +34,11 @@ namespace CustomPlugin.Tests.Environment
         {
             var config = new MiaEnvConfiguration
             {
-                USERID_HEADER_KEY = "userid",
-                GROUPS_HEADER_KEY = "usergroups",
-                CLIENTTYPE_HEADER_KEY = "clienttype",
-                BACKOFFICE_HEADER_KEY = "isbackoffice",
-                MICROSERVICE_GATEWAY_SERVICE_NAME = "microservice-gateway",
+                UserIdHeaderKey = "userid",
+                GroupsHeaderKey = "usergroups",
+                ClientTypeHeaderKey = "clienttype",
+                BackOfficeHeaderKey = "isbackoffice",
+                MicroserviceGatewayServiceName = "microservice-gateway",
             };
 
             Assert.Throws(typeof(InvalidEnvConfigurationException), () => ConfigValidator.ValidateConfig(config));
