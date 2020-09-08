@@ -37,10 +37,9 @@ You have to specify:
  +  ```csharp
         var crudClient = ServiceClientFactory.GetCrudServiceClient("http://localhost:300O", "my-secret", 3);
     ```
- #### Calling an API
-You can use CRUD client's methods to call the API endpoint you defined.
+
  #### Collection mapping
- To map your class to a collection, you have to specify the collection name within the `Attribute` ``[CollectionName]``.   
+ Some CRUD methods require you to map your class to a collection. To do this, you have to specify the collection name within the `Attribute` ``[CollectionName]``.   
   ```csharp
         [CollectionName("users")]
         public class User
@@ -48,7 +47,6 @@ You can use CRUD client's methods to call the API endpoint you defined.
             public int Id { get; set; }
             public string Firstname { get; set; }
             public string Lastname { get; set; }
-            public string Status { get; set; }
     
             public User() {}
     
@@ -57,7 +55,24 @@ You can use CRUD client's methods to call the API endpoint you defined.
                 Id = id;
                 Firstname = firstname;
                 Lastname = lastname;
-                Status = status;
             }
         }
-    ``` 
+  ``` 
+
+ #### Building a query
+ You can use class `CrudQueryBuilder` to build your HTTP query.
+ It provides specific methods to set the standard Mia CRUD query parameters and the method `Param` to set custom query parameters.
+ To set the value of the Mongo query parameter, you can also use a specific class (`MongoQueryBuilder`).
+  ```csharp
+    var query = new CrudQueryBuilder()
+        .State(State.Draft)
+        .CreatorId("foo")
+        .CreatedAt("bar")
+        .MongoQuery(new MongoQueryBuilder().NotIn("foo", new List<string>{"bar", "baz"}))
+        .Param("foo", "bar")
+        .Build();
+
+    var result = await crudClient.Get<User>(query);
+  ``` 
+
+
