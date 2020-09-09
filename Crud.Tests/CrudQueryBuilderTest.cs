@@ -113,7 +113,6 @@ namespace Crud.Tests
         {
             var mongoQueryOperations = new Dictionary<MongoOperator, object>
                 {[MongoOperator.GreaterThan] = 42, [MongoOperator.NotIn] = new List<string> {"baz", "bam"}};
-            //var mongoQuery = new Dictionary<string, Dictionary<MongoOperator, object>> {["foo"] = mongoQueryOperations};
             var greaterThanQuery = new MongoQueryBuilder().Greater("foo", 42);
             var notInQuery = new MongoQueryBuilder().NotIn("foo", new List<string> {"baz", "bam"});
             var mongoQuery = new MongoQueryBuilder().And(new List<MongoQueryBuilder> {greaterThanQuery, notInQuery});
