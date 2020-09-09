@@ -2,9 +2,9 @@ using System;
 
 namespace Crud.library
 {
-    public class CollectionName : Attribute
+    public sealed class CollectionName : Attribute
     {
-        public virtual string Value { get; }
+        public string Value { get; }
 
         public CollectionName(string value)
         {
