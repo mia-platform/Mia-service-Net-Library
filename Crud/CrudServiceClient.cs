@@ -110,7 +110,6 @@ namespace Crud
             catch (HttpRequestException e)
             {
                 // TODO log error
-                Console.WriteLine(e);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }
         }
@@ -129,7 +128,6 @@ namespace Crud
             catch (Exception e)
             {
                 //TODO log error
-                Console.WriteLine(e);
             }
 
             return result;
@@ -149,7 +147,6 @@ namespace Crud
             catch (Exception e)
             {
                 //TODO log error
-                Console.WriteLine(e);
             }
 
             return result;
@@ -169,7 +166,6 @@ namespace Crud
             catch (Exception e)
             {
                 //TODO log error
-                Console.WriteLine(e);
             }
 
             return result;
