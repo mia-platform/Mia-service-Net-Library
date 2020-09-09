@@ -25,7 +25,7 @@ namespace Crud.Tests
             var result = query["_id"];
             Check.That(result).IsEqualTo("foo");
         }
-        
+
         [Test]
         public void TestCreatorId()
         {
@@ -33,7 +33,7 @@ namespace Crud.Tests
             var result = query["creatorId"];
             Check.That(result).IsEqualTo("foo");
         }
-        
+
         [Test]
         public void TestCreatedAt()
         {
@@ -41,7 +41,7 @@ namespace Crud.Tests
             var result = query["createdAt"];
             Check.That(result).IsEqualTo("foo");
         }
-        
+
         [Test]
         public void TestUpdaterId()
         {
@@ -49,7 +49,7 @@ namespace Crud.Tests
             var result = query["updaterId"];
             Check.That(result).IsEqualTo("foo");
         }
-        
+
         [Test]
         public void TestUpdatedAt()
         {
@@ -118,8 +118,8 @@ namespace Crud.Tests
             //var mongoQuery = new Dictionary<string, Dictionary<MongoOperator, object>> {["foo"] = mongoQueryOperations};
             var greaterThanQuery = new MongoQueryBuilder().Greater("foo", 42);
             var notInQuery = new MongoQueryBuilder().NotIn("foo", new List<string> {"baz", "bam"});
-            var mongoQuery = new MongoQueryBuilder().And(new List<MongoQueryBuilder>{greaterThanQuery, notInQuery});
-            
+            var mongoQuery = new MongoQueryBuilder().And(new List<MongoQueryBuilder> {greaterThanQuery, notInQuery});
+
             var query = _qb
                 .Id("012345")
                 .CreatorId("12")
@@ -148,7 +148,7 @@ namespace Crud.Tests
             Check.That(query["_sk"]).IsEqualTo("10");
             Check.That(query["_s"]).IsEqualTo("bam");
         }
-        
+
         [Test]
         public void TestCustomParam()
         {

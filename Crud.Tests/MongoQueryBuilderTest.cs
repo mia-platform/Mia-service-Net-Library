@@ -120,7 +120,7 @@ namespace Crud.Tests
             Check.That(secondQueryOperation.Keys.First()).IsEqualTo("$ne");
             Check.That(secondQueryOperation["$ne"]).IsEqualTo("bar");
         }
-        
+
         [Test]
         public void TestOr()
         {
@@ -138,7 +138,7 @@ namespace Crud.Tests
             Check.That(firstQueryOperation["$nin"]).IsEqualTo(values);
             Check.That(secondQueryOperation).IsEqualTo("bum");
         }
-        
+
         [Test]
         public void TestNor()
         {
@@ -157,16 +157,16 @@ namespace Crud.Tests
             Check.That(secondQueryOperation.Keys.First()).IsEqualTo("$ne");
             Check.That(secondQueryOperation["$ne"]).IsEqualTo(42);
         }
-        
+
         [Test]
         public void TestNot()
         {
             var queryToNegate = new MongoQueryBuilder().GreaterOrEquals("foo", 42);
             var query = _qb.Not(queryToNegate);
-            
+
             var result = (Dictionary<string, object>) query.Build()["$not"];
             var innerQuery = (Dictionary<string, object>) result["foo"];
-            
+
             Check.That(innerQuery["$gte"]).IsEqualTo(42);
         }
     }
