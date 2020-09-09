@@ -58,16 +58,14 @@ namespace Crud.Tests
             Check.That(result).IsEqualTo("foo");
         }
 
-        /*[Test]
+        [Test]
         public void TestMongoQuery()
         {
-            var mongoQueryOperations = new Dictionary<MongoOperator, object>
-                {[MongoOperator.GreaterThan] = 42, [MongoOperator.NotIn] = new List<string> {"baz", "bam"}};
-            var mongoQuery = new Dictionary<string, Dictionary<MongoOperator, object>> {["foo"] = mongoQueryOperations};
+            var mongoQuery = new MongoQueryBuilder().GreaterOrEquals("foo", 42);
             var query = _qb.MongoQuery(mongoQuery).Build();
             var result = query["_q"];
-            Check.That(result).IsEqualTo(@"{""foo"":{""$gt"":42,""$nin"":[""baz"",""bam""]}}");
-        }*/
+            Check.That(result).IsEqualTo(@"{""foo"":{""$gte"":42}}");
+        }
 
         [Test]
         public void TestState()
