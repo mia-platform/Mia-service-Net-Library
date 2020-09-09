@@ -22,6 +22,11 @@ namespace Decorators.PreDecorators
             });
         }
 
+        public PreDecoratorRequest LeaveOriginalRequestUnmodified()
+        {
+            return null;
+        }
+
         private ExpandoObject CloneRequestBody()
         {
             dynamic newBody = new ExpandoObject();
@@ -61,22 +66,22 @@ namespace Decorators.PreDecorators
 
         public string GetUserId(MiaEnvConfiguration config)
         {
-            return Headers[config.UserIdHeaderKey];
+            return Headers[config.USERID_HEADER_KEY];
         }
 
         public string GetGroups(MiaEnvConfiguration config)
         {
-            return Headers[config.GroupsHeaderKey];
+            return Headers[config.GROUPS_HEADER_KEY];
         }
 
         public string GetClientType(MiaEnvConfiguration config)
         {
-            return Headers[config.ClientTypeHeaderKey];
+            return Headers[config.CLIENTTYPE_HEADER_KEY];
         }
 
         public string IsFromBackOffice(MiaEnvConfiguration config)
         {
-            return Headers[config.BackOfficeHeaderKey];
+            return Headers[config.BACKOFFICE_HEADER_KEY];
         }
     }
 }

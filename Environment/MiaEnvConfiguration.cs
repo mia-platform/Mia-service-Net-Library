@@ -2,11 +2,11 @@
 {
     public class MiaEnvConfiguration
     {
-        public string UserIdHeaderKey { get; set; }
-        public string GroupsHeaderKey { get; set; }
-        public string ClientTypeHeaderKey { get; set; }
-        public string BackOfficeHeaderKey { get; set; }
-        public string MicroserviceGatewayServiceName { get; set; }
-        public string CrudPath { get; set; }
+        public string USERID_HEADER_KEY { get; set; }
+        public string GROUPS_HEADER_KEY { get; set; }
+        public string CLIENTTYPE_HEADER_KEY { get; set; }
+        public string BACKOFFICE_HEADER_KEY { get; set; }
+        public string MICROSERVICE_GATEWAY_SERVICE_NAME { get; set; }
+        public string CRUD_PATH { get; set; }
     }
 }

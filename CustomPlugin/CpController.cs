@@ -11,9 +11,9 @@ namespace CustomPlugin
     {
         protected readonly MiaEnvConfiguration MiaEnvConfiguration;
         protected readonly ServiceClientFactory ServiceClientFactory;
-        protected readonly IDecoratorResponseFactory DecoratorResponseFactory;
+        protected readonly DecoratorResponseFactory DecoratorResponseFactory;
 
-        public CpController(MiaEnvConfiguration miaEnvConfiguration, ServiceClientFactory serviceClientFactory, IDecoratorResponseFactory decoratorResponseFactory)
+        public CpController(MiaEnvConfiguration miaEnvConfiguration, ServiceClientFactory serviceClientFactory, DecoratorResponseFactory decoratorResponseFactory)
         {
             MiaEnvConfiguration = miaEnvConfiguration;
             ServiceClientFactory = serviceClientFactory;

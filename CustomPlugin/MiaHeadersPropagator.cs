@@ -14,25 +14,25 @@ namespace CustomPlugin
         public MiaHeadersPropagator(IHeaderDictionary headers, MiaEnvConfiguration envConfig)
         {
             _envConfig = envConfig;
-            Headers[_envConfig.UserIdHeaderKey] = headers[_envConfig.UserIdHeaderKey];
-            Headers[_envConfig.GroupsHeaderKey] = headers[_envConfig.GroupsHeaderKey];
-            Headers[_envConfig.ClientTypeHeaderKey] = headers[_envConfig.ClientTypeHeaderKey];
-            Headers[_envConfig.BackOfficeHeaderKey] = headers[_envConfig.BackOfficeHeaderKey];
+            Headers[_envConfig.USERID_HEADER_KEY] = headers[_envConfig.USERID_HEADER_KEY];
+            Headers[_envConfig.GROUPS_HEADER_KEY] = headers[_envConfig.GROUPS_HEADER_KEY];
+            Headers[_envConfig.CLIENTTYPE_HEADER_KEY] = headers[_envConfig.CLIENTTYPE_HEADER_KEY];
+            Headers[_envConfig.BACKOFFICE_HEADER_KEY] = headers[_envConfig.BACKOFFICE_HEADER_KEY];
         }
 
         public string GetUserId()
         {
-            return Headers[_envConfig.UserIdHeaderKey];
+            return Headers[_envConfig.USERID_HEADER_KEY];
         }
 
         public string GetGroups()
         {
-            return Headers[_envConfig.GroupsHeaderKey];
+            return Headers[_envConfig.GROUPS_HEADER_KEY];
         }
 
         public string GetClientType()
         {
-            return Headers[_envConfig.ClientTypeHeaderKey];
+            return Headers[_envConfig.CLIENTTYPE_HEADER_KEY];
         }
 
         public bool IsFromBackOffice()
@@ -40,7 +40,7 @@ namespace CustomPlugin
             bool result;
             try
             {
-                result = bool.Parse(Headers[_envConfig.BackOfficeHeaderKey]);
+                result = bool.Parse(Headers[_envConfig.BACKOFFICE_HEADER_KEY]);
             }
             catch (Exception e)
             {
