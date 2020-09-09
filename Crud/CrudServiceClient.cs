@@ -110,7 +110,6 @@ namespace Crud
             }
             catch (HttpRequestException e)
             {
-                // TODO log error
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }
         }
@@ -128,7 +127,7 @@ namespace Crud
             }
             catch (Exception e)
             {
-                //TODO log error
+                throw new CrudException("Cannot read response body");
             }
 
             return result;
@@ -147,7 +146,7 @@ namespace Crud
             }
             catch (Exception e)
             {
-                //TODO log error
+                throw new CrudException("Cannot read response body");
             }
 
             return result;
@@ -166,7 +165,7 @@ namespace Crud
             }
             catch (Exception e)
             {
-                //TODO log error
+                throw new CrudException("Cannot read response body");
             }
 
             return result;
