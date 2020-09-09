@@ -35,7 +35,7 @@ You have to specify:
 + (optional) the API version
 
  ```csharp
-var crudClient = ServiceClientFactory.GetCrudServiceClient("http://localhost:300O", "my-secret", 3);
+var crudClient = ServiceClientFactory.GetCrudServiceClient("http://localhost:300O", "my-secret", 2);
  ```
 
  #### Collection mapping
@@ -74,4 +74,3 @@ var query = new CrudQueryBuilder()
 
 var result = await crudClient.Get<User>(query);
 ``` 
-
