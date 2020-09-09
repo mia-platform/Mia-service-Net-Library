@@ -10,7 +10,7 @@ It is able to integrate either the CRUD and other REST services.
 #### Service options
 Before getting your service proxy, you need to inject the appropriate `InitServiceOptions` instance:
  ```csharp
- var initOptions = new InitServiceOptions(8080, Protocol.Http);
+var initOptions = new InitServiceOptions(8080, Protocol.Http);
  ```
 
 #### Getting a proxy
@@ -74,5 +74,4 @@ var query = new CrudQueryBuilder()
 
 var result = await crudClient.Get<User>(query);
 ``` 
-
 
