@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using CustomPlugin.Environment;
+using Environment;
 using Microsoft.AspNetCore.Http;
 using Service;
 

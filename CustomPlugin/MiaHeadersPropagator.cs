@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using CustomPlugin.Environment;
+using Environment;
 using Microsoft.AspNetCore.Http;
 
 namespace CustomPlugin

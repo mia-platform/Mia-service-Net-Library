@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Dynamic;
-using CustomPlugin.Environment;
+using Environment;
 
 namespace Decorators.PreDecorators
 {

@@ -1,5 +1,5 @@
 ﻿using System;
-using CustomPlugin.Environment;
+using Environment;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CustomPlugin
