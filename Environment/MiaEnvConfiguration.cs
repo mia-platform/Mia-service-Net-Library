@@ -1,4 +1,4 @@
-namespace Environment
+    namespace Environment
 {
     public class MiaEnvConfiguration
     {
