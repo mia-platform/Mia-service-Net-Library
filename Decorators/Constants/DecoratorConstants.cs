@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Decorators.Constants
 {
-    public class DecoratorConstants
+    public static class DecoratorConstants
     {
         public const int ChangeOriginalStatusCode = 200;
         public const int LeaveOriginalUnchangedStatusCode = 204;

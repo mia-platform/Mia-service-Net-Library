@@ -6,11 +6,11 @@ namespace Decorators.PreDecorators
 {
     public class PreDecoratorRequestProxy
     {
-        private DecoratorRequest _request;
+        private readonly PreDecoratorRequest _request;
 
-        public PreDecoratorRequestProxy(DecoratorRequest originalRequest)
+        public PreDecoratorRequestProxy(PreDecoratorRequest request)
         {
-            _request = originalRequest;
+            _request = request;
         }
 
         public PreDecoratorRequestProxy Method(string method)
@@ -45,14 +45,7 @@ namespace Decorators.PreDecorators
 
         public PreDecoratorRequest Change()
         {
-            return new PreDecoratorRequest()
-            {
-                Method = _request.Method,
-                Path = _request.Path,
-                Headers = _request.Headers,
-                Query = _request.Query,
-                Body = _request.Body,
-            };
+            return _request;
         }
     }
 }

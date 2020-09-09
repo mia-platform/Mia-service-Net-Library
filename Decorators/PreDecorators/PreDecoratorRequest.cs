@@ -4,21 +4,15 @@ using CustomPlugin.Environment;
 
 namespace Decorators.PreDecorators
 {
-    public class PreDecoratorRequest
+    public class PreDecoratorRequest : DecoratorRequest
     {
-        public string Method { get; set; }
-        public string Path { get; set; }
-        public IDictionary<string, string> Headers { get; set; }
-        public IDictionary<string, string> Query { get; set; }
-        public ExpandoObject Body { get; set; }
-
         public PreDecoratorRequestProxy ChangeOriginalRequest()
         {
             var newRequest = (PreDecoratorRequest) MemberwiseClone();
             newRequest.Headers = new Dictionary<string, string>(Headers);
             newRequest.Query = new Dictionary<string, string>(Query);
             newRequest.Body = CloneRequestBody();
-            return new PreDecoratorRequestProxy(new DecoratorRequest()
+            return new PreDecoratorRequestProxy(new PreDecoratorRequest
             {
                 Method = newRequest.Method,
                 Path = newRequest.Path,
