@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Crud.library.query.Extensions;
-using Microsoft.AspNetCore.Http.Extensions;
-using Crud.library.query.Extensions;
 
 namespace Crud.library.query
 {
