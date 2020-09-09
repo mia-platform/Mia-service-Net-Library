@@ -21,7 +21,7 @@ To get a service proxy, you can use the following methods from class `ServiceCli
 var proxy = ServiceClientFactory.GetDirectServiceProxy("my-microservice", initOptions);
 ``` 
 
-+ `GetServiceProxy`, to use microservice gateway:
++ `GetServiceProxy`, to communicate with a specific custom service passing through the Microservice Gateway:
 ```csharp
 var proxy = ServiceClientFactory.GetServiceProxy(initOptions);
 ``` 
