@@ -63,6 +63,7 @@ public class User
  You can use class `CrudQueryBuilder` to build your HTTP query.
  It provides specific methods to set the standard Mia CRUD query parameters and the method `Param` to set custom query parameters.
  To set the value of the Mongo query parameter, you can also use a specific class (`MongoQueryBuilder`).
+
 ```csharp
 var query = new CrudQueryBuilder()
     .State(State.Draft)
