@@ -141,7 +141,7 @@ namespace Crud.Tests
             Check.That(query["updatedAt"]).IsEqualTo("78");
 
             Check.That(query["_q"])
-                .IsEqualTo(@"{""$and"":[{""foo"":{""$gt"":42.0}},{""foo"":{""$nin"":[""baz"",""bam""]}}]}");
+                .IsEqualTo(@"{""$and"":[{""foo"":{""$gt"":42}},{""foo"":{""$nin"":[""baz"",""bam""]}}]}");
             Check.That(query["_st"]).IsEqualTo(State.Trash.Value);
             Check.That(query["_p"]).IsEqualTo(@"[""foo"",""bar""]");
             Check.That(query["_l"]).IsEqualTo("42");
