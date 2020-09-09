@@ -32,7 +32,6 @@ namespace Crud
         private const string ExportLiteral = "export";
         private const string ApiSecretHeaderKey = "secret";
 
-
         public CrudServiceClient(Dictionary<string, string> miaHeaders, string apiPath = default(string),
             string apiSecret = default(string), int crudVersion = default(int))
         {
@@ -83,7 +82,9 @@ namespace Crud
 
         private string BuildQueryString(IReadOnlyCollection<KeyValuePair<string, string>> query)
         {
-            return query == null ? new QueryBuilder(DefaultQuery).ToQueryString().ToString() : new QueryBuilder(DefaultQuery.Concat(query)).ToQueryString().ToString();
+            return query == null
+                ? new QueryBuilder(DefaultQuery).ToQueryString().ToString()
+                : new QueryBuilder(DefaultQuery.Concat(query)).ToQueryString().ToString();
         }
 
         private static string GetCollectionName<T>()
