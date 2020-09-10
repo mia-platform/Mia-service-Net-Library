@@ -18,6 +18,12 @@ namespace Decorators.PostDecorators
             
             return new PostDecoratorRequestProxy(copy);
         }
+        
+        public PostDecoratorRequest LeaveOriginalResponseUnmodified()
+        {
+            return null;
+        }
+
 
         private ExpandoObject CloneResponseBody()
         {

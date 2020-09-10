@@ -23,7 +23,7 @@ namespace Decorator.Tests.PostDecorators
             requestBody.bar = "foo";
             requestBody.bam = "baz";
 
-            _postDecoratorRequest = new PostDecoratorRequest()
+            _postDecoratorRequest = new PostDecoratorRequest
             {
                 Request = new DecoratorRequest
                 {
@@ -33,25 +33,20 @@ namespace Decorator.Tests.PostDecorators
                     Query = new Dictionary<string, string> {{"baz", "bam"}},
                     Body = requestBody
                 },
-                Response =
-                {
-                    StatusCode = 200,
-                    Headers = new Dictionary<string, string> {{"bar", "foo"}},
-                    Body = responseBody
-                }
+                Response = new DecoratorResponse(200, new Dictionary<string, string> {{"bar", "foo"}}, responseBody)
             };
         }
 
         [Test]
-        public void TestChangeOriginalResponse()
+        public void TestLeaveOriginalResponseUnmodified()
         {
-            var newResponse = _postDecoratorRequest.ChangeOriginalResponse();
+            var newResponse = _postDecoratorRequest.LeaveOriginalResponseUnmodified();
 
             Check.That(newResponse).IsEqualTo(null);
         }
 
         [Test]
-        public void TestOriginalRequestGetsModified()
+        public void TestChangeOriginalResponse()
         {
             dynamic newBody = new ExpandoObject();
             newBody.foo = 42;
@@ -63,9 +58,23 @@ namespace Decorator.Tests.PostDecorators
                 .Body(newBody)
                 .Change();
 
-            Check.That(((PostDecoratorRequest) newRequest).Response.StatusCode).IsEqualTo(201);
-           // Assert.IsFalse(((PostDecoratorRequest) newRequest).Response.Headers.Equals(_postDecoratorRequest.Body));
-            //Assert.IsFalse(((PostDecoratorRequest) newRequest).Headers.Equals(_postDecoratorRequest.Headers));
+            Check.That(((PostDecoratorRequest) newRequest).Response.StatusCode).Equals(201);
+            Check.That(((PostDecoratorRequest) newRequest).Response.Headers).Equals(new Dictionary<string, string> {{"new", "header"}});
+            Check.That(((PostDecoratorRequest) newRequest).Response.Body).Equals(newBody);
+        }
+        
+        [Test]
+        public void TestDeepCloneIsCreated()
+        {
+            var newResponse = _postDecoratorRequest
+                .ChangeOriginalResponse()
+                .Change();
+
+            Check.That(newResponse.Response.StatusCode).Equals(_postDecoratorRequest.Response.StatusCode);
+            Check.That(newResponse.Response.Headers).Equals(_postDecoratorRequest.Response.Headers);
+            Check.That(newResponse.Response.Body).Equals(_postDecoratorRequest.Response.Body);
+            Assert.AreNotSame(newResponse.Response.Headers, _postDecoratorRequest.Response.Headers);
+            Assert.AreNotSame(newResponse.Response.Body, _postDecoratorRequest.Response.Body);
         }
     }
 }
