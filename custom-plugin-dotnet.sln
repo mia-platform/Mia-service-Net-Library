@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Environment", "Environment\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Environment.Tests", "Environment.Tests\Environment.Tests.csproj", "{BE406D59-874F-4440-9375-136CAF2AB22B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Decorator.Tests", "Decorator.Tests\Decorator.Tests.csproj", "{B1F1D538-B937-40CB-A875-B7B2F491FF3A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,5 +50,9 @@ Global
 		{BE406D59-874F-4440-9375-136CAF2AB22B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE406D59-874F-4440-9375-136CAF2AB22B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE406D59-874F-4440-9375-136CAF2AB22B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1F1D538-B937-40CB-A875-B7B2F491FF3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1F1D538-B937-40CB-A875-B7B2F491FF3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1F1D538-B937-40CB-A875-B7B2F491FF3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1F1D538-B937-40CB-A875-B7B2F491FF3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
