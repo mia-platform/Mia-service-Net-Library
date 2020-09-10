@@ -10,6 +10,7 @@ namespace Decorator.Tests
     public class Tests
     {
         private DecoratorResponseFactory _decoratorResponseFactory;
+
         [SetUp]
         public void Setup()
         {
@@ -17,7 +18,7 @@ namespace Decorator.Tests
         }
 
         [Test]
-        public void TestLeaveOriginalRequestUnmodified()
+        public void TestPreDecoratorLeaveOriginalRequestUnmodified()
         {
             dynamic body = new ExpandoObject();
             body.foo = "bar";
@@ -34,8 +35,34 @@ namespace Decorator.Tests
             var result =
                 _decoratorResponseFactory.MakePreDecoratorResponse(preDecoratorRequest
                     .LeaveOriginalRequestUnmodified());
-            
+
             Check.That(result).IsInstanceOf<LeaveOriginalRequestUnmodified>();
+        }
+
+        [Test]
+        public void TestPreDecoratorChangeOriginalRequest()
+        {
+            dynamic body = new ExpandoObject();
+            body.foo = "bar";
+            body.baz = "bam";
+
+            var preDecoratorRequest = new PreDecoratorRequest
+            {
+                Method = "GET",
+                Path = "test",
+                Headers = new Dictionary<string, string> {{"foo", "bar"}},
+                Query = new Dictionary<string, string> {{"baz", "bam"}},
+                Body = body
+            };
+
+            var newRequest = preDecoratorRequest.ChangeOriginalRequest()
+                .Query(new Dictionary<string, string> {{"foo", "bar"}})
+                .Change();
+
+            var result =
+                _decoratorResponseFactory.MakePreDecoratorResponse(newRequest);
+
+            Check.That(result).IsInstanceOf<ChangeOriginalRequest>();
         }
     }
 }

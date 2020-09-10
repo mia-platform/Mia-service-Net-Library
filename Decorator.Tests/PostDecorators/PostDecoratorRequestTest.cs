@@ -102,6 +102,14 @@ namespace Decorator.Tests.PostDecorators
         }
         
         [Test]
+        public void TestGetUserId()
+        {
+            var userId = _postDecoratorRequest.GetUserId(_miaEnvConfiguration);
+
+            Check.That(userId).IsEqualTo("42");
+        }
+        
+        [Test]
         public void TestGetGroups()
         {
             var userId = _postDecoratorRequest.GetGroups(_miaEnvConfiguration);
