@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Dynamic;
+using Environment;
 
 namespace Decorators.PostDecorators
 {
@@ -35,6 +36,26 @@ namespace Decorators.PostDecorators
             }
 
             return newBody;
+        }
+        
+        public string GetUserId(MiaEnvConfiguration config)
+        {
+            return Request.Headers[config.USERID_HEADER_KEY];
+        }
+
+        public string GetGroups(MiaEnvConfiguration config)
+        {
+            return Request.Headers[config.GROUPS_HEADER_KEY];
+        }
+
+        public string GetClientType(MiaEnvConfiguration config)
+        {
+            return Request.Headers[config.CLIENTTYPE_HEADER_KEY];
+        }
+
+        public string IsFromBackOffice(MiaEnvConfiguration config)
+        {
+            return Request.Headers[config.BACKOFFICE_HEADER_KEY];
         }
     }
 }

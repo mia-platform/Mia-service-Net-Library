@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using Decorators;
 using Decorators.PostDecorators;
-using Decorators.PreDecorators;
+using Environment;
 using NFluent;
 using NUnit.Framework;
 
@@ -11,6 +11,11 @@ namespace Decorator.Tests.PostDecorators
     public class PostDecoratorRequestTest
     {
         private PostDecoratorRequest _postDecoratorRequest;
+        private MiaEnvConfiguration _miaEnvConfiguration;
+        private const string BackOfficeHeaderKey = "backoffice";
+        private const string ClientTypeHeaderKey = "client-type";
+        private const string UserIdHeaderKey = "user-id";
+        private const string GroupsHeaderKey = "groups";
 
         [SetUp]
         public void Setup()
@@ -35,7 +40,26 @@ namespace Decorator.Tests.PostDecorators
                 },
                 Response = new DecoratorResponse(200, new Dictionary<string, string> {{"bar", "foo"}}, responseBody)
             };
+            
+            _miaEnvConfiguration = new MiaEnvConfiguration
+            {
+                BACKOFFICE_HEADER_KEY = BackOfficeHeaderKey,
+                CLIENTTYPE_HEADER_KEY = ClientTypeHeaderKey,
+                USERID_HEADER_KEY = UserIdHeaderKey,
+                GROUPS_HEADER_KEY = GroupsHeaderKey,
+            };
+            
+            SetupHeaders();
         }
+
+        private void SetupHeaders()
+        {
+            _postDecoratorRequest.Request.Headers[BackOfficeHeaderKey] = "true";
+            _postDecoratorRequest.Request.Headers[ClientTypeHeaderKey] = "foo";
+            _postDecoratorRequest.Request.Headers[UserIdHeaderKey] = "42";
+            _postDecoratorRequest.Request.Headers[GroupsHeaderKey] = "100";
+        }
+
 
         [Test]
         public void TestLeaveOriginalResponseUnmodified()
@@ -76,5 +100,30 @@ namespace Decorator.Tests.PostDecorators
             Assert.AreNotSame(newResponse.Response.Headers, _postDecoratorRequest.Response.Headers);
             Assert.AreNotSame(newResponse.Response.Body, _postDecoratorRequest.Response.Body);
         }
+        
+        [Test]
+        public void TestGetGroups()
+        {
+            var userId = _postDecoratorRequest.GetGroups(_miaEnvConfiguration);
+
+            Check.That(userId).IsEqualTo("100");
+        }
+        
+        [Test]
+        public void TestGetClientType()
+        {
+            var userId = _postDecoratorRequest.GetClientType(_miaEnvConfiguration);
+
+            Check.That(userId).IsEqualTo("foo");
+        }
+        
+        [Test]
+        public void TestIsFromBackOffice()
+        {
+            var userId = _postDecoratorRequest.IsFromBackOffice(_miaEnvConfiguration);
+
+            Check.That(userId).IsEqualTo("true");
+        }
+
     }
 }
