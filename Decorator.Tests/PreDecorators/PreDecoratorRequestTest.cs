@@ -56,22 +56,5 @@ namespace Decorator.Tests.PreDecorators
             Assert.IsFalse(((PreDecoratorRequest) newRequest).Headers.Equals(_preDecoratorRequest.Headers));
             Assert.IsFalse(((PreDecoratorRequest) newRequest).Query.Equals(_preDecoratorRequest.Query));
         }
-        
-        [Test]
-        public void TestDeepCloneIsCreated()
-        {
-            dynamic newBody = new ExpandoObject();
-            newBody.foo = 42;
-
-            var newRequest = _preDecoratorRequest
-                .ChangeOriginalRequest()
-                .Change();
-
-            Check.That(newRequest.Method).IsEqualTo(_preDecoratorRequest.Method);
-            Check.That(newRequest.Path).IsEqualTo(_preDecoratorRequest.Path);
-            Assert.IsFalse(newRequest.Body.Equals(_preDecoratorRequest.Body));
-            Assert.IsFalse(newRequest.Headers.Equals(_preDecoratorRequest.Headers));
-            Assert.IsFalse(newRequest.Query.Equals(_preDecoratorRequest.Query));
-        }
     }
 }

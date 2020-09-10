@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Dynamic;
 using Decorators;
 using Decorators.PreDecorators;
@@ -36,9 +35,7 @@ namespace Decorator.Tests
                 _decoratorResponseFactory.MakePreDecoratorResponse(preDecoratorRequest
                     .LeaveOriginalRequestUnmodified());
             
-            Check.That(result.StatusCode).IsEqualTo(204);
-            Check.That(result.Headers["Content-Type"]).IsEqualTo("application/json; charset=utf-8");
-            Check.That(result.Body).IsEqualTo(null);
+            Check.That(result).IsInstanceOf<LeaveOriginalRequestUnmodified>();
         }
     }
 }
