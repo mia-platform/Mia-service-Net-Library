@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Dynamic;
 using Decorators.Constants;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -6,15 +7,15 @@ using Newtonsoft.Json;
 
 namespace Decorators
 {
-    public class AbortChainResponse : DecoratorResponse
+    public class AbortChainResponse : DecoratorResponse, IToActionResult
 
     {
-        public AbortChainResponse(int finalStatusCode, IDictionary<string, string> finalHeaders, object finalBody) : base(
+        public AbortChainResponse(int finalStatusCode, IDictionary<string, string> finalHeaders, ExpandoObject finalBody) : base(
             finalStatusCode, finalHeaders, finalBody)
         {
         }
 
-        public override ActionResult ToActionResult(HttpContext context)
+        public ActionResult ToActionResult(HttpContext context)
         {
             AddResponseHeaders(context);
             return new ContentResult()

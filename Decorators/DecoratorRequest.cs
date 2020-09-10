@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Decorators
 {
@@ -12,5 +10,16 @@ namespace Decorators
         public IDictionary<string, string> Headers { get; set; }
         public IDictionary<string, string> Query { get; set; }
         public ExpandoObject Body { get; set; }
+
+        public ExpandoObject ToExpandoObject()
+        {
+            dynamic result = new ExpandoObject();
+            result.method = Method;
+            result.path = Path;
+            result.headers = Headers;
+            result.query = Query;
+            result.Body = Body;
+            return result;
+        }
     }
 }

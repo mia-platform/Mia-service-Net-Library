@@ -1,16 +1,17 @@
-using Decorators.Constants;
+using System.Collections.Generic;
+using System.Dynamic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-namespace Decorators.PreDecorators
+namespace Decorators.PostDecorators
 {
-    public class ChangeOriginalRequest : DecoratorResponse, IToActionResult
+    public class ChangeOriginalResponse : DecoratorResponse, IToActionResult
     {
-        public ChangeOriginalRequest(DecoratorRequest body) : base(DecoratorConstants.ChangeOriginalStatusCode, DecoratorConstants.DefaultHeaders, body.ToExpandoObject())
+        public ChangeOriginalResponse(int statusCode, IDictionary<string, string> headers, ExpandoObject body) : base(statusCode, headers, body)
         {
         }
-        
+
         public ActionResult ToActionResult(HttpContext context)
         {
             AddResponseHeaders(context);

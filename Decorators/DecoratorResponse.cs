@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Decorators
 {
-    public abstract class DecoratorResponse
+    public class DecoratorResponse
     {
-        public DecoratorResponse(int statusCode, IDictionary<string, string> headers, object body)
+        public DecoratorResponse(int statusCode, IDictionary<string, string> headers, ExpandoObject body)
         {
             StatusCode = statusCode;
             Headers = headers;
@@ -16,7 +15,7 @@ namespace Decorators
 
         public int StatusCode { get; set; }
         public IDictionary<string, string> Headers { get; set; }
-        public object Body { get; set; }
+        public ExpandoObject Body { get; set; }
 
         protected void AddResponseHeaders(HttpContext context)
         {
@@ -25,7 +24,5 @@ namespace Decorators
                 context.Response.Headers.Add(key, value);
             }
         }
-
-        public abstract ActionResult ToActionResult(HttpContext context);
     }
 }

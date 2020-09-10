@@ -8,18 +8,11 @@ namespace Decorators.PreDecorators
     {
         public PreDecoratorRequestProxy ChangeOriginalRequest()
         {
-            var newRequest = (PreDecoratorRequest) MemberwiseClone();
-            newRequest.Headers = new Dictionary<string, string>(Headers);
-            newRequest.Query = new Dictionary<string, string>(Query);
-            newRequest.Body = CloneRequestBody();
-            return new PreDecoratorRequestProxy(new PreDecoratorRequest
-            {
-                Method = newRequest.Method,
-                Path = newRequest.Path,
-                Headers = newRequest.Headers,
-                Query = newRequest.Query,
-                Body = newRequest.Body
-            });
+            var copy = (PreDecoratorRequest) MemberwiseClone();
+            copy.Headers = new Dictionary<string, string>(Headers);
+            copy.Query = new Dictionary<string, string>(Query);
+            copy.Body = CloneRequestBody();
+            return new PreDecoratorRequestProxy(copy);
         }
 
         public PreDecoratorRequest LeaveOriginalRequestUnmodified()
