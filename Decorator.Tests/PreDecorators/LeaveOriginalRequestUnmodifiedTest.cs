@@ -1,4 +1,3 @@
-using Decorators;
 using Decorators.PreDecorators;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +30,5 @@ namespace Decorator.Tests.PreDecorators
             var result = _decoratorResponse.ToActionResult(context);
             Check.That(result).IsInstanceOf<NoContentResult>();
         }
-        
-  
     }
 }

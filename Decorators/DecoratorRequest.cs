@@ -18,7 +18,7 @@ namespace Decorators
             result.path = Path;
             result.headers = Headers;
             result.query = Query;
-            result.Body = Body;
+            result.body = Body;
             return result;
         }
     }

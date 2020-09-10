@@ -14,7 +14,7 @@ namespace Decorators.PreDecorators
         public ActionResult ToActionResult(HttpContext context)
         {
             AddResponseHeaders(context);
-            return new ContentResult()
+            return new ContentResult
             {
                 StatusCode = StatusCode,
                 Content = JsonConvert.SerializeObject(Body)

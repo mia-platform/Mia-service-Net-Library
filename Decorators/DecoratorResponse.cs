@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
 namespace Decorators
 {
@@ -15,6 +16,7 @@ namespace Decorators
 
         public int StatusCode { get; set; }
         public IDictionary<string, string> Headers { get; set; }
+        
         public ExpandoObject Body { get; set; }
 
         protected void AddResponseHeaders(HttpContext context)
