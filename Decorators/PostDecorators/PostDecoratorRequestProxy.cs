@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Dynamic;
 
 namespace Decorators.PostDecorators
 {
@@ -16,10 +17,16 @@ namespace Decorators.PostDecorators
             _request.Response.StatusCode = statusCode;
             return this;
         }
-        
-        public PostDecoratorRequestProxy Body(IDictionary<string, string> headers)
+
+        public PostDecoratorRequestProxy Headers(IDictionary<string, string> headers)
         {
             _request.Response.Headers = headers;
+            return this;
+        }
+
+        public PostDecoratorRequestProxy Body(ExpandoObject body)
+        {
+            _request.Response.Body = body;
             return this;
         }
 

@@ -11,6 +11,7 @@ namespace Decorator.Tests.PreDecorators
     public class ChangeOriginalRequestTest
     {
         private ChangeOriginalRequest _decoratorResponse;
+        
         [SetUp]
         public void Setup()
         {

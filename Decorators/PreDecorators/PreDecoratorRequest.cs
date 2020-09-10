@@ -32,31 +32,6 @@ namespace Decorators.PreDecorators
             return newBody;
         }
 
-        public string GetOriginalRequestPath()
-        {
-            return Path;
-        }
-
-        public string GetOriginalRequestMethod()
-        {
-            return Method;
-        }
-
-        public IDictionary<string, string> GetOriginalRequestHeaders()
-        {
-            return Headers;
-        }
-
-        public IDictionary<string, string> GetOriginalRequestQuery()
-        {
-            return Query;
-        }
-
-        public ExpandoObject GetOriginalRequestBody()
-        {
-            return Body;
-        }
-
         public string GetUserId(MiaEnvConfiguration config)
         {
             return Headers[config.USERID_HEADER_KEY];
