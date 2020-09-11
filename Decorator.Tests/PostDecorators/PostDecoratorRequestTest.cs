@@ -25,8 +25,8 @@ namespace Decorator.Tests.PostDecorators
             requestBody.baz = "bam";
             
             dynamic responseBody = new ExpandoObject();
-            requestBody.bar = "foo";
-            requestBody.bam = "baz";
+            responseBody.bar = "foo";
+            responseBody.bam = "baz";
 
             _postDecoratorRequest = new PostDecoratorRequest
             {

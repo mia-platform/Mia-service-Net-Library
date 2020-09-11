@@ -15,6 +15,10 @@ namespace Decorators
             Body = body;
         }
 
+        public DecoratorResponse()
+        {
+        }
+
         public int StatusCode { get; set; }
         public IDictionary<string, string> Headers { get; set; }
 
