@@ -90,7 +90,7 @@ namespace Service
             }
             catch (HttpRequestException e)
             {
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                throw new ServiceProxyException($"HTTP request failed: {e.Message}");
             }
         }
 

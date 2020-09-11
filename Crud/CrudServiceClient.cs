@@ -110,7 +110,7 @@ namespace Crud
             }
             catch (HttpRequestException e)
             {
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
+               throw new CrudException($"HTTP request failed: {e.Message}");
             }
         }
 
