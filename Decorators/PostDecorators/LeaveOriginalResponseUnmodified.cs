@@ -8,7 +8,7 @@ namespace Decorators.PostDecorators
 {
     public class LeaveOriginalResponseUnmodified : DecoratorResponse, IToActionResult
     {
-        public LeaveOriginalResponseUnmodified(int statusCode, IDictionary<string, string> headers, ExpandoObject body)
+        public LeaveOriginalResponseUnmodified()
             : base(DecoratorConstants.LeaveOriginalUnchangedStatusCode, DecoratorConstants.DefaultHeaders, null)
         {
         }

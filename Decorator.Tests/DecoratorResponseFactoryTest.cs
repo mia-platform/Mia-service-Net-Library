@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using Decorators;
+using Decorators.PostDecorators;
 using Decorators.PreDecorators;
 using NFluent;
 using NUnit.Framework;
@@ -63,6 +64,72 @@ namespace Decorator.Tests
                 _decoratorResponseFactory.MakePreDecoratorResponse(newRequest);
 
             Check.That(result).IsInstanceOf<ChangeOriginalRequest>();
+        }
+
+        [Test]
+        public void TestPostDecoratorLeaveOriginalResponseUnmodified()
+        {
+            dynamic requestBody = new ExpandoObject();
+            requestBody.foo = "bar";
+            requestBody.baz = "bam";
+
+            dynamic responseBody = new ExpandoObject();
+            requestBody.bar = "foo";
+            requestBody.bam = "baz";
+
+            var postDecoratorRequest = new PostDecoratorRequest
+            {
+                Request = new DecoratorRequest
+                {
+                    Method = "GET",
+                    Path = "test",
+                    Headers = new Dictionary<string, string> {{"foo", "bar"}},
+                    Query = new Dictionary<string, string> {{"baz", "bam"}},
+                    Body = requestBody
+                },
+                Response = new DecoratorResponse(200, new Dictionary<string, string> {{"bar", "foo"}}, responseBody)
+            };
+            
+            
+            var result =
+                _decoratorResponseFactory.MakePostDecoratorResponse(postDecoratorRequest.LeaveOriginalResponseUnmodified());
+
+            Check.That(result).IsInstanceOf<LeaveOriginalResponseUnmodified>();
+        }
+
+        [Test]
+        public void TestPostDecoratorChangeOriginalResponse()
+        {
+            dynamic requestBody = new ExpandoObject();
+            requestBody.foo = "bar";
+            requestBody.baz = "bam";
+
+            dynamic responseBody = new ExpandoObject();
+            requestBody.bar = "foo";
+            requestBody.bam = "baz";
+
+            var postDecoratorRequest = new PostDecoratorRequest
+            {
+                Request = new DecoratorRequest
+                {
+                    Method = "GET",
+                    Path = "test",
+                    Headers = new Dictionary<string, string> {{"foo", "bar"}},
+                    Query = new Dictionary<string, string> {{"baz", "bam"}},
+                    Body = requestBody
+                },
+                Response = new DecoratorResponse(200, new Dictionary<string, string> {{"bar", "foo"}}, responseBody)
+            };
+            
+            var newRequest = postDecoratorRequest.ChangeOriginalResponse()
+                .StatusCode(201)
+                .Headers(new Dictionary<string, string> {{"foo", "bar"}})
+                .Change();
+
+            var result =
+                _decoratorResponseFactory.MakePostDecoratorResponse(newRequest);
+
+            Check.That(result).IsInstanceOf<ChangeOriginalResponse>();
         }
     }
 }
