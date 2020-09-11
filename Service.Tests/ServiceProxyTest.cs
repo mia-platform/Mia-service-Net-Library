@@ -17,7 +17,6 @@ namespace Service.Tests
     {
         private WireMockServer _server;
         private ServiceProxy _sut;
-        private HttpRequestHeaders _httpRequestHeaders = null;
         private const int SUCCESS_STATUS_CODE = 200;
         private const string SUCCESS_RESPONSE_BODY = @"{ ""msg"": ""Hello world!"" }";
         

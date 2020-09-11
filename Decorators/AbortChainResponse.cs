@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace Decorators
 {
-    public class AbortChainResponse : DecoratorResponse, IToActionResult
+    public class AbortChainResponse : DecoratorResponse
 
     {
         public AbortChainResponse(int finalStatusCode, IDictionary<string, string> finalHeaders, ExpandoObject finalBody) : base(
@@ -15,10 +15,10 @@ namespace Decorators
         {
         }
 
-        public ActionResult ToActionResult(HttpContext context)
+        public override ActionResult ToActionResult(HttpContext context)
         {
             AddResponseHeaders(context);
-            return new ContentResult()
+            return new ContentResult
             {
                 StatusCode = DecoratorConstants.AbortChainStatusCode,
                 Content = JsonConvert.SerializeObject(this)

@@ -6,14 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Decorators.PostDecorators
 {
-    public class LeaveOriginalResponseUnmodified : DecoratorResponse, IToActionResult
+    public class LeaveOriginalResponseUnmodified : DecoratorResponse
     {
         public LeaveOriginalResponseUnmodified()
             : base(DecoratorConstants.LeaveOriginalUnchangedStatusCode, DecoratorConstants.DefaultHeaders, null)
         {
         }
 
-        public ActionResult ToActionResult(HttpContext context)
+        public override ActionResult ToActionResult(HttpContext context)
         {
             AddResponseHeaders(context);
             return new NoContentResult();

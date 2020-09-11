@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace Decorators
 {
-    public class DecoratorResponse
+    public class DecoratorResponse : IToActionResult
     {
         public DecoratorResponse(int statusCode, IDictionary<string, string> headers, ExpandoObject body)
         {
@@ -16,7 +17,7 @@ namespace Decorators
 
         public int StatusCode { get; set; }
         public IDictionary<string, string> Headers { get; set; }
-        
+
         public ExpandoObject Body { get; set; }
 
         protected void AddResponseHeaders(HttpContext context)
@@ -25,6 +26,16 @@ namespace Decorators
             {
                 context.Response.Headers.Add(key, value);
             }
+        }
+
+        public virtual ActionResult ToActionResult(HttpContext context)
+        {
+            AddResponseHeaders(context);
+            return new ContentResult
+            {
+                StatusCode = StatusCode,
+                Content = JsonConvert.SerializeObject(Body)
+            };
         }
     }
 }
