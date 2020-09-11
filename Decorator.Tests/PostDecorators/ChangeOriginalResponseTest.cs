@@ -1,46 +1,44 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using Decorators;
-using Decorators.PreDecorators;
+using Decorators.PostDecorators;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NFluent;
 using NUnit.Framework;
 
-namespace Decorator.Tests.PreDecorators
+namespace Decorator.Tests.PostDecorators
 {
-    public class ChangeOriginalRequestTest
+    public class ChangeOriginalResponseTest
     {
-        private ChangeOriginalRequest _decoratorResponse;
-        private DecoratorRequest _newRequest;
-        
+        private ChangeOriginalResponse _decoratorResponse;
+        private DecoratorResponse _newResponse;
+
         [SetUp]
         public void Setup()
         {
             dynamic newBody = new ExpandoObject();
             newBody.foo = "bar";
             newBody.baz = "bam";
-            
-             _newRequest = new DecoratorRequest
+
+            _newResponse = new DecoratorResponse
             {
-                Method = "GET",
-                Path = "test",
+                StatusCode = 200,
                 Headers = new Dictionary<string, string> {{"foo", "bar"}},
-                Query = new Dictionary<string, string> {{"baz", "bam"}},
                 Body = newBody
             };
-            
-            _decoratorResponse = new ChangeOriginalRequest(_newRequest);
+
+            _decoratorResponse = new ChangeOriginalResponse(_newResponse);
         }
-        
+
         [Test]
         public void TestConstructor()
         {
             Check.That(_decoratorResponse.StatusCode).IsEqualTo(200);
             Check.That(_decoratorResponse.Headers["Content-Type"]).IsEqualTo("application/json; charset=utf-8");
-            Check.That(_decoratorResponse.Body).IsEqualTo(_newRequest.ToExpandoObject());
+            Check.That(_decoratorResponse.Body).IsEqualTo(_newResponse.ToExpandoObject());
         }
-        
+
         [Test]
         public void TestToActionResult()
         {
@@ -48,7 +46,9 @@ namespace Decorator.Tests.PreDecorators
             var result = (ContentResult) _decoratorResponse.ToActionResult(context);
             Check.That(result).IsInstanceOf<ContentResult>();
             Check.That(result.StatusCode).IsEqualTo(200);
-            Check.That(result.Content).IsEqualTo(@"{""method"":""GET"",""path"":""test"",""headers"":{""foo"":""bar""},""query"":{""baz"":""bam""},""body"":{""foo"":""bar"",""baz"":""bam""}}");
+            Check.That(result.Content)
+                .IsEqualTo(
+                    @"{""statusCode"":200,""headers"":{""foo"":""bar""},""body"":{""foo"":""bar"",""baz"":""bam""}}");
         }
     }
 }

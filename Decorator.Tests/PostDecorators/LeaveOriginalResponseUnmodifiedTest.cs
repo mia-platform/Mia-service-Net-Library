@@ -1,19 +1,19 @@
-using Decorators.PreDecorators;
+using Decorators.PostDecorators;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NFluent;
 using NUnit.Framework;
 
-namespace Decorator.Tests.PreDecorators
+namespace Decorator.Tests.PostDecorators
 {
-    public class LeaveOriginalRequestUnmodifiedTest
+    public class LeaveOriginalResponseUnmodifiedTest
     {
-        private LeaveOriginalRequestUnmodified _decoratorResponse;
-        
+        private LeaveOriginalResponseUnmodified _decoratorResponse;
+
         [SetUp]
         public void Setup()
         {
-            _decoratorResponse = new LeaveOriginalRequestUnmodified();
+            _decoratorResponse = new LeaveOriginalResponseUnmodified();
         }
 
         [Test]
@@ -23,7 +23,7 @@ namespace Decorator.Tests.PreDecorators
             Check.That(_decoratorResponse.Headers["Content-Type"]).IsEqualTo("application/json; charset=utf-8");
             Check.That(_decoratorResponse.Body).IsEqualTo(null);
         }
-        
+
         [Test]
         public void TestToActionResult()
         {

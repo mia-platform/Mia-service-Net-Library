@@ -25,8 +25,7 @@ namespace Decorators
                 return new LeaveOriginalResponseUnmodified();
             }
 
-            return new ChangeOriginalResponse(postDecoratorRequest.Response.StatusCode,
-                postDecoratorRequest.Response.Headers, postDecoratorRequest.Response.Body);
+            return new ChangeOriginalResponse(postDecoratorRequest.Response);
         }
 
         public DecoratorResponse AbortChain(int finalStatusCode, IDictionary<string, string> finalHeaders = null,

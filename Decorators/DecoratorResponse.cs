@@ -41,5 +41,13 @@ namespace Decorators
                 Content = JsonConvert.SerializeObject(Body)
             };
         }
+        public ExpandoObject ToExpandoObject()
+        {
+            dynamic result = new ExpandoObject();
+            result.statusCode = StatusCode;
+            result.headers = Headers;
+            result.body = Body;
+            return result;
+        }
     }
 }
