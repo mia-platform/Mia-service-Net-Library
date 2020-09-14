@@ -2,14 +2,15 @@
 A library that allows you to define Mia-Platform custom services in .NET Core easily.
 
 ## Purpose
-This library aims to provide an easy way to integrate the Platform.
-It is able to integrate either the CRUD and other REST services.
+This library aims to provide an easy way to integrate your custom microservices with [Mia-Platform](https://mia-platform.eu).
+You can use it is to integrate with your defined CRUD and other custom services that run is your DevOps Console Project.
 
 ## Usage
 ### Service proxy
 #### Service options
 Before getting your service proxy, you need to inject the appropriate `InitServiceOptions` instance:
- ```csharp
+
+```csharp
 var initOptions = new InitServiceOptions(8080, Protocol.Http);
  ```
 
