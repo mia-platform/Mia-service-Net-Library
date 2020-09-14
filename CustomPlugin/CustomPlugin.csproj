@@ -5,6 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Crud\Crud.csproj" />
       <ProjectReference Include="..\Decorators\Decorators.csproj" />
       <ProjectReference Include="..\Environment\Environment.csproj" />
       <ProjectReference Include="..\Service\Service.csproj" />

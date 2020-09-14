@@ -1,10 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using NFluent;
 using NUnit.Framework;
 using WireMock.RequestBuilders;
@@ -30,7 +27,7 @@ namespace Service.Tests
         public async Task TestGet()
         {
             var initServiceOptions = new InitServiceOptions(_server.Ports.First());
-            _sut = new ServiceProxy("localhost", initServiceOptions);
+            _sut = new ServiceProxy(new Dictionary<string, string>(), "localhost", initServiceOptions);
 
             _server
                 .Given(Request.Create().WithPath("/foo").UsingGet())
@@ -53,7 +50,7 @@ namespace Service.Tests
         {
             var port = _server.Ports.First();
             var initServiceOptions = new InitServiceOptions(port);
-            _sut = new ServiceProxy("localhost", initServiceOptions);
+            _sut = new ServiceProxy(new Dictionary<string, string>(), "localhost", initServiceOptions);
 
             _server
                 .Given(Request.Create().WithPath("/foo").WithParam("bar", "baz").UsingGet())
@@ -77,7 +74,7 @@ namespace Service.Tests
         public async Task TestPost()
         {
             var initServiceOptions = new InitServiceOptions(_server.Ports.First());
-            _sut = new ServiceProxy("localhost", initServiceOptions);
+            _sut = new ServiceProxy(new Dictionary<string, string>(), "localhost", initServiceOptions);
             const string body = @"{ ""foo"": ""bar"" }";
 
             _server
@@ -101,7 +98,7 @@ namespace Service.Tests
         {
             var port = _server.Ports.First();
             var initServiceOptions = new InitServiceOptions(port);
-            _sut = new ServiceProxy("localhost", initServiceOptions);
+            _sut = new ServiceProxy(new Dictionary<string, string>(), "localhost", initServiceOptions);
             const string body = @"{ ""foo"": ""bar"" }";
 
             _server
@@ -126,7 +123,7 @@ namespace Service.Tests
         public async Task TestPut()
         {
             var initServiceOptions = new InitServiceOptions(_server.Ports.First());
-            _sut = new ServiceProxy("localhost", initServiceOptions);
+            _sut = new ServiceProxy(new Dictionary<string, string>(), "localhost", initServiceOptions);
             const string body = @"{ ""foo"": ""bar"" }";
 
             _server
@@ -150,7 +147,7 @@ namespace Service.Tests
         {
             var port = _server.Ports.First();
             var initServiceOptions = new InitServiceOptions(port);
-            _sut = new ServiceProxy("localhost", initServiceOptions);
+            _sut = new ServiceProxy(new Dictionary<string, string>(), "localhost", initServiceOptions);
             const string body = @"{ ""foo"": ""bar"" }";
 
             _server
@@ -175,7 +172,7 @@ namespace Service.Tests
         public async Task TestPatch()
         {
             var initServiceOptions = new InitServiceOptions(_server.Ports.First());
-            _sut = new ServiceProxy("localhost", initServiceOptions);
+            _sut = new ServiceProxy(new Dictionary<string, string>(), "localhost", initServiceOptions);
             const string body = @"{ ""foo"": ""bar"" }";
 
             _server
@@ -199,7 +196,7 @@ namespace Service.Tests
         {
             var port = _server.Ports.First();
             var initServiceOptions = new InitServiceOptions(port);
-            _sut = new ServiceProxy("localhost", initServiceOptions);
+            _sut = new ServiceProxy(new Dictionary<string, string>(), "localhost", initServiceOptions);
             const string body = @"{ ""foo"": ""bar"" }";
 
             _server
@@ -224,7 +221,7 @@ namespace Service.Tests
         public async Task TestDelete()
         {
             var initServiceOptions = new InitServiceOptions(_server.Ports.First());
-            _sut = new ServiceProxy("localhost", initServiceOptions);
+            _sut = new ServiceProxy(new Dictionary<string, string>(), "localhost", initServiceOptions);
 
             _server
                 .Given(Request.Create().WithPath("/foo").UsingDelete())
@@ -247,7 +244,7 @@ namespace Service.Tests
         {
             var port = _server.Ports.First();
             var initServiceOptions = new InitServiceOptions(port);
-            _sut = new ServiceProxy("localhost", initServiceOptions);
+            _sut = new ServiceProxy(new Dictionary<string, string>(), "localhost", initServiceOptions);
 
             _server
                 .Given(Request.Create().WithPath("/foo").WithParam("bar", "baz").UsingDelete())

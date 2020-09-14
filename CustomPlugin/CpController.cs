@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Decorators;
 using Environment;
 using Microsoft.AspNetCore.Mvc;
