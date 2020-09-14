@@ -1,9 +1,6 @@
-using System;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
+using System.Collections.Generic;
+using Crud;
 using CustomPlugin.Environment;
-using Microsoft.AspNetCore.Http;
 using Service;
 
 namespace CustomPlugin
@@ -11,18 +8,11 @@ namespace CustomPlugin
     public class ServiceClientFactory
     {
         private readonly MiaEnvConfiguration _miaEnvConfiguration;
-        private static  HttpRequestHeaders _miaHeaders = ServiceProxy.GetDefaultHeaders();
-        private static HttpRequestHeaders MiaHeaders => _miaHeaders;
+        private static Dictionary<string, string> _miaHeaders;
 
         public static void SetMiaHeaders(MiaHeadersPropagator miaHeadersPropagator)
         {
-            _miaHeaders = ServiceProxy.GetDefaultHeaders();
-
-            foreach (var (key, value) in miaHeadersPropagator.Headers)
-            {
-                MiaHeaders.Remove(key);
-                MiaHeaders.Add(key, value);
-            }
+            _miaHeaders = miaHeadersPropagator.Headers;
         }
 
         public ServiceClientFactory(MiaEnvConfiguration miaEnvConfiguration)
@@ -30,17 +20,24 @@ namespace CustomPlugin
             _miaEnvConfiguration = miaEnvConfiguration;
         }
 
-        public ServiceProxy GetDirectServiceProxy(string serviceName, InitServiceOptions options)
+        public IServiceProxy GetDirectServiceProxy(string serviceName, InitServiceOptions options)
         {
-            return new ServiceProxy(serviceName, options);
+            return new ServiceProxy(_miaHeaders, serviceName, options);
         }
 
-        public ServiceProxy GetServiceProxy(InitServiceOptions options)
+        public IServiceProxy GetServiceProxy(InitServiceOptions options)
         {
             var microserviceNameKey = _miaEnvConfiguration.MICROSERVICE_GATEWAY_SERVICE_NAME;
             return string.IsNullOrEmpty(microserviceNameKey)
                 ? null
-                : new ServiceProxy(microserviceNameKey, options);
+                : new ServiceProxy(_miaHeaders, microserviceNameKey, options);
+        }
+
+        public ICrudServiceClient GetCrudServiceClient(
+            string apiPath = default(string),
+            string apiSecret = default(string), int crudVersion = default(int))
+        {
+            return new CrudServiceClient(_miaHeaders, apiPath, apiSecret, crudVersion); 
         }
     }
 }
