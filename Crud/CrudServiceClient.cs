@@ -127,7 +127,7 @@ namespace Crud
             }
             catch (Exception e)
             {
-                throw new CrudException("Cannot read response body");
+                throw new CrudException($"Cannot read response body: {e.Message}");
             }
 
             return result;
@@ -146,7 +146,7 @@ namespace Crud
             }
             catch (Exception e)
             {
-                throw new CrudException("Cannot read response body");
+                throw new CrudException($"Cannot read response body: {e.Message}");
             }
 
             return result;
@@ -165,7 +165,7 @@ namespace Crud
             }
             catch (Exception e)
             {
-                throw new CrudException("Cannot read response body");
+                throw new CrudException($"Cannot read response body: {e.Message}");
             }
 
             return result;
