@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using Logging.Entities;
 using Microsoft.AspNetCore.Http;
@@ -17,20 +18,24 @@ namespace Logging
         
         public async Task Invoke(HttpContext context)
         {
-            HttpRequest request = context.Request;
+            var responseStopwatch = new Stopwatch();
+            responseStopwatch.Start();
+            var request = context.Request;
             var incomingRequestLog = BuildIncomingRequestLog(context, request);
             LoggingUtility.LogIncomingRequest(incomingRequestLog);
-            
+
+            var response = context.Response;
             using (var buffer = new MemoryStream()) {
-                HttpResponse response = context.Response;
                 var bodyStream = response.Body;
                 response.Body = buffer;
                 await _next(context);
-                CpRequest cpRequest = new CpRequest
+                responseStopwatch.Stop();
+                var passedMicroSeconds = responseStopwatch.ElapsedMilliseconds / 1000.0;
+                var cpRequest = new CpRequest
                 {
                     Method = request.Method
                 };
-                CpResponse cpResponse = new CpResponse
+                var cpResponse = new CpResponse
                 {
                     StatusCode = response.StatusCode,
                     Body = new Body
@@ -38,15 +43,14 @@ namespace Logging
                         Bytes = response.ContentLength ?? buffer.Length
                     }
                 };
-                // response time da calcolare con un timer?
-                CompletedRequestLog completedRequestLog = BuildCompletedRequestLog(context, cpRequest, cpResponse, request);
+                var completedRequestLog = BuildCompletedRequestLog(context, cpRequest, cpResponse, request, passedMicroSeconds);
                 buffer.Position = 0;
                 await buffer.CopyToAsync(bodyStream);
                 LoggingUtility.LogCompletedRequest(completedRequestLog);
             }
         }
 
-        private static CompletedRequestLog BuildCompletedRequestLog(HttpContext context, CpRequest cpRequest, CpResponse cpResponse, HttpRequest request)
+        private static CompletedRequestLog BuildCompletedRequestLog(HttpContext context, CpRequest cpRequest, CpResponse cpResponse, HttpRequest request, double responseTime)
         {
             return new CompletedRequestLog
             {
@@ -67,7 +71,7 @@ namespace Logging
                     Hostname = request.Host.ToString(),
                     Ip = context.Connection.RemoteIpAddress.MapToIPv4().ToString()
                 },
-                ResponseTime = 0
+                ResponseTime = responseTime
             };
         }
 

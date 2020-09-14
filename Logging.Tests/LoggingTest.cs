@@ -14,6 +14,7 @@ namespace Logging.Tests
         private const string Original = "Nunit Framework";
         private const long Bytes = 42;
         private const int StatusCode = 200;
+        private const float ResponseTime = 1337F;
         
         [Test]
         public void TestIncomingRequestLog()
@@ -48,7 +49,7 @@ namespace Logging.Tests
                         "{\"Original\":\"" + Original + "\"}," +
                     "\"Host\":" +
                         "{\"Hostname\":\"" + Hostname + "\",\"Ip\":\"" + Ip + "\"}," +
-                "\"ResponseTime\":0.0}";
+                "\"ResponseTime\":" + ResponseTime + ".0}";
             var mockRequest = BuildCompletedRequestLog();
             
             var appender = new log4net.Appender.MemoryAppender();
@@ -92,9 +93,10 @@ namespace Logging.Tests
                     Hostname = Hostname,
                     Ip = Ip
                 },
-                ResponseTime = 0
+                ResponseTime = ResponseTime
             };
         }
+        
         private static IncomingRequestLog BuildIncomingRequestLog()
         {
             return new IncomingRequestLog
