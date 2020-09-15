@@ -2,6 +2,6 @@
 {
     public class Url
     {
-        public string Path { get; set; }
+        public string path { get; set; }
     }
 }

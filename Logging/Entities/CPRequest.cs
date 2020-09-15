@@ -2,6 +2,6 @@
 {
     public class CpRequest
     {
-        public string Method { get; set; }
+        public string method { get; set; }
     }
 }

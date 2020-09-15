@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using Logging.Entities;
@@ -10,7 +11,8 @@ namespace Logging
     public class RequestResponseLoggingMiddleware
     {
         private readonly RequestDelegate _next;
-
+        private long _reqIdAuto = 1;
+        
         public RequestResponseLoggingMiddleware(RequestDelegate next)
         {
             _next = next;
@@ -21,86 +23,76 @@ namespace Logging
             var responseStopwatch = new Stopwatch();
             responseStopwatch.Start();
             var request = context.Request;
-            var incomingRequestLog = BuildIncomingRequestLog(context, request);
-            LoggingUtility.LogIncomingRequest(incomingRequestLog);
-
             var response = context.Response;
             using (var buffer = new MemoryStream()) {
                 var bodyStream = response.Body;
                 response.Body = buffer;
                 await _next(context);
                 responseStopwatch.Stop();
-                var passedMicroSeconds = responseStopwatch.ElapsedMilliseconds / 1000.0;
+                var passedMicroSeconds = responseStopwatch.ElapsedMilliseconds / 1000m;
                 var cpRequest = new CpRequest
                 {
-                    Method = request.Method
+                    method = request.Method
                 };
                 var cpResponse = new CpResponse
                 {
-                    StatusCode = response.StatusCode,
-                    Body = new Body
+                    statusCode = response.StatusCode,
+                    body = new Body
                     {
-                        Bytes = response.ContentLength ?? buffer.Length
+                        bytes = response.ContentLength ?? buffer.Length
                     }
                 };
-                var completedRequestLog = BuildCompletedRequestLog(context, cpRequest, cpResponse, request, passedMicroSeconds);
+                var reqId = GetReqId(request);
+                var completedRequestLog = BuildCompletedRequestLog(context, cpRequest, cpResponse, request, passedMicroSeconds, reqId);
                 buffer.Position = 0;
                 await buffer.CopyToAsync(bodyStream);
-                LoggingUtility.LogCompletedRequest(completedRequestLog);
+                LoggingUtility.LogRequest(completedRequestLog);
             }
         }
 
-        private static CompletedRequestLog BuildCompletedRequestLog(HttpContext context, CpRequest cpRequest, CpResponse cpResponse, HttpRequest request, double responseTime)
+        private long GetReqId(HttpRequest request)
+        {
+            long reqId;
+            if (string.IsNullOrEmpty(request.Headers["x-request-id"]))
+            {
+                reqId = _reqIdAuto;
+                _reqIdAuto++;
+            }
+            else
+            {
+                reqId = int.Parse(request.Headers["x-request-id"]);
+                _reqIdAuto = 1;
+            }
+            return reqId;
+        }
+
+        private static CompletedRequestLog BuildCompletedRequestLog(HttpContext context, CpRequest cpRequest, 
+            CpResponse cpResponse, HttpRequest request, decimal responseTime, long reqId)
         {
             return new CompletedRequestLog
             {
-                Http = new Http
+                level = LogLevels.Info,
+                time = DateTimeOffset.Now.ToUnixTimeMilliseconds(),
+                reqId = reqId,
+                http = new Http
                 {
-                    Request = cpRequest,
-                    Response = cpResponse
+                    request = cpRequest,
+                    response = cpResponse
                 },
-                Url = new Url 
+                url = new Url 
                 {
-                    Path = request.GetDisplayUrl(),
+                    path = request.GetDisplayUrl(),
                 },
-                UserAgent = new UserAgent
+                userAgent = new UserAgent
                 {
-                    Original = request.Headers["User-Agent"].ToString()
+                    original = request.Headers["User-Agent"].ToString()
                 },
-                Host = new Host
+                host = new Host
                 {
-                    Hostname = request.Host.ToString(),
-                    Ip = context.Connection.RemoteIpAddress.MapToIPv4().ToString()
+                    hostname = request.Host.ToString(),
+                    ip = context.Connection.RemoteIpAddress.MapToIPv4().ToString()
                 },
-                ResponseTime = responseTime
-            };
-        }
-
-        private static IncomingRequestLog BuildIncomingRequestLog(HttpContext context, HttpRequest request)
-        {
-            return new IncomingRequestLog
-            {
-                Http = new Http
-                {
-                    Request = new CpRequest
-                    {
-                        Method = request.Method
-                    },
-                    Response = null
-                },
-                Url = new Url
-                {
-                    Path = request.GetDisplayUrl()
-                },
-                UserAgent = new UserAgent
-                {
-                    Original = request.Headers["User-Agent"].ToString()
-                },
-                Host = new Host
-                {
-                    Hostname = request.Host.ToString(),
-                    Ip = context.Connection.RemoteIpAddress.MapToIPv4().ToString()
-                }
+                responseTime = responseTime
             };
         }
     }

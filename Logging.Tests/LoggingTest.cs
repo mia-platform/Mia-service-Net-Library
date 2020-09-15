@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using log4net.Config;
 using Logging.Entities;
 using NUnit.Framework;
@@ -14,47 +15,29 @@ namespace Logging.Tests
         private const string Original = "Nunit Framework";
         private const long Bytes = 42;
         private const int StatusCode = 200;
-        private const float ResponseTime = 1337F;
+        private const decimal ResponseTime = 1337;
+        private const int ReqId = 1;
+        private const int Level = 30;
+        private static readonly long Time = DateTimeOffset.Now.ToUnixTimeMilliseconds();
         
         [Test]
-        public void TestIncomingRequestLog()
-        {
-            const string expectedLog =
-                "{\"Http\":{\"Request\":{\"Method\":\"" + HttpRequestMethod + "\"},\"Response\":null}," +
-                "\"Url\":" +
-                    "{\"Path\":\"" + Path + "\"}," +
-                    "\"UserAgent\":" +
-                        "{\"Original\":\"" + Original + "\"}," +
-                    "\"Host\":" +
-                        "{\"Hostname\":\"" + Hostname + "\",\"Ip\":\"" + Ip + "\"}}";
-            var mockRequest = BuildIncomingRequestLog();
-            var appender = new log4net.Appender.MemoryAppender();
-            BasicConfigurator.Configure(appender);
-            LoggingUtility.LogIncomingRequest(mockRequest);
-            
-            var result = appender.GetEvents();
-            Assert.IsTrue(result.Any());
-            Assert.IsTrue(result[0].MessageObject.Equals(expectedLog));
-        }
-        
-        [Test]
-        public void TestCompletedRequestLog()
+        public void TestRequestLog()
         {
             var expectedLog =
-                "{\"Http\":{\"Request\":{\"Method\":\"" + HttpRequestMethod + "\"}," +
-                "\"Response\":{\"StatusCode\":" + StatusCode + ",\"Body\":{\"Bytes\":"+ Bytes + "}}}," +
-                "\"Url\":" +
-                    "{\"Path\":\"" + Path + "\"}," +
-                    "\"UserAgent\":" +
-                        "{\"Original\":\"" + Original + "\"}," +
-                    "\"Host\":" +
-                        "{\"Hostname\":\"" + Hostname + "\",\"Ip\":\"" + Ip + "\"}," +
-                "\"ResponseTime\":" + ResponseTime + ".0}";
+                "{\"level\":" + Level + ",\"time\":" + Time + ",\"reqId\":"+ ReqId +",\"http\":{\"request\":{\"method\":\"" + HttpRequestMethod + "\"}," +
+                "\"response\":{\"statusCode\":" + StatusCode + ",\"body\":{\"bytes\":"+ Bytes + "}}}," +
+                "\"url\":" +
+                    "{\"path\":\"" + Path + "\"}," +
+                    "\"userAgent\":" +
+                        "{\"original\":\"" + Original + "\"}," +
+                    "\"host\":" +
+                        "{\"hostname\":\"" + Hostname + "\",\"ip\":\"" + Ip + "\"}," +
+                "\"responseTime\":" + ResponseTime + ".0}";
             var mockRequest = BuildCompletedRequestLog();
             
             var appender = new log4net.Appender.MemoryAppender();
             BasicConfigurator.Configure(appender);
-            LoggingUtility.LogCompletedRequest(mockRequest);
+            LoggingUtility.LogRequest(mockRequest);
             
             var result = appender.GetEvents();
             Assert.IsTrue(result.Any());
@@ -65,62 +48,38 @@ namespace Logging.Tests
         {
             return new CompletedRequestLog
             {
-                Http = new Http
+                level = Level,
+                time = Time,
+                reqId = ReqId,
+                http = new Http
                 {
-                    Request = new CpRequest
+                    request = new CpRequest
                     {
-                        Method = HttpRequestMethod
+                        method = HttpRequestMethod
                     },
-                    Response = new CpResponse
+                    response = new CpResponse
                     {
-                        Body = new Body
+                        body = new Body
                         {
-                            Bytes = Bytes
+                            bytes = Bytes
                         },
-                        StatusCode = StatusCode
+                        statusCode = StatusCode
                     }
                 },
-                Url = new Url 
+                url = new Url 
                 {
-                    Path = Path,
+                    path = Path,
                 },
-                UserAgent = new UserAgent
+                userAgent = new UserAgent
                 {
-                    Original = Original
+                    original = Original
                 },
-                Host = new Host
+                host = new Host
                 {
-                    Hostname = Hostname,
-                    Ip = Ip
+                    hostname = Hostname,
+                    ip = Ip
                 },
-                ResponseTime = ResponseTime
-            };
-        }
-        
-        private static IncomingRequestLog BuildIncomingRequestLog()
-        {
-            return new IncomingRequestLog
-            {
-                Host = new Host
-                {
-                    Hostname = Hostname,
-                    Ip = Ip
-                },
-                Http = new Http
-                {
-                    Request = new CpRequest
-                    {
-                        Method = HttpRequestMethod
-                    }
-                },
-                Url = new Url
-                {
-                    Path = Path
-                },
-                UserAgent = new UserAgent
-                {
-                    Original = Original
-                }
+                responseTime = ResponseTime
             };
         }
     }

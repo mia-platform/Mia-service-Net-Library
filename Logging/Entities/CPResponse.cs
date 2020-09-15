@@ -2,7 +2,7 @@
 {
     public class CpResponse
     {
-        public int StatusCode { get; set; }
-        public Body Body { get; set; }
+        public int statusCode { get; set; }
+        public Body body { get; set; }
     }
 }

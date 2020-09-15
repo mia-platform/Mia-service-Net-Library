@@ -2,7 +2,7 @@
 {
     public class Http
     {
-        public CpRequest Request { get; set; }
-        public CpResponse Response { get; set; }
+        public CpRequest request { get; set; }
+        public CpResponse response { get; set; }
     }
 }

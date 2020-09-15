@@ -2,6 +2,6 @@
 {
     public class UserAgent
     {
-        public string Original { get; set; }
+        public string original { get; set; }
     }
 }

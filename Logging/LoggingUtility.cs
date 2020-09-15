@@ -8,12 +8,7 @@ namespace Logging
     {
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         
-        public static void LogIncomingRequest(IncomingRequestLog requestLog)
-        {
-            var jsonString = JsonConvert.SerializeObject(requestLog, Formatting.None);
-            Logger.Info(jsonString);
-        }
-        public static void LogCompletedRequest(CompletedRequestLog requestLog)
+        public static void LogRequest(CompletedRequestLog requestLog)
         {
             var jsonString = JsonConvert.SerializeObject(requestLog, Formatting.None);
             Logger.Info(jsonString);
