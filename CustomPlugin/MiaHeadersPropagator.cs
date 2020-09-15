@@ -42,7 +42,7 @@ namespace CustomPlugin
             {
                 result = bool.Parse(Headers[_envConfig.BACKOFFICE_HEADER_KEY]);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 result = false;
             }
