@@ -59,14 +59,15 @@ namespace Logging
                     Request = cpRequest,
                     Response = cpResponse
                 },
-                Url = new Url() {
+                Url = new Url 
+                {
                     Path = request.GetDisplayUrl(),
                 },
                 UserAgent = new UserAgent
                 {
                     Original = request.Headers["User-Agent"].ToString()
                 },
-                Host = new Host()
+                Host = new Host
                 {
                     Hostname = request.Host.ToString(),
                     Ip = context.Connection.RemoteIpAddress.MapToIPv4().ToString()
@@ -95,7 +96,7 @@ namespace Logging
                 {
                     Original = request.Headers["User-Agent"].ToString()
                 },
-                Host = new Host()
+                Host = new Host
                 {
                     Hostname = request.Host.ToString(),
                     Ip = context.Connection.RemoteIpAddress.MapToIPv4().ToString()

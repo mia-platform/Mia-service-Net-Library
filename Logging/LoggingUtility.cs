@@ -10,12 +10,12 @@ namespace Logging
         
         public static void LogIncomingRequest(IncomingRequestLog requestLog)
         {
-            string jsonString = JsonConvert.SerializeObject(requestLog, Formatting.None);
+            var jsonString = JsonConvert.SerializeObject(requestLog, Formatting.None);
             Logger.Info(jsonString);
         }
         public static void LogCompletedRequest(CompletedRequestLog requestLog)
         {
-            string jsonString = JsonConvert.SerializeObject(requestLog, Formatting.None);
+            var jsonString = JsonConvert.SerializeObject(requestLog, Formatting.None);
             Logger.Info(jsonString);
         }
     }
