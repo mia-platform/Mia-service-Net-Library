@@ -13,7 +13,7 @@ namespace CustomPlugin
 {
     public class StartupUtils
     {
-        public static string DocsPath = "documentations";
+        public static readonly string DocsPath = "documentations";
         public static void ConfigureCpServices(IServiceCollection services, IConfiguration configuration)
         {
             var miaEnvConfiguration = new MiaEnvConfiguration();
