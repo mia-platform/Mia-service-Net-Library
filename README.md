@@ -145,7 +145,7 @@ To leave the original response unchanged, the `LeaveOriginalResponseUnmodified` 
 
 ##### Response
 Both the result of `ChangeOriginalResponse` building operation and the one of `LeaveOriginalResponseUnmodified` call can be passed to static method
- `DecoratorResponseFactory.makePostDecoratorResponse(PostDecoratorRequest postDecoratorRequest)`.
+ `DecoratorResponseFactory.MakePostDecoratorResponse(PostDecoratorRequest postDecoratorRequest)`.
 This method returns an instance of `DecoratorResponse`, which represents the response that should be returned.
 
 ##### Abort chain
