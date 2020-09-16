@@ -118,9 +118,9 @@ To abort the decorator chain, you can obtain the related `DecoratorResponse` ins
 
 #### POST decorators
 ##### Request
-The properties of the `PostDecoratorRequest` instance can be used to access the original request:
+An instance of class `PostDecoratorRequest` can be used as input to the decorator handler.
 
-The utility functions exposed by the `PostDecoratorRequest` instance can be used to access both the original request and the original response:
+The properties of the `PostDecoratorRequest` instance can be used to access both the original request and the original response:
 
 + `Request.Method` - returns the original request method
 + `Request.Path` - returns the path of the original request
