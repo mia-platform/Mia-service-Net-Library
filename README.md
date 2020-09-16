@@ -102,7 +102,7 @@ Moreover, the `PreDecoratorRequest` instance exposes an interface to modify the 
 + `Headers(IDictionary<string, string> headers)` - modify the headers of the original request
 + `Query (IDictionary<string, string> query)` - modify the querystring of the original request
 + `Body(ExpandoObject body)` - modify the body of the original request
-+ `Change()` - return the resulting `PredecoratorRequestInstance`
++ `Change()` - return the resulting `PreDecoratorRequest` instance.
 
 To leave the original request unchanged, you can instead use `LeaveOriginalRequestUnmodified` method.
 
@@ -139,6 +139,7 @@ Moreover, the `PostDecoratorRequest` instance exposes an interface to modify the
 + `Headers(IDictionary<string, string> headers)` - modify the headers of the original response
 + `Body(ExpandoObject body)` - change the body of the original response
 + `StatusCode(int statusCode)` - change the status code of the original response
++ `Change()` - return the resulting `PostDecoratorRequest` instance.
 
 To leave the original response unchanged, the `LeaveOriginalResponseUnmodified` function can be used instead.
 
