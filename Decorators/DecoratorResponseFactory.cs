@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Runtime.InteropServices;
 using Decorators.PostDecorators;
 using Decorators.PreDecorators;
 
@@ -28,10 +29,10 @@ namespace Decorators
             return new ChangeOriginalResponse(postDecoratorRequest.Response);
         }
 
-        public DecoratorResponse AbortChain(int finalStatusCode, IDictionary<string, string> finalHeaders = null,
-            ExpandoObject finalBody = null)
+        public DecoratorResponse AbortChain(int finalStatusCode, [Optional]IDictionary<string, string> finalHeaders,
+            [Optional]ExpandoObject finalBody)
         {
-            return new AbortChainResponse(finalStatusCode, finalHeaders, finalBody);
+            return new AbortChainResponse(finalStatusCode, finalHeaders ?? new Dictionary<string, string>(), finalBody ?? new ExpandoObject());
         }
     }
 }
