@@ -1,6 +1,6 @@
-### CRUD client
+## CRUD client
 
-#### Getting a CRUD client
+### Getting a CRUD client
 To get a CRUD client, you can use the following methods from class `ServiceClientFactory`:
 You have to specify:
 + the API endpoint
@@ -11,7 +11,7 @@ You have to specify:
 var crudClient = ServiceClientFactory.GetCrudServiceClient("http://localhost:300O", "my-secret", 2);
  ```
 
- #### Collection mapping
+ ### Collection mapping
  Some CRUD methods require you to map your class to a collection. To do this, you have to specify the collection name within the `Attribute` ``[CollectionName]``.   
 
 ```csharp
@@ -33,7 +33,7 @@ public class User
 }
 ``` 
 
- #### Building a query
+ ### Building a query
  You can use class `CrudQueryBuilder` to build your HTTP query.
  It provides specific methods to set the standard Mia CRUD query parameters and the method `Param` to set custom query parameters.
  To set the value of the Mongo query parameter, you can also use a specific class (`MongoQueryBuilder`).

@@ -1,12 +1,12 @@
-### Service proxy
-#### Service options
+## Service proxy
+### Service options
 Before getting your service proxy, you need to inject the appropriate `InitServiceOptions` instance:
 
 ```csharp
 var initOptions = new InitServiceOptions(8080, Protocol.Http);
  ```
 
-#### Getting a proxy
+### Getting a proxy
 To get a service proxy, you can use the following methods from class `ServiceClientFactory`:
 
 + `GetDirectServiceProxy`, to directly communicate with a specific microservice
@@ -19,7 +19,7 @@ var proxy = ServiceClientFactory.GetDirectServiceProxy("my-microservice", initOp
 var proxy = ServiceClientFactory.GetServiceProxy(initOptions);
 ``` 
 
-#### Proxy methods
+### Proxy methods
 The proxy provides the following methods to make HTTP requests:
 
 
