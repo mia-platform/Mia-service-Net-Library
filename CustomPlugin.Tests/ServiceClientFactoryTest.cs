@@ -1,8 +1,6 @@
-using System.Collections.Generic;
 using Crud;
 using Environment;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Primitives;
 using NFluent;
 using NUnit.Framework;
 using Service;
