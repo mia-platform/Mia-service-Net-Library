@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Environment;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Primitives;
 
 namespace CustomPlugin
 {
@@ -11,7 +12,7 @@ namespace CustomPlugin
         internal Dictionary<string, string> Headers => _headers;
         private MiaEnvConfiguration _envConfig;
 
-        public MiaHeadersPropagator(IHeaderDictionary headers, MiaEnvConfiguration envConfig)
+        public MiaHeadersPropagator(IDictionary<string, StringValues> headers, MiaEnvConfiguration envConfig)
         {
             _envConfig = envConfig;
             Headers[_envConfig.USERID_HEADER_KEY] = headers[_envConfig.USERID_HEADER_KEY];

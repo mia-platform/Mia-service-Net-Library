@@ -27,14 +27,15 @@ namespace CustomPlugin
 
         public IServiceProxy GetServiceProxy(InitServiceOptions options)
         {
-            var microserviceNameKey = _miaEnvConfiguration.MICROSERVICE_GATEWAY_SERVICE_NAME;
-            return string.IsNullOrEmpty(microserviceNameKey)
+            var microserviceName = _miaEnvConfiguration.MICROSERVICE_GATEWAY_SERVICE_NAME;
+            
+            return string.IsNullOrEmpty(microserviceName)
                 ? null
-                : new ServiceProxy(_miaHeaders, microserviceNameKey, options);
+                : new ServiceProxy(_miaHeaders, microserviceName, options);
         }
 
         public ICrudServiceClient GetCrudServiceClient(
-            string apiPath = default(string),
+            string apiPath,
             string apiSecret = default(string), int crudVersion = default(int))
         {
             return new CrudServiceClient(_miaHeaders, apiPath, apiSecret, crudVersion); 
