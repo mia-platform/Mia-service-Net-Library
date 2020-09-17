@@ -1,17 +1,63 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Diagnostics;
+using System.Reflection;
 using log4net;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
 namespace Logging
 {
-    public static class LoggingUtility
+    public class LoggingUtility
     {
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        
-        public static void LogRequest(CompletedRequestLog requestLog)
+
+        private static void LogWithLevel(LogLevels level, string message)
+        {
+            switch (level)
+            {
+                case LogLevels.Trace:
+                    Logger.Trace(message);
+                    break;
+                case LogLevels.Debug:
+                    Logger.Debug(message);
+                    break;
+                case LogLevels.Info:
+                    Logger.Info(message);
+                    break;
+                case LogLevels.Warn:
+                    Logger.Warn(message);
+                    break;
+                case LogLevels.Error:
+                    Logger.Error(message);
+                    break;
+                case LogLevels.Fatal:
+                    Logger.Fatal(message);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(level), level, null);
+            }
+        }
+        public static void LogRequest(RequestLog requestLog)
         {
             var jsonString = JsonConvert.SerializeObject(requestLog, Formatting.None);
-            Logger.Info(jsonString);
+            LogWithLevel(LogLevels.Info, jsonString);
         }
+
+        public static void LogMessage(HttpRequest req, LogLevels logLevel, object logProperties, string message)
+        {
+            var headerId = req.Headers["x-request-id"];
+            var reqId = string.IsNullOrEmpty(headerId) ? 0 : int.Parse(headerId);
+            var requestLog = new MessageLog
+                {
+                    level = (int) logLevel,
+                    time = DateTimeOffset.Now.ToUnixTimeMilliseconds(),
+                    reqId = reqId,
+                    msg = message,
+                    LogProperties = logProperties
+                };
+            var jsonString = JsonConvert.SerializeObject(requestLog, Formatting.None);
+            LogWithLevel(logLevel, jsonString);
+        }
+        
     }
 }

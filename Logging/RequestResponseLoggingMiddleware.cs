@@ -66,12 +66,12 @@ namespace Logging
             return reqId;
         }
 
-        private static CompletedRequestLog BuildCompletedRequestLog(HttpContext context, CpRequest cpRequest, 
+        private static RequestLog BuildCompletedRequestLog(HttpContext context, CpRequest cpRequest, 
             CpResponse cpResponse, HttpRequest request, decimal responseTime, long reqId)
         {
-            return new CompletedRequestLog
+            return new RequestLog
             {
-                level = LogLevels.Info,
+                level = (int) LogLevels.Info,
                 time = DateTimeOffset.Now.ToUnixTimeMilliseconds(),
                 reqId = reqId,
                 http = new Http
