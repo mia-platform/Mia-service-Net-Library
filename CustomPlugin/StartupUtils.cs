@@ -23,16 +23,21 @@ namespace CustomPlugin
             var serviceClientFactory = new ServiceClientFactory(miaEnvConfiguration);
             var decoratorResponseFactory = new DecoratorResponseFactory();
 
-            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
-            {
-                ContractResolver = new CamelCasePropertyNamesContractResolver()
-            };
+            SetupJsonSerializer();
 
             services.AddSingleton(miaEnvConfiguration);
             services.AddSingleton(serviceClientFactory);
             services.AddSingleton(decoratorResponseFactory);
         }
-        
+
+        private static void SetupJsonSerializer()
+        {
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
+        }
+
         public static Func<HttpContext, Func<Task>, Task> RouteInjections(IApplicationBuilder app)
         {
             return async (context, next) =>
