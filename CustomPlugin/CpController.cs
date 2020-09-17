@@ -1,4 +1,3 @@
-using System;
 using Decorators;
 using Environment;
 using Microsoft.AspNetCore.Mvc;
@@ -20,8 +19,7 @@ namespace CustomPlugin
             ServiceClientFactory = serviceClientFactory;
             DecoratorResponseFactory = decoratorResponseFactory;
         }
-
-
+        
         [HttpGet]
         [Route("/-/healthz")]
         public virtual CpStatusBody Healthz()
