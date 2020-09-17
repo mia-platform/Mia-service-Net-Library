@@ -24,21 +24,21 @@ namespace CustomPlugin
 
         [HttpGet]
         [Route("/-/healthz")]
-        public CpStatusBody Healthz()
+        public virtual CpStatusBody Healthz()
         {
             return CpStatus.Ok();
         }
-        
+
         [HttpGet]
         [Route("/-/ready")]
-        public CpStatusBody Ready()
+        public virtual CpStatusBody Ready()
         {
             return CpStatus.Ok();
         }
-        
+
         [HttpGet]
         [Route("/-/check-up")]
-        public CpStatusBody CheckUp()
+        public virtual CpStatusBody CheckUp()
         {
             return CpStatus.Ok();
         }
