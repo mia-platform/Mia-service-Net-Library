@@ -12,7 +12,7 @@ var crudClient = ServiceClientFactory.GetCrudServiceClient("http://localhost:300
  ```
 
  ### Collection mapping
- Some CRUD methods require you to map your class to a collection. To do this, you have to specify the collection name within the `Attribute` ``[CollectionName]``.   
+CRUD methods require you to map your class to a collection. To do this, you have to specify the collection name within the `Attribute` ``[CollectionName]``.   
 
 ```csharp
 [CollectionName("users")]
