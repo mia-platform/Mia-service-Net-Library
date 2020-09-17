@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Crud;
 using Environment;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using NFluent;
 using NUnit.Framework;
@@ -25,7 +26,7 @@ namespace CustomPlugin.Tests
                 MICROSERVICE_GATEWAY_SERVICE_NAME = "gateway-name"
             };
             _serviceClientFactory = new ServiceClientFactory(_miaEnvConfiguration);
-            var miaHeaders = new Dictionary<string, StringValues>
+            var miaHeaders = new HeaderDictionary
             {
                 {"1", "_"},
                 {"2", "_"},
