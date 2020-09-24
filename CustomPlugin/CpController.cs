@@ -19,26 +19,5 @@ namespace CustomPlugin
             ServiceClientFactory = serviceClientFactory;
             DecoratorResponseFactory = decoratorResponseFactory;
         }
-        
-        [HttpGet]
-        [Route("/-/healthz")]
-        public virtual CpStatusBody Healthz()
-        {
-            return CpStatus.Ok();
-        }
-
-        [HttpGet]
-        [Route("/-/ready")]
-        public virtual CpStatusBody Ready()
-        {
-            return CpStatus.Ok();
-        }
-
-        [HttpGet]
-        [Route("/-/check-up")]
-        public virtual CpStatusBody CheckUp()
-        {
-            return CpStatus.Ok();
-        }
     }
 }
