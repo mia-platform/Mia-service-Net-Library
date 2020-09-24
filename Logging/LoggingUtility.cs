@@ -7,10 +7,9 @@ using Newtonsoft.Json;
 
 namespace Logging
 {
-    public static class LoggingUtility
+    public class LoggingUtility
     {
-        private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-        
+        private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private static void LogWithLevel(LogLevels level, string message)
         {
