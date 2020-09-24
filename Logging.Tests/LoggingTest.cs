@@ -48,38 +48,38 @@ namespace Logging.Tests
         {
             return new RequestLog
             {
-                level = Level,
-                time = Time,
-                reqId = ReqId,
-                http = new Http
+                Level = Level,
+                Time = Time,
+                ReqId = ReqId,
+                Http = new Http
                 {
-                    request = new CpRequest
+                    Request = new CpRequest
                     {
-                        method = HttpRequestMethod
+                        Method = HttpRequestMethod
                     },
-                    response = new CpResponse
+                    Response = new CpResponse
                     {
-                        body = new Body
+                        Body = new Body
                         {
-                            bytes = Bytes
+                            Bytes = Bytes
                         },
-                        statusCode = StatusCode
+                        StatusCode = StatusCode
                     }
                 },
-                url = new Url 
+                Url = new Url 
                 {
-                    path = Path,
+                    Path = Path,
                 },
-                userAgent = new UserAgent
+                UserAgent = new UserAgent
                 {
-                    original = Original
+                    Original = Original
                 },
-                host = new Host
+                Host = new Host
                 {
-                    hostname = Hostname,
-                    ip = Ip
+                    Hostname = Hostname,
+                    Ip = Ip
                 },
-                responseTime = ResponseTime
+                ResponseTime = ResponseTime
             };
         }
     }

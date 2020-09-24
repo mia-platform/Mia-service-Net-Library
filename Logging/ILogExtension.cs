@@ -3,7 +3,7 @@ using log4net;
 
 namespace Logging
 {
-    public static class ILogExtension
+    public static class LogExtension
     {
         public static void Trace(this ILog log, string message, Exception exception)
         {

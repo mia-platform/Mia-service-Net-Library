@@ -2,6 +2,6 @@
 {
     public class Body
     {
-        public long bytes { get; set; }
+        public long Bytes { get; set; }
     }
 }

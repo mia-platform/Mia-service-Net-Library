@@ -49,10 +49,10 @@ namespace Logging
             var reqId = string.IsNullOrEmpty(headerId) ? 0 : int.Parse(headerId);
             var requestLog = new MessageLog
                 {
-                    level = (int) logLevel,
-                    time = DateTimeOffset.Now.ToUnixTimeMilliseconds(),
-                    reqId = reqId,
-                    msg = message,
+                    Level = (int) logLevel,
+                    Time = DateTimeOffset.Now.ToUnixTimeMilliseconds(),
+                    ReqId = reqId,
+                    Msg = message,
                     LogProperties = logProperties
                 };
             var jsonString = JsonConvert.SerializeObject(requestLog, Formatting.None);

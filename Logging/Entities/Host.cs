@@ -2,7 +2,7 @@
 {
     public class Host
     {
-        public string hostname  { get; set; }
-        public string ip  { get; set; }
+        public string Hostname  { get; set; }
+        public string Ip  { get; set; }
     }
 }

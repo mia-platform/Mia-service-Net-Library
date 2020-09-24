@@ -4,13 +4,13 @@
 {
     public class RequestLog
     {
-        public int level { get; set; }
-        public long time { get; set; }
-        public long reqId { get; set; }
-        public Http http { get; set; }
-        public Url url { get; set; }
-        public UserAgent userAgent { get; set; }
-        public Host host { get; set; }
-        public decimal responseTime { get; set; }
+        public int Level { get; set; }
+        public long Time { get; set; }
+        public long ReqId { get; set; }
+        public Http Http { get; set; }
+        public Url Url { get; set; }
+        public UserAgent UserAgent { get; set; }
+        public Host Host { get; set; }
+        public decimal ResponseTime { get; set; }
     }
 }

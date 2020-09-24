@@ -32,14 +32,14 @@ namespace Logging
                 var passedMicroSeconds = responseStopwatch.ElapsedMilliseconds / 1000m;
                 var cpRequest = new CpRequest
                 {
-                    method = request.Method
+                    Method = request.Method
                 };
                 var cpResponse = new CpResponse
                 {
-                    statusCode = response.StatusCode,
-                    body = new Body
+                    StatusCode = response.StatusCode,
+                    Body = new Body
                     {
-                        bytes = response.ContentLength ?? buffer.Length
+                        Bytes = response.ContentLength ?? buffer.Length
                     }
                 };
                 var reqId = GetReqId(request);
@@ -71,28 +71,28 @@ namespace Logging
         {
             return new RequestLog
             {
-                level = (int) LogLevels.Info,
-                time = DateTimeOffset.Now.ToUnixTimeMilliseconds(),
-                reqId = reqId,
-                http = new Http
+                Level = (int) LogLevels.Info,
+                Time = DateTimeOffset.Now.ToUnixTimeMilliseconds(),
+                ReqId = reqId,
+                Http = new Http
                 {
-                    request = cpRequest,
-                    response = cpResponse
+                    Request = cpRequest,
+                    Response = cpResponse
                 },
-                url = new Url 
+                Url = new Url 
                 {
-                    path = request.GetDisplayUrl(),
+                    Path = request.GetDisplayUrl(),
                 },
-                userAgent = new UserAgent
+                UserAgent = new UserAgent
                 {
-                    original = request.Headers["User-Agent"].ToString()
+                    Original = request.Headers["User-Agent"].ToString()
                 },
-                host = new Host
+                Host = new Host
                 {
-                    hostname = request.Host.ToString(),
-                    ip = context.Connection.RemoteIpAddress.MapToIPv4().ToString()
+                    Hostname = request.Host.ToString(),
+                    Ip = context.Connection.RemoteIpAddress.MapToIPv4().ToString()
                 },
-                responseTime = responseTime
+                ResponseTime = responseTime
             };
         }
     }
