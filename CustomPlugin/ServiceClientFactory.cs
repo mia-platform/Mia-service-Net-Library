@@ -27,7 +27,7 @@ namespace CustomPlugin
 
         public IServiceProxy GetServiceProxy(InitServiceOptions options)
         {
-            var microserviceName = _miaEnvConfiguration.MICROSERVICE_GATEWAY_SERVICE_NAME;
+            var microserviceGatewayName = _miaEnvConfiguration.MICROSERVICE_GATEWAY_SERVICE_NAME;
             
             return string.IsNullOrEmpty(microserviceName)
                 ? null
