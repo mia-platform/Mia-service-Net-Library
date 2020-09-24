@@ -8,7 +8,6 @@ using Newtonsoft.Json;
 namespace Decorators
 {
     public class AbortChainResponse : DecoratorResponse
-
     {
         public AbortChainResponse(int finalStatusCode, IDictionary<string, string> finalHeaders, ExpandoObject finalBody) : base(
             finalStatusCode, finalHeaders, finalBody)
