@@ -17,19 +17,19 @@ namespace CustomPlugin.Tests
         {
             _miaEnvConfiguration = new MiaEnvConfiguration
             {
-                USERID_HEADER_KEY = "1",
-                GROUPS_HEADER_KEY = "2",
-                CLIENTTYPE_HEADER_KEY = "3",
-                BACKOFFICE_HEADER_KEY = "4",
+                USERID_HEADER_KEY = "useridkey",
+                GROUPS_HEADER_KEY = "groupskey",
+                CLIENTTYPE_HEADER_KEY = "clienttypekey",
+                BACKOFFICE_HEADER_KEY = "backofficekey",
                 MICROSERVICE_GATEWAY_SERVICE_NAME = "gateway-name"
             };
             _serviceClientFactory = new ServiceClientFactory(_miaEnvConfiguration);
             var miaHeaders = new HeaderDictionary
             {
-                {"1", "_"},
-                {"2", "_"},
-                {"3", "_"},
-                {"4", "_"},
+                {"useridkey", "_"},
+                {"groupskey", "_"},
+                {"clienttypekey", "_"},
+                {"backofficekey", "_"},
                 {"gateway-name", "bar"},
             };
             var miaHeadersPropagator = new MiaHeadersPropagator(miaHeaders, _miaEnvConfiguration);
@@ -55,10 +55,10 @@ namespace CustomPlugin.Tests
         {
             var configWithoutMsGatewayName = new MiaEnvConfiguration
             {
-                USERID_HEADER_KEY = "1",
-                GROUPS_HEADER_KEY = "2",
-                CLIENTTYPE_HEADER_KEY = "3",
-                BACKOFFICE_HEADER_KEY = "4",
+                USERID_HEADER_KEY = "useridkey",
+                GROUPS_HEADER_KEY = "groupskey",
+                CLIENTTYPE_HEADER_KEY = "clienttypekey",
+                BACKOFFICE_HEADER_KEY = "backofficekey",
                 MICROSERVICE_GATEWAY_SERVICE_NAME = ""
             };
             
