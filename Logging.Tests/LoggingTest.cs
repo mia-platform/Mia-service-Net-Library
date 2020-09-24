@@ -44,9 +44,8 @@ namespace Logging.Tests
             Assert.IsTrue(result[0].MessageObject.Equals(expectedLog));
         }
 
-        private static RequestLog BuildCompletedRequestLog()
-        {
-            return new RequestLog
+        private static RequestLog BuildCompletedRequestLog() =>
+            new RequestLog
             {
                 level = Level,
                 time = Time,
@@ -81,6 +80,5 @@ namespace Logging.Tests
                 },
                 responseTime = ResponseTime
             };
-        }
     }
 }
