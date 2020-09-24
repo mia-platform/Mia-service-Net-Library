@@ -19,26 +19,18 @@ namespace Logging.Tests
         private const int ReqId = 1;
         private const int Level = 30;
         private static readonly long Time = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-        
+
         [Test]
         public void TestRequestLog()
         {
             var expectedLog =
-                "{\"level\":" + Level + ",\"time\":" + Time + ",\"reqId\":"+ ReqId +",\"http\":{\"request\":{\"method\":\"" + HttpRequestMethod + "\"}," +
-                "\"response\":{\"statusCode\":" + StatusCode + ",\"body\":{\"bytes\":"+ Bytes + "}}}," +
-                "\"url\":" +
-                    "{\"path\":\"" + Path + "\"}," +
-                    "\"userAgent\":" +
-                        "{\"original\":\"" + Original + "\"}," +
-                    "\"host\":" +
-                        "{\"hostname\":\"" + Hostname + "\",\"ip\":\"" + Ip + "\"}," +
-                "\"responseTime\":" + ResponseTime + ".0}";
+                $@"{{""level"":{Level},""time"":{Time},""reqId"":{ReqId},""http"":{{""request"":{{""method"":""{HttpRequestMethod}"",""userAgent"":{{""original"":""{Original}""}}}},""response"":{{""statusCode"":{StatusCode},""body"":{{""bytes"":{Bytes}}}}}}},""url"":{{""path"":""{Path}""}},""host"":{{""hostname"":""{Hostname}"",""ip"":""{Ip}""}},""responseTime"":{ResponseTime}.0}}";
             var mockRequest = BuildCompletedRequestLog();
-            
+
             var appender = new log4net.Appender.MemoryAppender();
             BasicConfigurator.Configure(appender);
             LoggingUtility.LogRequest(mockRequest);
-            
+
             var result = appender.GetEvents();
             Assert.IsTrue(result.Any());
             Assert.IsTrue(result[0].MessageObject.Equals(expectedLog));
@@ -55,7 +47,11 @@ namespace Logging.Tests
                 {
                     Request = new CpRequest
                     {
-                        Method = HttpRequestMethod
+                        Method = HttpRequestMethod,
+                        UserAgent = new UserAgent
+                        {
+                            Original = Original
+                        },
                     },
                     Response = new CpResponse
                     {
@@ -66,13 +62,9 @@ namespace Logging.Tests
                         StatusCode = StatusCode
                     }
                 },
-                Url = new Url 
+                Url = new Url
                 {
                     Path = Path,
-                },
-                UserAgent = new UserAgent
-                {
-                    Original = Original
                 },
                 Host = new Host
                 {
