@@ -29,9 +29,9 @@ namespace CustomPlugin
         {
             var microserviceGatewayName = _miaEnvConfiguration.MICROSERVICE_GATEWAY_SERVICE_NAME;
             
-            return string.IsNullOrEmpty(microserviceName)
+            return string.IsNullOrEmpty(microserviceGatewayName)
                 ? null
-                : new ServiceProxy(_miaHeaders, microserviceName, options);
+                : new ServiceProxy(_miaHeaders, microserviceGatewayName, options);
         }
 
         public ICrudServiceClient GetCrudServiceClient(
