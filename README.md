@@ -10,3 +10,4 @@ You can use it is to integrate with your defined CRUD and other custom services 
 * <a href="./docs/CRUDClient.md"><b>CRUD client</b></a>
 * <a href="./docs/Decorators.md"><b>Decorators</b></a>
 * <a href="./docs/MIAHeaders.md"><b>Access platform headers</b></a>
+* <a href="./docs/Logging.md"><b>Logging</b></a>
