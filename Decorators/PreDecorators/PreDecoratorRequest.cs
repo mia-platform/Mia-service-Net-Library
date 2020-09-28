@@ -36,6 +36,11 @@ namespace Decorators.PreDecorators
         {
             return Headers[config.USERID_HEADER_KEY];
         }
+        
+        public string GetUserProperties(MiaEnvConfiguration config)
+        {
+            return Headers[config.USER_PROPERTIES_HEADER_KEY];
+        }
 
         public string GetGroups(MiaEnvConfiguration config)
         {

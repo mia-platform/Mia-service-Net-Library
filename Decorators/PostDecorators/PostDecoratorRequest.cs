@@ -43,6 +43,11 @@ namespace Decorators.PostDecorators
             return Request.Headers[config.USERID_HEADER_KEY];
         }
 
+        public string GetUserProperties(MiaEnvConfiguration config)
+        {
+            return Request.Headers[config.USER_PROPERTIES_HEADER_KEY];
+        }
+
         public string GetGroups(MiaEnvConfiguration config)
         {
             return Request.Headers[config.GROUPS_HEADER_KEY];

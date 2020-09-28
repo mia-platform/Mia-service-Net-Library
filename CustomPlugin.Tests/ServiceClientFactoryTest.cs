@@ -18,6 +18,7 @@ namespace CustomPlugin.Tests
             _miaEnvConfiguration = new MiaEnvConfiguration
             {
                 USERID_HEADER_KEY = "useridkey",
+                USER_PROPERTIES_HEADER_KEY = "userpropskey",
                 GROUPS_HEADER_KEY = "groupskey",
                 CLIENTTYPE_HEADER_KEY = "clienttypekey",
                 BACKOFFICE_HEADER_KEY = "backofficekey",
@@ -27,6 +28,7 @@ namespace CustomPlugin.Tests
             var miaHeaders = new HeaderDictionary
             {
                 {"useridkey", "_"},
+                {"userpropskey", "_"},
                 {"groupskey", "_"},
                 {"clienttypekey", "_"},
                 {"backofficekey", "_"},
@@ -56,6 +58,7 @@ namespace CustomPlugin.Tests
             var configWithoutMsGatewayName = new MiaEnvConfiguration
             {
                 USERID_HEADER_KEY = "useridkey",
+                USER_PROPERTIES_HEADER_KEY = "userpropskey",
                 GROUPS_HEADER_KEY = "groupskey",
                 CLIENTTYPE_HEADER_KEY = "clienttypekey",
                 BACKOFFICE_HEADER_KEY = "backofficekey",

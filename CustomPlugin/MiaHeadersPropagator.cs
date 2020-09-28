@@ -16,6 +16,7 @@ namespace CustomPlugin
         {
             _envConfig = envConfig;
             Headers[_envConfig.USERID_HEADER_KEY] = headers[_envConfig.USERID_HEADER_KEY];
+            Headers[_envConfig.USER_PROPERTIES_HEADER_KEY] = headers[_envConfig.USER_PROPERTIES_HEADER_KEY];
             Headers[_envConfig.GROUPS_HEADER_KEY] = headers[_envConfig.GROUPS_HEADER_KEY];
             Headers[_envConfig.CLIENTTYPE_HEADER_KEY] = headers[_envConfig.CLIENTTYPE_HEADER_KEY];
             Headers[_envConfig.BACKOFFICE_HEADER_KEY] = headers[_envConfig.BACKOFFICE_HEADER_KEY];
@@ -24,6 +25,11 @@ namespace CustomPlugin
         public string GetUserId()
         {
             return Headers[_envConfig.USERID_HEADER_KEY];
+        }
+
+        public string GetUserProperties()
+        {
+            return Headers[_envConfig.USER_PROPERTIES_HEADER_KEY];
         }
 
         public string GetGroups()

@@ -11,6 +11,7 @@ namespace Environment.Tests
             var config = new MiaEnvConfiguration
             {
                 USERID_HEADER_KEY = "userid",
+                USER_PROPERTIES_HEADER_KEY = "userproperties",
                 GROUPS_HEADER_KEY = "usergroups",
                 CLIENTTYPE_HEADER_KEY = "clienttype",
                 BACKOFFICE_HEADER_KEY = "isbackoffice",
@@ -35,6 +36,7 @@ namespace Environment.Tests
             var config = new MiaEnvConfiguration
             {
                 USERID_HEADER_KEY = "userid",
+                USER_PROPERTIES_HEADER_KEY = "userproperties",
                 GROUPS_HEADER_KEY = "usergroups",
                 CLIENTTYPE_HEADER_KEY = "clienttype",
                 BACKOFFICE_HEADER_KEY = "isbackoffice",

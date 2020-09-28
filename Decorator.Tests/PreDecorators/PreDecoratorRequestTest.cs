@@ -14,6 +14,7 @@ namespace Decorator.Tests.PreDecorators
         private const string BackOfficeHeaderKey = "backoffice";
         private const string ClientTypeHeaderKey = "client-type";
         private const string UserIdHeaderKey = "user-id";
+        private const string UserPropertiesHeaderKey = "user-properties";
         private const string GroupsHeaderKey = "groups";
 
         [SetUp]
@@ -37,6 +38,7 @@ namespace Decorator.Tests.PreDecorators
                 BACKOFFICE_HEADER_KEY = BackOfficeHeaderKey,
                 CLIENTTYPE_HEADER_KEY = ClientTypeHeaderKey,
                 USERID_HEADER_KEY = UserIdHeaderKey,
+                USER_PROPERTIES_HEADER_KEY = UserPropertiesHeaderKey,
                 GROUPS_HEADER_KEY = GroupsHeaderKey,
             };
 
@@ -48,6 +50,7 @@ namespace Decorator.Tests.PreDecorators
             _preDecoratorRequest.Headers[BackOfficeHeaderKey] = "true";
             _preDecoratorRequest.Headers[ClientTypeHeaderKey] = "foo";
             _preDecoratorRequest.Headers[UserIdHeaderKey] = "42";
+            _preDecoratorRequest.Headers[UserPropertiesHeaderKey] = "bar";
             _preDecoratorRequest.Headers[GroupsHeaderKey] = "100";
         }
 
@@ -104,6 +107,14 @@ namespace Decorator.Tests.PreDecorators
             var userId = _preDecoratorRequest.GetUserId(_miaEnvConfiguration);
 
             Check.That(userId).IsEqualTo("42");
+        }
+        
+        [Test]
+        public void TestGetUserProperties()
+        {
+            var userId = _preDecoratorRequest.GetUserProperties(_miaEnvConfiguration);
+
+            Check.That(userId).IsEqualTo("bar");
         }
         
         [Test]

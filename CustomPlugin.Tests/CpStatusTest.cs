@@ -11,7 +11,7 @@ namespace CustomPlugin.Tests
         {
             var result = CpStatus.Ok();
             Check.That(result.Name).Equals(Assembly.GetEntryAssembly()?.GetName().Name);
-            Check.That(result.Version).Equals(Assembly.GetEntryAssembly()?.GetName().Version);
+            Check.That(result.Version).Equals(Assembly.GetEntryAssembly()?.GetName().Version?.ToString();
             Check.That(result.Status).Equals("OK");
         }
         
@@ -20,7 +20,7 @@ namespace CustomPlugin.Tests
         {
             var result = CpStatus.Ko();
             Check.That(result.Name).Equals(Assembly.GetEntryAssembly()?.GetName().Name);
-            Check.That(result.Version).Equals(Assembly.GetEntryAssembly()?.GetName().Version);
+            Check.That(result.Version).Equals(Assembly.GetEntryAssembly()?.GetName().Version?.ToString();
             Check.That(result.Status).Equals("KO");
         }
     }
