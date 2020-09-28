@@ -91,14 +91,10 @@ Class `PatchCodingKey` contains static methods to get patch keys. For example, `
 
 Class `PatchItemSection` has two `Dictionary` props: `PatchFilterSection` and `PatchUpdateSection`. When serialized,
  it produces a JSON object that looks like this:
-```json
+```
 {
-    "filter": { 
-      // ...
-    },
-    "update": { 
-      // ...
-    }
+    "filter": {...},
+    "update": {...}
 }
 ```
 
