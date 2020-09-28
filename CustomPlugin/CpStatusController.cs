@@ -35,17 +35,17 @@ namespace CustomPlugin.obj
             return CheckUpHandler();
         }
 
-        public virtual CpStatusBody HealthinessHandler()
+        protected virtual CpStatusBody HealthinessHandler()
         {
             return CpStatus.Ok();
         }
 
-        public virtual CpStatusBody ReadinessHandler()
+        protected virtual CpStatusBody ReadinessHandler()
         {
             return CpStatus.Ok();
         }
         
-        public virtual CpStatusBody CheckUpHandler()
+        protected virtual CpStatusBody CheckUpHandler()
         {
             return CpStatus.Ok();
         }
