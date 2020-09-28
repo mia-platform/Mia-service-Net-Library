@@ -93,8 +93,12 @@ Class `PatchItemSection` has two `Dictionary` props: `PatchFilterSection` and `P
  it produces a JSON object that looks like this:
 ```json
 {
-    "filter": {...},
-    "update": {...}
+    "filter": { 
+      // ...
+    },
+    "update": { 
+      // ...
+    }
 }
 ```
 
@@ -167,7 +171,7 @@ Resulting query:
 
 Once you have set your query operations, call the `Dictionary<string, object> Build()` method to get the resulting query.
 
-Here are some examples:
+Here's an example:
 ```csharp
 var notInQuery = new MongoQueryBuilder().NotIn("name", new List<string> {"foo", "bar", "baz"});
 var comparisonQuery = new MongoQueryBuilder().Greater("id", 42);
