@@ -237,7 +237,7 @@ namespace Crud
             return response.Content;
         }
 
-        public async Task<HttpContent> PatchBulk<T>(PatchBulkBody patchBody,
+        public async Task<HttpContent> PatchBulk<T>(IList<PatchItemSection> patchBody,
             Dictionary<string, string> query = null)
         {
             var path = $"{BuildPath(GetCollectionName<T>())}/{BulkLiteral}";

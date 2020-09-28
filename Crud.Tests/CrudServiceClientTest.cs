@@ -301,7 +301,7 @@ namespace Crud.Tests
                 PatchUpdateSection = new PatchUpdateSection {[PatchCodingKey.Set] = new Dictionary<string, object> {{"foo", "bar"}}}
             };
             
-            var requestBody = new PatchBulkBody {patchItem1, patchItem2};
+            var requestBody = new List<PatchItemSection> {patchItem1, patchItem2};
 
             const string successResponseBody =
                 @"{""result"":""ok""}";
