@@ -28,7 +28,7 @@ Moreover, the `PreDecoratorRequest` instance exposes an interface to modify the 
 To leave the original request unchanged, you can instead use `LeaveOriginalRequestUnmodified` method.
 
 #### Response
-Both the result of `ChangeOriginalRequest` building operation and the one of `LaveOriginalRequestUnmodified` call can be passed to static method
+Both the result of `ChangeOriginalRequest` building operation and the one of `LeaveOriginalRequestUnmodified` call can be passed to static method
  `DecoratorResponseFactory.MakePreDecoratorResponse(PreDecoratorRequest preDecoratorRequest)`.
 This method returns an instance of `DecoratorResponse`, which represents the response that should be returned.
 

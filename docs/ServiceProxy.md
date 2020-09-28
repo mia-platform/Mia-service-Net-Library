@@ -1,9 +1,14 @@
 ## Service proxy
 ### Service options
 Before getting your service proxy, you need to inject the appropriate `InitServiceOptions` instance:
+You have to specify:
++ the service port
++ the service protocol (Either `Protocol.Http` or `Protocol.Https`)
++ (optional) default proxy headers 
++ (optional) default path prefix
 
 ```csharp
-var initOptions = new InitServiceOptions(8080, Protocol.Http);
+var initOptions = new InitServiceOptions(8080, Protocol.Http, new Dictionary<string, string> {{"foo", "bar"}}, "prefix");
  ```
 
 ### Getting a proxy
