@@ -9,6 +9,7 @@ var miaHeadersPropagator = (MiaHeadersPropagator) HttpContext.Items["MiaHeadersP
 `MiaHeadersPropagator` instance exposes the following methods:
 ```csharp
 string GetUserId();
+string GetUserProperties();
 string GetGroups();
 string GetClientType();
 bool IsFromBackOffice();
