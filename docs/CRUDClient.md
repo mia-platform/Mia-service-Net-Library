@@ -25,7 +25,7 @@ public class User
     
     public User() {}
     
-    public User(int id, string firstname, string lastname, string status)
+    public User(int id, string firstname, string lastname)
     {
         Id = id;
         Firstname = firstname;
