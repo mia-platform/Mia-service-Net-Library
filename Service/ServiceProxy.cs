@@ -47,12 +47,14 @@ namespace Service
             }
         }
 
-        private Uri BuildUrl(string path, string queryString, InitServiceOptions options)
+        private Uri BuildUrl(string path, string queryString, ServiceOptions options)
         {
+            var prefixedPath = string.IsNullOrEmpty(options?.Prefix) ? path : $"{options.Prefix}/{path}";
+            
             var uriBuilder = new UriBuilder
             {
                 Host = ServiceName,
-                Path = path,
+                Path = string.IsNullOrEmpty(InitOptions.Prefix) ? prefixedPath : $"{InitOptions.Prefix}/{prefixedPath}",
                 Port = options?.Port ?? InitOptions.Port,
                 Scheme = (options?.Protocol ?? InitOptions.Protocol).ToString(),
                 Query = queryString,
