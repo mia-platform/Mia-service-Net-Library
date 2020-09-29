@@ -30,8 +30,11 @@ namespace Logging.Tests
             var appender = new log4net.Appender.MemoryAppender();
             BasicConfigurator.Configure(appender);
             LoggingUtility.LogRequest(mockRequest);
-
             var result = appender.GetEvents();
+            Console.WriteLine(result);
+            Console.WriteLine(result.Length);
+            Console.WriteLine(result.Any());
+            Console.WriteLine(result[0].MessageObject);
             Assert.IsTrue(result.Any());
             Assert.IsTrue(result[0].MessageObject.Equals(expectedLog));
         }
