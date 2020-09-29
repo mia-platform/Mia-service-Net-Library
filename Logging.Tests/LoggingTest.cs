@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Linq;
-using log4net.Config;
+using log4net;
 using Logging.Entities;
+using Moq;
 using NUnit.Framework;
 
 namespace Logging.Tests
@@ -19,24 +19,18 @@ namespace Logging.Tests
         private const int ReqId = 1;
         private const int Level = 30;
         private static readonly long Time = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-
+        
         [Test]
         public void TestRequestLog()
         {
             var expectedLog =
                 $@"{{""Level"":{Level},""Time"":{Time},""ReqId"":{ReqId},""Http"":{{""Request"":{{""Method"":""{HttpRequestMethod}"",""UserAgent"":{{""Original"":""{Original}""}}}},""Response"":{{""StatusCode"":{StatusCode},""Body"":{{""Bytes"":{Bytes}}}}}}},""Url"":{{""Path"":""{Path}""}},""Host"":{{""Hostname"":""{Hostname}"",""Ip"":""{Ip}""}},""ResponseTime"":{ResponseTime}.0}}";
             var mockRequest = BuildCompletedRequestLog();
-
-            var appender = new log4net.Appender.MemoryAppender();
-            BasicConfigurator.Configure(appender);
-            LoggingUtility.LogRequest(mockRequest);
-            var result = appender.GetEvents();
-            Console.WriteLine(result);
-            Console.WriteLine(result.Length);
-            Console.WriteLine(result.Any());
-            Console.WriteLine(result[0].MessageObject);
-            Assert.IsTrue(result.Any());
-            Assert.IsTrue(result[0].MessageObject.Equals(expectedLog));
+            var mockILog = new Mock<ILog>();
+            var loggingUtility = new LoggingUtility(mockILog.Object);
+            mockILog.Setup(mock => mock.Info(It.IsAny<string>()));
+            loggingUtility.LogRequest(mockRequest);
+            mockILog.Verify(mock => mock.Info(expectedLog), Times.Once());
         }
 
         private static RequestLog BuildCompletedRequestLog()

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Reflection;
 using log4net;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
@@ -9,56 +7,60 @@ namespace Logging
 {
     public class LoggingUtility
     {
-        private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ILog _logger;
 
-        private static void LogWithLevel(LogLevels level, string message)
+        public LoggingUtility(ILog logger)
+        {
+            _logger = logger;
+        }
+        
+        private void LogWithLevel(LogLevels level, string message)
         {
             switch (level)
             {
                 case LogLevels.Trace:
-                    Logger.Trace(message);
+                    _logger.Trace(message);
                     break;
                 case LogLevels.Debug:
-                    Logger.Debug(message);
+                    _logger.Debug(message);
                     break;
                 case LogLevels.Info:
-                    Logger.Info(message);
+                    _logger.Info(message);
                     break;
                 case LogLevels.Warn:
-                    Logger.Warn(message);
+                    _logger.Warn(message);
                     break;
                 case LogLevels.Error:
-                    Logger.Error(message);
+                    _logger.Error(message);
                     break;
                 case LogLevels.Fatal:
-                    Logger.Fatal(message);
+                    _logger.Fatal(message);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(level), level, null);
             }
         }
         
-        public static void LogRequest(RequestLog requestLog)
+        public void LogRequest(RequestLog requestLog)
         {
             var jsonString = JsonConvert.SerializeObject(requestLog, Formatting.None);
-            Logger.Info(jsonString);
+            _logger.Info(jsonString);
         }
 
-        public static void LogMessage(HttpRequest req, LogLevels logLevel, object logProperties, string message)
+        public void LogMessage(HttpRequest req, LogLevels logLevel, object logProperties, string message)
         {
             var headerId = req.Headers["x-request-id"];
             var reqId = string.IsNullOrEmpty(headerId) ? 0 : int.Parse(headerId);
             var requestLog = new MessageLog
-                {
-                    Level = (int) logLevel,
-                    Time = DateTimeOffset.Now.ToUnixTimeMilliseconds(),
-                    ReqId = reqId,
-                    Msg = message,
-                    LogProperties = logProperties
-                };
+            {
+                Level = (int) logLevel,
+                Time = DateTimeOffset.Now.ToUnixTimeMilliseconds(),
+                ReqId = reqId,
+                Msg = message,
+                LogProperties = logProperties
+            };
             var jsonString = JsonConvert.SerializeObject(requestLog, Formatting.None);
             LogWithLevel(logLevel, jsonString);
         }
-        
     }
 }

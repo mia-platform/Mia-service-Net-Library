@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
+using log4net;
 using Logging.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
@@ -12,14 +13,16 @@ namespace Logging
     {
         private readonly RequestDelegate _next;
         private long _reqIdAuto = 1;
-        
+        private readonly ILog _logger = LogManager.GetLogger(typeof(RequestResponseLoggingMiddleware));
+
         public RequestResponseLoggingMiddleware(RequestDelegate next)
         {
             _next = next;
         }
         
         public async Task Invoke(HttpContext context)
-        {
+        {   
+            var loggingUtility = new LoggingUtility(_logger);
             var responseStopwatch = new Stopwatch();
             responseStopwatch.Start();
             var request = context.Request;
@@ -50,7 +53,7 @@ namespace Logging
                 var completedRequestLog = BuildCompletedRequestLog(context, cpRequest, cpResponse, request, passedMicroSeconds, reqId);
                 buffer.Position = 0;
                 await buffer.CopyToAsync(bodyStream);
-                LoggingUtility.LogRequest(completedRequestLog);
+                loggingUtility.LogRequest(completedRequestLog);
             }
         }
 
