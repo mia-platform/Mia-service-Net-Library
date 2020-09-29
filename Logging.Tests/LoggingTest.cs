@@ -6,6 +6,17 @@ using NUnit.Framework;
 
 namespace Logging.Tests
 {
+    public class CustomProps
+    {
+        public string CustomPropA { get; set; }
+        public string CustomPropB { get; set; }
+
+        public CustomProps(string customPropA, string customPropB)
+        {
+            CustomPropA = customPropA;
+            CustomPropB = customPropB;
+        }
+    }
     public class LoggingTest
     {
         private const string Hostname = "mockedHostname";
@@ -19,21 +30,42 @@ namespace Logging.Tests
         private const int ReqId = 1;
         private const int Level = 30;
         private static readonly long Time = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+        private RequestLog _mockRequest;
+        private Mock<ILog> _mockILog;
+        
+        [SetUp]
+        public void Init()
+        {
+            _mockRequest = BuildRequestLog();
+            _mockILog = new Mock<ILog>();
+            _mockILog.Setup(mock => mock.Info(It.IsAny<string>()));
+        }
         
         [Test]
         public void TestRequestLog()
         {
             var expectedLog =
                 $@"{{""Level"":{Level},""Time"":{Time},""ReqId"":{ReqId},""Http"":{{""Request"":{{""Method"":""{HttpRequestMethod}"",""UserAgent"":{{""Original"":""{Original}""}}}},""Response"":{{""StatusCode"":{StatusCode},""Body"":{{""Bytes"":{Bytes}}}}}}},""Url"":{{""Path"":""{Path}""}},""Host"":{{""Hostname"":""{Hostname}"",""Ip"":""{Ip}""}},""ResponseTime"":{ResponseTime}.0}}";
-            var mockRequest = BuildCompletedRequestLog();
-            var mockILog = new Mock<ILog>();
-            var loggingUtility = new LoggingUtility(mockILog.Object);
-            mockILog.Setup(mock => mock.Info(It.IsAny<string>()));
-            loggingUtility.LogRequest(mockRequest);
-            mockILog.Verify(mock => mock.Info(expectedLog), Times.Once());
+            var loggingUtility = new LoggingUtility(_mockILog.Object);
+            loggingUtility.LogRequest(_mockRequest);
+            _mockILog.Verify(mock => mock.Info(expectedLog), Times.Once());
         }
 
-        private static RequestLog BuildCompletedRequestLog()
+        [Test]
+        public void TestMessageLog()
+        {
+            var requestMocker = new HttpRequestTests();
+            var mockRequest = requestMocker.CreateMockRequest();
+            // FIXME punteggiatura non coincide e quindi fallisce
+            var expectedLog =
+                $@"{{""Level"":{Level},""Time"":{Time},""ReqId"":{ReqId},""Msg"":""message"",""CustomPropA"":""foo"",""CustomPropB"":""bar""}}";
+            var loggingUtility = new LoggingUtility(_mockILog.Object);
+            loggingUtility.LogMessage(mockRequest.Object, LogLevels.Debug, 
+                new CustomProps("foo", "bar"), "message");
+            _mockILog.Verify(mock => mock.Debug(expectedLog), Times.Once());
+        }
+        
+        private static RequestLog BuildRequestLog()
         {
             return new RequestLog
             {

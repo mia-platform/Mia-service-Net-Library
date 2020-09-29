@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using log4net;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
@@ -46,20 +49,37 @@ namespace Logging
             var jsonString = JsonConvert.SerializeObject(requestLog, Formatting.None);
             _logger.Info(jsonString);
         }
-
-        public void LogMessage(HttpRequest req, LogLevels logLevel, object logProperties, string message)
+        
+        private static IDictionary<string, object> ToDictionary(object source)
+        {
+            var dictionary = new Dictionary<string, object>();
+            foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(source))
+            {
+                var value = property.GetValue(source);
+                dictionary.Add(property.Name, value);
+            }
+            return dictionary;
+        }
+        
+        public void LogMessage(HttpRequest req, LogLevels logLevel, object customProperties, string message)
         {
             var headerId = req.Headers["x-request-id"];
             var reqId = string.IsNullOrEmpty(headerId) ? 0 : int.Parse(headerId);
-            var requestLog = new MessageLog
+            var messageDictionary = new Dictionary<string, object>
             {
-                Level = (int) logLevel,
-                Time = DateTimeOffset.Now.ToUnixTimeMilliseconds(),
-                ReqId = reqId,
-                Msg = message,
-                LogProperties = logProperties
+                {"level", (int) logLevel},
+                {"time", DateTimeOffset.Now.ToUnixTimeMilliseconds()},
+                {"reqId", reqId},
+                {"msg", message}
             };
-            var jsonString = JsonConvert.SerializeObject(requestLog, Formatting.None);
+            var propsAsDict = ToDictionary(customProperties);
+            var merged = messageDictionary
+                .Concat(propsAsDict)
+                .GroupBy(i => i.Key)
+                .ToDictionary(
+                    group => group.Key, 
+                    group => group.First().Value);
+            var jsonString = JsonConvert.SerializeObject(merged, Formatting.None);
             LogWithLevel(logLevel, jsonString);
         }
     }
