@@ -37,10 +37,11 @@ namespace Logging
                     throw new ArgumentOutOfRangeException(nameof(level), level, null);
             }
         }
+        
         public static void LogRequest(RequestLog requestLog)
         {
             var jsonString = JsonConvert.SerializeObject(requestLog, Formatting.None);
-            LogWithLevel(LogLevels.Info, jsonString);
+            Logger.Info(jsonString);
         }
 
         public static void LogMessage(HttpRequest req, LogLevels logLevel, object logProperties, string message)

@@ -24,7 +24,7 @@ namespace Logging.Tests
         public void TestRequestLog()
         {
             var expectedLog =
-                $@"{{""level"":{Level},""time"":{Time},""reqId"":{ReqId},""http"":{{""request"":{{""method"":""{HttpRequestMethod}"",""userAgent"":{{""original"":""{Original}""}}}},""response"":{{""statusCode"":{StatusCode},""body"":{{""bytes"":{Bytes}}}}}}},""url"":{{""path"":""{Path}""}},""host"":{{""hostname"":""{Hostname}"",""ip"":""{Ip}""}},""responseTime"":{ResponseTime}.0}}";
+                $@"{{""Level"":{Level},""Time"":{Time},""ReqId"":{ReqId},""Http"":{{""Request"":{{""Method"":""{HttpRequestMethod}"",""UserAgent"":{{""Original"":""{Original}""}}}},""Response"":{{""StatusCode"":{StatusCode},""Body"":{{""Bytes"":{Bytes}}}}}}},""Url"":{{""Path"":""{Path}""}},""Host"":{{""Hostname"":""{Hostname}"",""Ip"":""{Ip}""}},""ResponseTime"":{ResponseTime}.0}}";
             var mockRequest = BuildCompletedRequestLog();
 
             var appender = new log4net.Appender.MemoryAppender();

@@ -32,7 +32,11 @@ namespace Logging
                 var passedMicroSeconds = responseStopwatch.ElapsedMilliseconds / 1000m;
                 var cpRequest = new CpRequest
                 {
-                    Method = request.Method
+                    Method = request.Method,
+                    UserAgent = new UserAgent
+                    {
+                        Original = request.Headers["User-Agent"].ToString()
+                    }
                 };
                 var cpResponse = new CpResponse
                 {
@@ -82,10 +86,6 @@ namespace Logging
                 Url = new Url 
                 {
                     Path = request.GetDisplayUrl(),
-                },
-                UserAgent = new UserAgent
-                {
-                    Original = request.Headers["User-Agent"].ToString()
                 },
                 Host = new Host
                 {
