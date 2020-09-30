@@ -5,16 +5,21 @@ using System.Linq;
 using log4net;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Logging
 {
     public class LoggingUtility
     {
         private readonly ILog _logger;
-
+        
         public LoggingUtility(ILog logger)
         {
             _logger = logger;
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
         }
         
         private void LogWithLevel(LogLevels level, string message)
@@ -67,10 +72,10 @@ namespace Logging
             var reqId = string.IsNullOrEmpty(headerId) ? 0 : int.Parse(headerId);
             var messageDictionary = new Dictionary<string, object>
             {
-                {"level", (int) logLevel},
-                {"time", DateTimeOffset.Now.ToUnixTimeMilliseconds()},
-                {"reqId", reqId},
-                {"msg", message}
+                {"Level", (int) logLevel},
+                {"Time", DateTimeOffset.Now.ToUnixTimeMilliseconds()},
+                {"ReqId", reqId},
+                {"Msg", message}
             };
             var propsAsDict = ToDictionary(customProperties);
             var merged = messageDictionary

@@ -28,7 +28,8 @@ namespace Logging.Tests
         private const int StatusCode = 200;
         private const decimal ResponseTime = 1337;
         private const int ReqId = 1;
-        private const int Level = 30;
+        private const int LevelInfo = 30;
+        private const int LevelDebug = 20;
         private static readonly long Time = DateTimeOffset.Now.ToUnixTimeMilliseconds();
         private RequestLog _mockRequest;
         private Mock<ILog> _mockILog;
@@ -39,13 +40,14 @@ namespace Logging.Tests
             _mockRequest = BuildRequestLog();
             _mockILog = new Mock<ILog>();
             _mockILog.Setup(mock => mock.Info(It.IsAny<string>()));
+            _mockILog.Setup(mock => mock.Debug(It.IsAny<string>()));
         }
         
         [Test]
         public void TestRequestLog()
         {
             var expectedLog =
-                $@"{{""Level"":{Level},""Time"":{Time},""ReqId"":{ReqId},""Http"":{{""Request"":{{""Method"":""{HttpRequestMethod}"",""UserAgent"":{{""Original"":""{Original}""}}}},""Response"":{{""StatusCode"":{StatusCode},""Body"":{{""Bytes"":{Bytes}}}}}}},""Url"":{{""Path"":""{Path}""}},""Host"":{{""Hostname"":""{Hostname}"",""Ip"":""{Ip}""}},""ResponseTime"":{ResponseTime}.0}}";
+                $@"{{""level"":{LevelInfo},""time"":{Time},""reqId"":{ReqId},""http"":{{""request"":{{""method"":""{HttpRequestMethod}"",""userAgent"":{{""original"":""{Original}""}}}},""response"":{{""statusCode"":{StatusCode},""body"":{{""bytes"":{Bytes}}}}}}},""url"":{{""path"":""{Path}""}},""host"":{{""hostname"":""{Hostname}"",""ip"":""{Ip}""}},""responseTime"":{ResponseTime}.0}}";
             var loggingUtility = new LoggingUtility(_mockILog.Object);
             loggingUtility.LogRequest(_mockRequest);
             _mockILog.Verify(mock => mock.Info(expectedLog), Times.Once());
@@ -56,20 +58,21 @@ namespace Logging.Tests
         {
             var requestMocker = new HttpRequestTests();
             var mockRequest = requestMocker.CreateMockRequest();
-            // FIXME punteggiatura non coincide e quindi fallisce
-            var expectedLog =
-                $@"{{""Level"":{Level},""Time"":{Time},""ReqId"":{ReqId},""Msg"":""message"",""CustomPropA"":""foo"",""CustomPropB"":""bar""}}";
+            var logBeginsWith = $@"{{""level"":{LevelDebug},""time"":";
+            var logEndsWith = 
+                $@",""reqId"":{ReqId},""msg"":""message"",""customPropA"":""foo"",""customPropB"":""bar""}}";
             var loggingUtility = new LoggingUtility(_mockILog.Object);
             loggingUtility.LogMessage(mockRequest.Object, LogLevels.Debug, 
                 new CustomProps("foo", "bar"), "message");
-            _mockILog.Verify(mock => mock.Debug(expectedLog), Times.Once());
+            _mockILog.Verify(mock => mock.Debug(It.Is<string>(str =>
+                str.StartsWith(logBeginsWith) && str.EndsWith(logEndsWith))), Times.Once);
         }
         
         private static RequestLog BuildRequestLog()
         {
             return new RequestLog
             {
-                Level = Level,
+                Level = LevelInfo,
                 Time = Time,
                 ReqId = ReqId,
                 Http = new Http
