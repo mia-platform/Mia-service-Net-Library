@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -13,7 +14,9 @@ namespace CustomPlugin
 {
     public class StartupUtils
     {
-        public static readonly string DocsPath = "documentations";
+        private const string SwaggerDocumentName = "json";
+        private const string SwaggerDocsPrefix = "documentation";
+
         public static void ConfigureCpServices(IServiceCollection services, IConfiguration configuration)
         {
             var miaEnvConfiguration = new MiaEnvConfiguration();
@@ -28,6 +31,30 @@ namespace CustomPlugin
             services.AddSingleton(miaEnvConfiguration);
             services.AddSingleton(serviceClientFactory);
             services.AddSingleton(decoratorResponseFactory);
+        }
+
+        public static void ConfigureDocs(IServiceCollection services, string title)
+        {
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc(SwaggerDocumentName, new OpenApiInfo
+                {
+                    Title = title,
+                });
+            });
+        }
+
+        public static void UseSwagger(IApplicationBuilder app)
+        {
+            app.UseSwagger(c => { c.RouteTemplate = $"/{SwaggerDocsPrefix}/{{documentName}}/swagger.json"; });
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint($"/{SwaggerDocsPrefix}/{SwaggerDocumentName}/swagger.json", "My API V1");
+                c.RoutePrefix = SwaggerDocsPrefix;
+            });
+
+            app.UseSwagger(c => { c.RouteTemplate = $"/{SwaggerDocsPrefix}/{{documentName}}"; });
         }
 
         private static void SetupJsonSerializer()

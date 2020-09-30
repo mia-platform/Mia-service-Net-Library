@@ -30,7 +30,6 @@ namespace Crud.library.query.Extensions
             query.Add("updaterId", value);
         }
 
-
         public static void AddUpdatedAtParam(
             this Dictionary<string, string> query, string value)
         {
