@@ -33,14 +33,23 @@ namespace CustomPlugin
             services.AddSingleton(decoratorResponseFactory);
         }
 
-        public static void ConfigureDocs(IServiceCollection services, string title = "API")
+        public static void ConfigureDocs(IServiceCollection services, string title = "Custom Service", string description = "Custom Service API")
         {
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc(SwaggerDocumentName, new OpenApiInfo
                 {
                     Title = title,
+                    Description = description
                 });
+            });
+        }  
+        
+        public static void ConfigureDocs(IServiceCollection services, OpenApiInfo apiInfo)
+        {
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc(SwaggerDocumentName, apiInfo);
             });
         }
 
