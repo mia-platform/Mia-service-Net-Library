@@ -33,7 +33,7 @@ namespace CustomPlugin
             services.AddSingleton(decoratorResponseFactory);
         }
 
-        public static void ConfigureDocs(IServiceCollection services, string title)
+        public static void ConfigureDocs(IServiceCollection services, string title = "API")
         {
             services.AddSwaggerGen(c =>
             {
@@ -44,13 +44,13 @@ namespace CustomPlugin
             });
         }
 
-        public static void UseSwagger(IApplicationBuilder app)
+        public static void UseSwagger(IApplicationBuilder app, string apiName = "API")
         {
             app.UseSwagger(c => { c.RouteTemplate = $"/{SwaggerDocsPrefix}/{{documentName}}/swagger.json"; });
 
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint($"/{SwaggerDocsPrefix}/{SwaggerDocumentName}/swagger.json", "My API V1");
+                c.SwaggerEndpoint($"/{SwaggerDocsPrefix}/{SwaggerDocumentName}/swagger.json", apiName);
                 c.RoutePrefix = SwaggerDocsPrefix;
             });
 

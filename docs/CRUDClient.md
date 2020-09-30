@@ -1,4 +1,6 @@
 ## CRUD client
+A CRUD client allows you to easily make HTTP requests to [CRUD Services](https://docs.mia-platform.eu/docs/runtime_suite/crud-service).
+To create a CRUD Service, check the documentation [here](https://docs.mia-platform.eu/docs/development_suite/api-console/api-design/crud_advanced)
 
 ### Getting a CRUD client
 To get a CRUD client, you can use the following methods from class `ServiceClientFactory`:

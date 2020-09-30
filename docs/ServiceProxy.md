@@ -1,4 +1,6 @@
 ## Service proxy
+A Service proxy allows you to make HTTP calls to other [microservices](https://docs.mia-platform.eu/docs/development_suite/api-console/api-design/services).
+
 ### Service options
 Before getting your service proxy, you need to inject the appropriate `InitServiceOptions` instance:
 You have to specify:
@@ -20,7 +22,7 @@ To get a service proxy, you can use the following methods from class `ServiceCli
 var proxy = ServiceClientFactory.GetDirectServiceProxy("my-microservice", initOptions);
 ``` 
 
-+ `GetServiceProxy`, to communicate with a specific custom service passing through the Microservice Gateway:
++ `GetServiceProxy`, to communicate with a specific custom service passing through the [Microservice Gateway](https://docs.mia-platform.eu/docs/runtime_suite/microservice-gateway):
 ```csharp
 var proxy = ServiceClientFactory.GetServiceProxy(initOptions);
 ``` 

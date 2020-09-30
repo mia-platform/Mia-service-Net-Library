@@ -1,5 +1,6 @@
 
 ## Decorators
+This section explains how to define and handle your [Decorator](https://docs.mia-platform.eu/docs/development_suite/api-console/api-design/crud_advanced) routes.
 
 ### PRE decorators
 #### Request
