@@ -2,7 +2,7 @@
 
 namespace Logging
 {
-    public class RequestLog
+    public class CompletedRequestLog
     {
         public int Level { get; set; }
         public long Time { get; set; }

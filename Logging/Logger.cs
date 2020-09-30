@@ -9,59 +9,63 @@ using Newtonsoft.Json.Serialization;
 
 namespace Logging
 {
-    public class Logger
+    public static class Logger
     {
-        private readonly ILog _logger;
+        private static ILog _loggerInstance = LogManager.GetLogger(typeof(Logger));
         
-        public Logger(ILog logger)
+        public static void SetInstance(ILog loggerInstance)
         {
-            _logger = logger;
-            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
-            {
-                ContractResolver = new CamelCasePropertyNamesContractResolver()
-            };
+            _loggerInstance = loggerInstance;
         }
-
-        public void Trace(HttpRequest request, string message, object customProperties = null)
+        
+        public static void Trace(HttpRequest request, string message, object customProperties = null)
         {
             var jsonString = GetJsonLog(request, LogLevels.Trace, customProperties, message);
-            _logger.Trace(jsonString);
+            _loggerInstance.Trace(jsonString);
         }
         
-        public void Debug(HttpRequest request, string message, object customProperties = null)
+        public static void Debug(HttpRequest request, string message, object customProperties = null)
         {
             var jsonString = GetJsonLog(request, LogLevels.Debug, customProperties, message);
-            _logger.Debug(jsonString);
+            _loggerInstance.Debug(jsonString);
         }
         
-        public void Info(HttpRequest request, string message, object customProperties = null)
+        public static void Info(HttpRequest request, string message, object customProperties = null)
         {
             var jsonString = GetJsonLog(request, LogLevels.Info, customProperties, message);
-            _logger.Info(jsonString);
+            _loggerInstance.Info(jsonString);
         }
         
-        public void Warn(HttpRequest request, string message, object customProperties = null)
+        public static void Warn(HttpRequest request, string message, object customProperties = null)
         {
             var jsonString = GetJsonLog(request, LogLevels.Warn, customProperties, message);
-            _logger.Warn(jsonString);
+            _loggerInstance.Warn(jsonString);
         }
         
-        public void Error(HttpRequest request, string message, object customProperties = null)
+        public static void Error(HttpRequest request, string message, object customProperties = null)
         {
             var jsonString = GetJsonLog(request, LogLevels.Error, customProperties, message);
-            _logger.Error(jsonString);
+            _loggerInstance.Error(jsonString);
         }
         
-        public void Fatal(HttpRequest request, string message, object customProperties = null)
+        public static void Fatal(HttpRequest request, string message, object customProperties = null)
         {
             var jsonString = GetJsonLog(request, LogLevels.Fatal, customProperties, message);
-            _logger.Fatal(jsonString);
+            _loggerInstance.Fatal(jsonString);
         }
         
-        public void LogRequest(RequestLog requestLog)
+        public static void LogRequest(CompletedRequestLog completedRequestLog)
         {
-            var jsonString = JsonConvert.SerializeObject(requestLog, Formatting.None);
-            _logger.Info(jsonString);
+            CamelCaseSerialize();
+            var jsonString = JsonConvert.SerializeObject(completedRequestLog, Formatting.None);
+            _loggerInstance.Info(jsonString);
+        }
+        
+        public static void LogRequest(IncomingRequestLog incomingRequestLog)
+        {
+            CamelCaseSerialize();
+            var jsonString = JsonConvert.SerializeObject(incomingRequestLog, Formatting.None);
+            _loggerInstance.Trace(jsonString);
         }
         
         private static IDictionary<string, object> ToDictionary(object source)
@@ -74,9 +78,10 @@ namespace Logging
             }
             return dictionary;
         }
-
+        
         private static string GetJsonLog(HttpRequest req, LogLevels logLevel, object customProperties, string message)
         {
+            CamelCaseSerialize();
             var headerId = req.Headers["x-request-id"];
             var reqId = string.IsNullOrEmpty(headerId) ? 0 : int.Parse(headerId);
             var messageDictionary = new Dictionary<string, object>
@@ -95,6 +100,14 @@ namespace Logging
                     group => @group.First().Value);
             var jsonString = JsonConvert.SerializeObject(merged, Formatting.None);
             return jsonString;
+        }
+
+        private static void CamelCaseSerialize()
+        {
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
         }
     }
 }

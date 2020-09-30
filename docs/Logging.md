@@ -6,12 +6,10 @@ There are two types of logging:
  * Message Logging: logs a message, along with its custom properties if there are any.
  
 ```
-// _logger is the ILog instance in the current class.
-var logger = new Logger(_logger);
 // customObject attributes will be added to the log.
-logger.Trace(HttpContext.Request, "message with object", customObject);
+Logger.Trace(HttpContext.Request, "message with object", customObject);
 // or
-logger.Trace(HttpContext.Request, "message without object");
+Logger.Trace(HttpContext.Request, "message without object");
 ```
 
 The logger class supports the main logging levels: *Trace*, *Debug*, *Info*, *Warn*, *Error* and *Fatal*.
@@ -23,10 +21,18 @@ By default the library will generate a log for each request, representing both t
 ```
 [HttpPost]
 [Route("hello")]
-public void LoggingTest([FromBody] Hello hello)
+public string LoggingTest([FromBody] Hello hello)
 {
-    var logger = new Logger(LogManager.GetLogger(typeof(HelloWorldController)));
-    logger.Trace(HttpContext.Request, "message with object", hello);
+    Logger.Trace(HttpContext.Request, "message with object", hello);
+    if (hello.Message.Contains(".NET Core"))
+    {
+        Logger.Info(HttpContext.Request, "foo");
+    }
+    else
+    {
+        Logger.Warn(HttpContext.Request, "bar");
+    }
+    return "Goodbye, world!";
 } 
 ```
 For further details about logs can you see the [guidelines for logs](https://docs.mia-platform.eu/development_suite/monitoring-dashboard/dev_ops_guide/log/).

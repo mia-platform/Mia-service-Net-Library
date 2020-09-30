@@ -13,7 +13,6 @@ namespace Logging
     {
         private readonly RequestDelegate _next;
         private long _reqIdAuto = 1;
-        private readonly ILog _logger = LogManager.GetLogger(typeof(RequestResponseLoggingMiddleware));
 
         public RequestResponseLoggingMiddleware(RequestDelegate next)
         {
@@ -22,25 +21,28 @@ namespace Logging
         
         public async Task Invoke(HttpContext context)
         {   
-            var loggingUtility = new Logger(_logger);
             var responseStopwatch = new Stopwatch();
             responseStopwatch.Start();
             var request = context.Request;
             var response = context.Response;
+            var cpRequest = new CpRequest
+            {
+                Method = request.Method,
+                UserAgent = new UserAgent
+                {
+                    Original = request.Headers["User-Agent"].ToString()
+                }
+            };
+            var reqId = GetReqId(request);
+            var incomingRequestLog = BuildIncomingRequestLog(context, cpRequest, request, reqId);
+            Logger.LogRequest(incomingRequestLog);
+            
             using (var buffer = new MemoryStream()) {
                 var bodyStream = response.Body;
                 response.Body = buffer;
                 await _next(context);
                 responseStopwatch.Stop();
                 var passedMicroSeconds = responseStopwatch.ElapsedMilliseconds / 1000m;
-                var cpRequest = new CpRequest
-                {
-                    Method = request.Method,
-                    UserAgent = new UserAgent
-                    {
-                        Original = request.Headers["User-Agent"].ToString()
-                    }
-                };
                 var cpResponse = new CpResponse
                 {
                     StatusCode = response.StatusCode,
@@ -49,11 +51,10 @@ namespace Logging
                         Bytes = response.ContentLength ?? buffer.Length
                     }
                 };
-                var reqId = GetReqId(request);
                 var completedRequestLog = BuildCompletedRequestLog(context, cpRequest, cpResponse, request, passedMicroSeconds, reqId);
                 buffer.Position = 0;
                 await buffer.CopyToAsync(bodyStream);
-                loggingUtility.LogRequest(completedRequestLog);
+                Logger.LogRequest(completedRequestLog);
             }
         }
 
@@ -73,10 +74,33 @@ namespace Logging
             return reqId;
         }
 
-        private static RequestLog BuildCompletedRequestLog(HttpContext context, CpRequest cpRequest, 
+        private static IncomingRequestLog BuildIncomingRequestLog(HttpContext context, CpRequest cpRequest, HttpRequest request, long reqId)
+        {
+            return new IncomingRequestLog
+            {
+                Level = (int) LogLevels.Trace,
+                Time = DateTimeOffset.Now.ToUnixTimeMilliseconds(),
+                ReqId = reqId,
+                Http = new HttpIncoming
+                {
+                    Request = cpRequest
+                },
+                Url = new Url
+                {
+                    Path = request.GetDisplayUrl()
+                },
+                Host = new Host
+                {
+                    Hostname = request.Host.ToString(),
+                    Ip = context.Connection.RemoteIpAddress.MapToIPv4().ToString()
+                },
+            };
+        }
+
+        private static CompletedRequestLog BuildCompletedRequestLog(HttpContext context, CpRequest cpRequest, 
             CpResponse cpResponse, HttpRequest request, decimal responseTime, long reqId)
         {
-            return new RequestLog
+            return new CompletedRequestLog
             {
                 Level = (int) LogLevels.Info,
                 Time = DateTimeOffset.Now.ToUnixTimeMilliseconds(),
