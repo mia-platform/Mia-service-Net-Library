@@ -28,8 +28,6 @@ namespace Logging.Tests
         private const int StatusCode = 200;
         private const decimal ResponseTime = 1337;
         private const int ReqId = 1;
-        private const int LevelInfo = 30;
-        private const int LevelDebug = 20;
         private static readonly long Time = DateTimeOffset.Now.ToUnixTimeMilliseconds();
         private RequestLog _mockRequest;
         private Mock<ILog> _mockILog;
@@ -47,9 +45,9 @@ namespace Logging.Tests
         public void TestRequestLog()
         {
             var expectedLog =
-                $@"{{""level"":{LevelInfo},""time"":{Time},""reqId"":{ReqId},""http"":{{""request"":{{""method"":""{HttpRequestMethod}"",""userAgent"":{{""original"":""{Original}""}}}},""response"":{{""statusCode"":{StatusCode},""body"":{{""bytes"":{Bytes}}}}}}},""url"":{{""path"":""{Path}""}},""host"":{{""hostname"":""{Hostname}"",""ip"":""{Ip}""}},""responseTime"":{ResponseTime}.0}}";
-            var loggingUtility = new LoggingUtility(_mockILog.Object);
-            loggingUtility.LogRequest(_mockRequest);
+                $@"{{""level"":{(int) LogLevels.Info},""time"":{Time},""reqId"":{ReqId},""http"":{{""request"":{{""method"":""{HttpRequestMethod}"",""userAgent"":{{""original"":""{Original}""}}}},""response"":{{""statusCode"":{StatusCode},""body"":{{""bytes"":{Bytes}}}}}}},""url"":{{""path"":""{Path}""}},""host"":{{""hostname"":""{Hostname}"",""ip"":""{Ip}""}},""responseTime"":{ResponseTime}.0}}";
+            var logger = new Logger(_mockILog.Object);
+            logger.LogRequest(_mockRequest);
             _mockILog.Verify(mock => mock.Info(expectedLog), Times.Once());
         }
 
@@ -58,13 +56,27 @@ namespace Logging.Tests
         {
             var requestMocker = new HttpRequestTests();
             var mockRequest = requestMocker.CreateMockRequest();
-            var logBeginsWith = $@"{{""level"":{LevelDebug},""time"":";
+            var logBeginsWith = $@"{{""level"":{(int) LogLevels.Debug},""time"":";
             var logEndsWith = 
                 $@",""reqId"":{ReqId},""msg"":""message"",""customPropA"":""foo"",""customPropB"":""bar""}}";
-            var loggingUtility = new LoggingUtility(_mockILog.Object);
-            loggingUtility.LogMessage(mockRequest.Object, LogLevels.Debug, 
-                new CustomProps("foo", "bar"), "message");
+            var logger = new Logger(_mockILog.Object);
+            logger.Debug(mockRequest.Object, 
+                "message", new CustomProps("foo", "bar"));
             _mockILog.Verify(mock => mock.Debug(It.Is<string>(str =>
+                str.StartsWith(logBeginsWith) && str.EndsWith(logEndsWith))), Times.Once);
+        }
+        
+        [Test]
+        public void TestMessageLogWithoutParams()
+        {
+            var requestMocker = new HttpRequestTests();
+            var mockRequest = requestMocker.CreateMockRequest();
+            var logBeginsWith = $@"{{""level"":{(int) LogLevels.Warn},""time"":";
+            var logEndsWith = 
+                $@",""reqId"":{ReqId},""msg"":""message""}}";
+            var logger = new Logger(_mockILog.Object);
+            logger.Warn(mockRequest.Object, "message");
+            _mockILog.Verify(mock => mock.Warn(It.Is<string>(str =>
                 str.StartsWith(logBeginsWith) && str.EndsWith(logEndsWith))), Times.Once);
         }
         
@@ -72,7 +84,7 @@ namespace Logging.Tests
         {
             return new RequestLog
             {
-                Level = LevelInfo,
+                Level = (int) LogLevels.Info,
                 Time = Time,
                 ReqId = ReqId,
                 Http = new Http

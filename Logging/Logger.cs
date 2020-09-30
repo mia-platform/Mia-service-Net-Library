@@ -9,11 +9,11 @@ using Newtonsoft.Json.Serialization;
 
 namespace Logging
 {
-    public class LoggingUtility
+    public class Logger
     {
         private readonly ILog _logger;
         
-        public LoggingUtility(ILog logger)
+        public Logger(ILog logger)
         {
             _logger = logger;
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
@@ -21,32 +21,41 @@ namespace Logging
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             };
         }
-        
-        private void LogWithLevel(LogLevels level, string message)
+
+        public void Trace(HttpRequest request, string message, object customProperties = null)
         {
-            switch (level)
-            {
-                case LogLevels.Trace:
-                    _logger.Trace(message);
-                    break;
-                case LogLevels.Debug:
-                    _logger.Debug(message);
-                    break;
-                case LogLevels.Info:
-                    _logger.Info(message);
-                    break;
-                case LogLevels.Warn:
-                    _logger.Warn(message);
-                    break;
-                case LogLevels.Error:
-                    _logger.Error(message);
-                    break;
-                case LogLevels.Fatal:
-                    _logger.Fatal(message);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(level), level, null);
-            }
+            var jsonString = GetJsonLog(request, LogLevels.Trace, customProperties, message);
+            _logger.Trace(jsonString);
+        }
+        
+        public void Debug(HttpRequest request, string message, object customProperties = null)
+        {
+            var jsonString = GetJsonLog(request, LogLevels.Debug, customProperties, message);
+            _logger.Debug(jsonString);
+        }
+        
+        public void Info(HttpRequest request, string message, object customProperties = null)
+        {
+            var jsonString = GetJsonLog(request, LogLevels.Info, customProperties, message);
+            _logger.Info(jsonString);
+        }
+        
+        public void Warn(HttpRequest request, string message, object customProperties = null)
+        {
+            var jsonString = GetJsonLog(request, LogLevels.Warn, customProperties, message);
+            _logger.Warn(jsonString);
+        }
+        
+        public void Error(HttpRequest request, string message, object customProperties = null)
+        {
+            var jsonString = GetJsonLog(request, LogLevels.Error, customProperties, message);
+            _logger.Error(jsonString);
+        }
+        
+        public void Fatal(HttpRequest request, string message, object customProperties = null)
+        {
+            var jsonString = GetJsonLog(request, LogLevels.Fatal, customProperties, message);
+            _logger.Fatal(jsonString);
         }
         
         public void LogRequest(RequestLog requestLog)
@@ -65,8 +74,8 @@ namespace Logging
             }
             return dictionary;
         }
-        
-        public void LogMessage(HttpRequest req, LogLevels logLevel, object customProperties, string message)
+
+        private static string GetJsonLog(HttpRequest req, LogLevels logLevel, object customProperties, string message)
         {
             var headerId = req.Headers["x-request-id"];
             var reqId = string.IsNullOrEmpty(headerId) ? 0 : int.Parse(headerId);
@@ -82,10 +91,10 @@ namespace Logging
                 .Concat(propsAsDict)
                 .GroupBy(i => i.Key)
                 .ToDictionary(
-                    group => group.Key, 
-                    group => group.First().Value);
+                    group => @group.Key,
+                    group => @group.First().Value);
             var jsonString = JsonConvert.SerializeObject(merged, Formatting.None);
-            LogWithLevel(logLevel, jsonString);
+            return jsonString;
         }
     }
 }

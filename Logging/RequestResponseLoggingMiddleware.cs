@@ -22,7 +22,7 @@ namespace Logging
         
         public async Task Invoke(HttpContext context)
         {   
-            var loggingUtility = new LoggingUtility(_logger);
+            var loggingUtility = new Logger(_logger);
             var responseStopwatch = new Stopwatch();
             responseStopwatch.Start();
             var request = context.Request;
