@@ -17,6 +17,7 @@ namespace Logging.Tests
             CustomPropB = customPropB;
         }
     }
+    
     public class LoggingTest
     {
         private const string Hostname = "mockedHostname";

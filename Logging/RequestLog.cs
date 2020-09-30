@@ -1,6 +1,6 @@
 ﻿using Logging.Entities;
 
- namespace Logging
+namespace Logging
 {
     public class RequestLog
     {
