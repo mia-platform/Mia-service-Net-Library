@@ -1,10 +1,21 @@
 # Logging
 You can log a message to see in DevOps console. The library uses the [log4net logging system](https://logging.apache.org/log4net/).
 
-In order to log messages you have to call this method.
-`LoggingUtility.LogMessage(HttpRequest req, LogLevels logLevel, object userObject, string message)`
+There are two types of logging:
+ * Request Logging: logs every incoming request in the typical format.
+ * Message Logging: logs a message, along with its custom properties if there are any.
+ 
+```
+// _logger is the ILog instance in the current class.
+var logger = new Logger(_logger);
+// customObject attributes will be added to the log.
+logger.Trace(HttpContext.Request, "message with object", customObject);
+// or
+logger.Trace(HttpContext.Request, "message without object");
+```
 
-Each `logLevel` level produces a log with the homonym level.
+The logger class supports the main logging levels: *Trace*, *Debug*, *Info*, *Warn*, *Error* and *Fatal*.
+
 
 By default the library will generate a log for each request, representing both the incoming request and the request completion, logs are created with the *info* level and already provide useful information for later analysis or debugging. If you need more, you can add your logs.
 
@@ -12,21 +23,10 @@ By default the library will generate a log for each request, representing both t
 ```
 [HttpPost]
 [Route("hello")]
-public string LoggingTest([FromBody] Hello hello)
+public void LoggingTest([FromBody] Hello hello)
 {
-    // Log at 'Trace' level with custom object 'hello'
-    LoggingUtility.LogMessage(HttpContext.Request, LogLevels.Trace, hello, "custom message");
-    if (hello.Message.Contains(".NET Core"))
-    {
-        // Log at 'Info' level
-        LoggingUtility.LogMessage(HttpContext.Request, LogLevels.Info, null, "custom message 2");
-    }
-    else
-    {
-        // Log at 'Warn' level with custom object 'hello'
-        LoggingUtility.LogMessage(HttpContext.Request, LogLevels.Warn, null, "custom message 3");
-    }
-    return "Goodbye, world";
-}
+    var logger = new Logger(LogManager.GetLogger(typeof(HelloWorldController)));
+    logger.Trace(HttpContext.Request, "message with object", hello);
+} 
 ```
 For further details about logs can you see the [guidelines for logs](https://docs.mia-platform.eu/development_suite/monitoring-dashboard/dev_ops_guide/log/).
