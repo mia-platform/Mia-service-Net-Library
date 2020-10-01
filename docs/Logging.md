@@ -33,6 +33,6 @@ public string LoggingTest([FromBody] Hello hello)
         Logger.Warn(HttpContext.Request, "bar");
     }
     return "Goodbye, world!";
-} 
+}
 ```
 For further details about logs can you see the [guidelines for logs](https://docs.mia-platform.eu/development_suite/monitoring-dashboard/dev_ops_guide/log/).
