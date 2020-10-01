@@ -20,7 +20,7 @@ namespace Logging
         }
         
         public async Task Invoke(HttpContext context)
-        {   
+        {
             var responseStopwatch = new Stopwatch();
             responseStopwatch.Start();
             var request = context.Request;
