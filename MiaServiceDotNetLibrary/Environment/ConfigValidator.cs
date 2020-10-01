@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Reflection;
 
 namespace MiaServiceDotNetLibrary.Environment
 {
@@ -6,18 +7,19 @@ namespace MiaServiceDotNetLibrary.Environment
     {
         public static void ValidateConfig(MiaEnvConfiguration configuration)
         {
-            if (IsConfigInvalid(configuration))
-            {
-                throw new InvalidEnvConfigurationException("Required environment variable not found");
-            }
-        }
+            var props = configuration.GetType().GetProperties()
+                .ToDictionary(
+                    prop => prop.Name,
+                    prop => (string) prop.GetValue(configuration)
+                );
 
-        private static bool IsConfigInvalid(MiaEnvConfiguration configuration)
-        {
-            return configuration.GetType().GetProperties()
-                .Where(pi => pi.PropertyType == typeof(string))
-                .Select(pi => (string) pi.GetValue(configuration))
-                .Any(string.IsNullOrEmpty);
+            foreach (var (key, value) in props)
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    throw new InvalidEnvConfigurationException($"Required environment variable not found: {key}.");
+                }
+            }
         }
     }
 }
