@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.Dynamic;
-using Environment;
-using MiaServiceDotNetLibrary.Decorators;
+using MiaServiceDotNetLibrary.Environment;
 
-namespace Decorators.PostDecorators
+namespace MiaServiceDotNetLibrary.Decorators.PostDecorators
 {
     public class PostDecoratorRequest
     {

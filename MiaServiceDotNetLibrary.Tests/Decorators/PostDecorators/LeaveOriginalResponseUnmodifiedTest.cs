@@ -1,4 +1,4 @@
-using Decorators.PostDecorators;
+using MiaServiceDotNetLibrary.Decorators.PostDecorators;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NFluent;

@@ -1,7 +1,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Service
+namespace MiaServiceDotNetLibrary.Service
 {
     public interface IServiceProxy
     {

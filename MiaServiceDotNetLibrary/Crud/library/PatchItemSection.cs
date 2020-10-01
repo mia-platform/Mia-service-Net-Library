@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using Crud.library.enums;
+using MiaServiceDotNetLibrary.Crud.library.enums;
 using Newtonsoft.Json;
 
-namespace Crud.library
+namespace MiaServiceDotNetLibrary.Crud.library
 {
     public class PatchItemSection
     {

@@ -1,10 +1,11 @@
 ﻿using System;
 using log4net;
-using Logging.Entities;
+using MiaServiceDotNetLibrary.Logging;
+using MiaServiceDotNetLibrary.Logging.Entities;
 using Moq;
 using NUnit.Framework;
 
-namespace Logging.Tests
+namespace MiaServiceDotNetLibrary.Tests.Logging
 {
     public class CustomProps
     {

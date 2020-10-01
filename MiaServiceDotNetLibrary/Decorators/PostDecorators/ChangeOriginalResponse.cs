@@ -1,7 +1,6 @@
-using Decorators.Constants;
-using MiaServiceDotNetLibrary.Decorators;
+using MiaServiceDotNetLibrary.Decorators.Constants;
 
-namespace Decorators.PostDecorators
+namespace MiaServiceDotNetLibrary.Decorators.PostDecorators
 {
     public class ChangeOriginalResponse : DecoratorResponse
     {

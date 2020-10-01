@@ -1,6 +1,6 @@
 using System;
 
-namespace Crud.library
+namespace MiaServiceDotNetLibrary.Crud.library
 {
     public class CrudException : Exception
     {

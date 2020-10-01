@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Environment;
+using MiaServiceDotNetLibrary.Environment;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Primitives;
 
-namespace CustomService
+namespace MiaServiceDotNetLibrary
 {
     public class MiaHeadersPropagator
     {

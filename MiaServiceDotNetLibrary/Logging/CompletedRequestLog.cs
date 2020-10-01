@@ -1,6 +1,6 @@
-﻿using Logging.Entities;
+﻿using MiaServiceDotNetLibrary.Logging.Entities;
 
-namespace Logging
+namespace MiaServiceDotNetLibrary.Logging
 {
     public class CompletedRequestLog
     {

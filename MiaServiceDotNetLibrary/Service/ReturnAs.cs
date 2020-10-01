@@ -1,4 +1,4 @@
-namespace Service
+namespace MiaServiceDotNetLibrary.Service
 {
     public enum ReturnAs
     {

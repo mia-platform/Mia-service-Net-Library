@@ -1,8 +1,7 @@
 using System;
 using System.Threading.Tasks;
-using CustomService;
-using Decorators;
-using Environment;
+using MiaServiceDotNetLibrary.Decorators;
+using MiaServiceDotNetLibrary.Environment;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;

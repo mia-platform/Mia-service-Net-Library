@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Dynamic;
 
-namespace Decorators.PostDecorators
+namespace MiaServiceDotNetLibrary.Decorators.PostDecorators
 {
     public class PostDecoratorRequestProxy
     {

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Crud.library.query;
+using MiaServiceDotNetLibrary.Crud.library.query;
 using MiaServiceDotNetLibrary.Tests.Crud.utils;
 using NFluent;
 using NUnit.Framework;

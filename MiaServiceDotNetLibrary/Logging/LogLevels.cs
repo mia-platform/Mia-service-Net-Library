@@ -1,4 +1,4 @@
-﻿namespace Logging
+﻿namespace MiaServiceDotNetLibrary.Logging
 {
     public enum LogLevels
     {

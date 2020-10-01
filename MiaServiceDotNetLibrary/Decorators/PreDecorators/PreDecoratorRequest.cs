@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Dynamic;
-using Environment;
+using MiaServiceDotNetLibrary.Environment;
 
-namespace Decorators.PreDecorators
+namespace MiaServiceDotNetLibrary.Decorators.PreDecorators
 {
     public class PreDecoratorRequest : DecoratorRequest
     {

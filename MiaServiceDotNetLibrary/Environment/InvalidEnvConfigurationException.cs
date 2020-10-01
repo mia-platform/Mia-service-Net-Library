@@ -1,6 +1,6 @@
 using System;
 
-namespace Environment
+namespace MiaServiceDotNetLibrary.Environment
 {
     public class InvalidEnvConfigurationException : Exception
     {

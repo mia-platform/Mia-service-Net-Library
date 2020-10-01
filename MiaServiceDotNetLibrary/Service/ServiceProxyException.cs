@@ -1,6 +1,6 @@
 using System;
 
-namespace Service
+namespace MiaServiceDotNetLibrary.Service
 {
     public class ServiceProxyException : Exception
     {

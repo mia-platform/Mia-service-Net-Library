@@ -2,7 +2,7 @@ using System.Reflection;
 using NFluent;
 using NUnit.Framework;
 
-namespace CustomService.Tests
+namespace MiaServiceDotNetLibrary.Tests
 {
     public class ServiceStatusTest
     {

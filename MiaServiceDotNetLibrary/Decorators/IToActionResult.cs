@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Decorators
+namespace MiaServiceDotNetLibrary.Decorators
 {
     public interface IToActionResult
     {

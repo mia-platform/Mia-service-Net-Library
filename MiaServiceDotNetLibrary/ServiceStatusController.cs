@@ -1,8 +1,8 @@
-using Decorators;
-using Environment;
+using MiaServiceDotNetLibrary.Decorators;
+using MiaServiceDotNetLibrary.Environment;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CustomService
+namespace MiaServiceDotNetLibrary
 {
     public abstract class ServiceStatusController : ServiceController
     {

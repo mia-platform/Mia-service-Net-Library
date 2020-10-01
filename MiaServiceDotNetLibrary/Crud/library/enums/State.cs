@@ -1,4 +1,4 @@
-namespace Crud.library.enums
+namespace MiaServiceDotNetLibrary.Crud.library.enums
 {
     public class State
     {

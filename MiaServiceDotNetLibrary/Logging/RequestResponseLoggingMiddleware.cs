@@ -2,12 +2,11 @@
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
-using log4net;
-using Logging.Entities;
+using MiaServiceDotNetLibrary.Logging.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 
-namespace Logging
+namespace MiaServiceDotNetLibrary.Logging
 {
     public class RequestResponseLoggingMiddleware
     {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Service
+namespace MiaServiceDotNetLibrary.Service
 {
     public class InitServiceOptions
     {

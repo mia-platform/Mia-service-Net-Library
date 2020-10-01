@@ -1,12 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Runtime.InteropServices;
-using Decorators.PostDecorators;
-using Decorators.PreDecorators;
-using MiaServiceDotNetLibrary.Decorators;
+using MiaServiceDotNetLibrary.Decorators.PostDecorators;
+using MiaServiceDotNetLibrary.Decorators.PreDecorators;
 
-namespace Decorators
+namespace MiaServiceDotNetLibrary.Decorators
 {
     public class DecoratorResponseFactory
     {

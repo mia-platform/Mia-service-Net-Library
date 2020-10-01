@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using Crud.library.query.Extensions;
+using MiaServiceDotNetLibrary.Crud.library.query.extensions;
 
-namespace Crud.library.query
+namespace MiaServiceDotNetLibrary.Crud.library.query
 {
     public class MongoQueryBuilder
     {

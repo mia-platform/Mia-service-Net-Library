@@ -1,4 +1,4 @@
-    namespace Environment
+    namespace MiaServiceDotNetLibrary.Environment
 {
     public class MiaEnvConfiguration
     {

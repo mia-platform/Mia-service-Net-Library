@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Dynamic;
 
-namespace Decorators
+namespace MiaServiceDotNetLibrary.Decorators
 {
     public class DecoratorRequest
     {

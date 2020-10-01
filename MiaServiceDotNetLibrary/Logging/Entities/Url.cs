@@ -1,4 +1,4 @@
-﻿namespace Logging.Entities
+﻿namespace MiaServiceDotNetLibrary.Logging.Entities
 {
     public class Url
     {

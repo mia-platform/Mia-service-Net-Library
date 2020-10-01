@@ -1,11 +1,8 @@
-using System.Collections.Generic;
-using System.Dynamic;
-using Decorators.Constants;
-using MiaServiceDotNetLibrary.Decorators;
+using MiaServiceDotNetLibrary.Decorators.Constants;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Decorators.PostDecorators
+namespace MiaServiceDotNetLibrary.Decorators.PostDecorators
 {
     public class LeaveOriginalResponseUnmodified : DecoratorResponse
     {

@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
-using Crud.library.enums;
-using Crud.library.query.Extensions;
+using MiaServiceDotNetLibrary.Crud.library.enums;
+using MiaServiceDotNetLibrary.Crud.library.query.extensions;
 using Microsoft.AspNetCore.Http.Extensions;
 
-namespace Crud.library.query
+namespace MiaServiceDotNetLibrary.Crud.library.query
 {
     public class CrudQueryBuilder
     {

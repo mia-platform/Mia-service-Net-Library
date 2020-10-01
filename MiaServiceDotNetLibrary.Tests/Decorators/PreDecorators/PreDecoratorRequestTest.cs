@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Dynamic;
-using Decorators.PreDecorators;
-using Environment;
+using MiaServiceDotNetLibrary.Decorators.PreDecorators;
+using MiaServiceDotNetLibrary.Environment;
 using NFluent;
 using NUnit.Framework;
 

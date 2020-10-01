@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.Dynamic;
-using Decorators;
-using Decorators.PostDecorators;
-using Decorators.PreDecorators;
 using MiaServiceDotNetLibrary.Decorators;
+using MiaServiceDotNetLibrary.Decorators.PostDecorators;
+using MiaServiceDotNetLibrary.Decorators.PreDecorators;
 using NFluent;
 using NUnit.Framework;
 

@@ -2,10 +2,10 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Crud.library;
-using Crud.library.enums;
+using MiaServiceDotNetLibrary.Crud.library;
+using MiaServiceDotNetLibrary.Crud.library.enums;
 
-namespace Crud
+namespace MiaServiceDotNetLibrary.Crud
 {
     public interface ICrudServiceClient
     {

@@ -1,8 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
 
-namespace Decorators.PreDecorators
+namespace MiaServiceDotNetLibrary.Decorators.PreDecorators
 {
     public class PreDecoratorRequestProxy
     {

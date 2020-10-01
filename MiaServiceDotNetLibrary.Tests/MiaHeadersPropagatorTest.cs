@@ -1,5 +1,4 @@
-using CustomService;
-using Environment;
+using MiaServiceDotNetLibrary.Environment;
 using Microsoft.AspNetCore.Http;
 using NFluent;
 using NUnit.Framework;

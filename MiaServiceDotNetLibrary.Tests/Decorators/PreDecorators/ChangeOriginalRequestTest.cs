@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Dynamic;
-using Decorators;
-using Decorators.PreDecorators;
+using MiaServiceDotNetLibrary.Decorators;
+using MiaServiceDotNetLibrary.Decorators.PreDecorators;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NFluent;

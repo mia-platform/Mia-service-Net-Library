@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Crud.library.enums;
-using Newtonsoft.Json;
+using MiaServiceDotNetLibrary.Crud.library.enums;
 
-namespace Crud.library.query.Extensions
+namespace MiaServiceDotNetLibrary.Crud.library.query.extensions
 {
     public static class MongoQueryExtensionMethods
     {

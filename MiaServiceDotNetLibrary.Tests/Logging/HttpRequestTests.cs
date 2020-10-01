@@ -6,7 +6,7 @@ using Microsoft.Extensions.Primitives;
 using Moq;
 using Newtonsoft.Json;
 
-namespace Logging.Tests
+namespace MiaServiceDotNetLibrary.Tests.Logging
 {
     public class MockBody
     {

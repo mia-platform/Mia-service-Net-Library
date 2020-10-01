@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Dynamic;
-using Decorators;
+using MiaServiceDotNetLibrary.Decorators;
 using NFluent;
 using NUnit.Framework;
 

@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using log4net;
-using MiaServiceDotNetLibrary.Logging;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Logging
+namespace MiaServiceDotNetLibrary.Logging
 {
     public static class Logger
     {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using Crud.library.enums;
-using Crud.library.query;
+using MiaServiceDotNetLibrary.Crud.library.enums;
+using MiaServiceDotNetLibrary.Crud.library.query;
 using NFluent;
 using NUnit.Framework;
 

@@ -1,10 +1,9 @@
-using Crud;
-using CustomService;
-using Environment;
+using MiaServiceDotNetLibrary.Crud;
+using MiaServiceDotNetLibrary.Environment;
+using MiaServiceDotNetLibrary.Service;
 using Microsoft.AspNetCore.Http;
 using NFluent;
 using NUnit.Framework;
-using Service;
 
 namespace MiaServiceDotNetLibrary.Tests
 {

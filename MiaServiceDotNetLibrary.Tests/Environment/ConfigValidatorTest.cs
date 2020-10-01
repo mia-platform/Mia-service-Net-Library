@@ -1,4 +1,4 @@
-using Environment;
+using MiaServiceDotNetLibrary.Environment;
 using NUnit.Framework;
 
 namespace MiaServiceDotNetLibrary.Tests.Environment

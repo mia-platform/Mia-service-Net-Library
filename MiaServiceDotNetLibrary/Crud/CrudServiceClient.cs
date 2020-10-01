@@ -7,12 +7,12 @@ using System.Net.Mime;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Crud.library;
-using Crud.library.enums;
+using MiaServiceDotNetLibrary.Crud.library;
+using MiaServiceDotNetLibrary.Crud.library.enums;
 using Microsoft.AspNetCore.Http.Extensions;
 using Newtonsoft.Json;
 
-namespace Crud
+namespace MiaServiceDotNetLibrary.Crud
 {
     public class CrudServiceClient : ICrudServiceClient
     {

@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using Crud;
-using Environment;
-using Service;
+using MiaServiceDotNetLibrary.Crud;
+using MiaServiceDotNetLibrary.Environment;
+using MiaServiceDotNetLibrary.Service;
 
-namespace CustomService
+namespace MiaServiceDotNetLibrary
 {
     public class ServiceClientFactory
     {

@@ -1,4 +1,4 @@
-using Crud.library;
+using MiaServiceDotNetLibrary.Crud.library;
 
 namespace MiaServiceDotNetLibrary.Tests.Crud.utils
 {

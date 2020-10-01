@@ -1,4 +1,4 @@
-namespace CustomService
+namespace MiaServiceDotNetLibrary
 {
     public class ServiceStatus
     {

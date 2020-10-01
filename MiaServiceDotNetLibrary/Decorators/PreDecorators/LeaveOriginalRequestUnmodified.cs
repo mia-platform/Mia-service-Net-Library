@@ -1,9 +1,8 @@
-using Decorators.Constants;
-using MiaServiceDotNetLibrary.Decorators;
+using MiaServiceDotNetLibrary.Decorators.Constants;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Decorators.PreDecorators
+namespace MiaServiceDotNetLibrary.Decorators.PreDecorators
 {
     public class LeaveOriginalRequestUnmodified : DecoratorResponse
     {
