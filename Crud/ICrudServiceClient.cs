@@ -24,7 +24,7 @@ namespace Crud
         public Task<HttpContent> PatchById<T>(string id, Dictionary<PatchCodingKey, Dictionary<string, object>> body,
             Dictionary<string, string> query = null);
 
-        public Task<HttpContent> PatchBulk<T>(PatchBulkBody body, Dictionary<string, string> query = null);
+        public Task<HttpContent> PatchBulk<T>(IList<PatchItemSection> body, Dictionary<string, string> query = null);
         public Task<HttpContent> Delete<T>(Dictionary<string, string> query = null);
         public Task<HttpContent> DeleteById<T>(string id, Dictionary<string, string> query = null);
     }

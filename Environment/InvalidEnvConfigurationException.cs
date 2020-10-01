@@ -1,6 +1,6 @@
 using System;
 
-namespace CustomPlugin.Environment
+namespace Environment
 {
     public class InvalidEnvConfigurationException : Exception
     {
