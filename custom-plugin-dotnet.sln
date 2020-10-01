@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service.Tests", "Service.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomPlugin.Tests", "CustomPlugin.Tests\CustomPlugin.Tests.csproj", "{6C614046-6BF3-4E98-81DD-C67FA7F9A892}"
 EndProject
-Project("{aFAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crud", "Crud\Crud.csproj", "{2DA3276E-4C2E-43D5-8276-AACD5AEF2B3A}"
+Project("{00000000-0000-0000-0000-000000000000}") = "Crud", "Crud\Crud.csproj", "{2DA3276E-4C2E-43D5-8276-AACD5AEF2B3A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crud.Tests", "Crud.Tests\Crud.Tests.csproj", "{B897D44E-09BF-4049-B19E-23EB83F2DB50}"
 EndProject
@@ -19,6 +19,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Environment.Tests", "Environment.Tests\Environment.Tests.csproj", "{BE406D59-874F-4440-9375-136CAF2AB22B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Decorator.Tests", "Decorator.Tests\Decorator.Tests.csproj", "{B1F1D538-B937-40CB-A875-B7B2F491FF3A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logging", "Logging\Logging.csproj", "{54626233-C090-421A-BB95-BA2D7B06429A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logging.Tests", "Logging.Tests\Logging.Tests.csproj", "{A1B6E9AE-A731-4C39-9183-82BF0C81DD4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
