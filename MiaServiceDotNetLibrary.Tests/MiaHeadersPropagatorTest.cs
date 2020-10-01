@@ -1,10 +1,10 @@
-using CustomPlugin;
+using CustomService;
 using Environment;
 using Microsoft.AspNetCore.Http;
 using NFluent;
 using NUnit.Framework;
 
-namespace CustomService.Tests
+namespace MiaServiceDotNetLibrary.Tests
 {
     public class MiaHeadersPropagatorTest
     {
