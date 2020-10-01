@@ -2,14 +2,14 @@ using System.Reflection;
 using NFluent;
 using NUnit.Framework;
 
-namespace CustomPlugin.Tests
+namespace CustomService.Tests
 {
-    public class CpStatusTest
+    public class ServiceStatusTest
     {
         [Test]
         public void TestOk()
         {
-            var result = CpStatus.Ok();
+            var result = ServiceStatus.Ok();
             Check.That(result.Name).Equals(Assembly.GetEntryAssembly()?.GetName().Name);
             Check.That(result.Version).Equals(Assembly.GetEntryAssembly()?.GetName().Version?.ToString());
             Check.That(result.Status).Equals("OK");
@@ -18,7 +18,7 @@ namespace CustomPlugin.Tests
         [Test]
         public void TestKo()
         {
-            var result = CpStatus.Ko();
+            var result = ServiceStatus.Ko();
             Check.That(result.Name).Equals(Assembly.GetEntryAssembly()?.GetName().Name);
             Check.That(result.Version).Equals(Assembly.GetEntryAssembly()?.GetName().Version?.ToString());
             Check.That(result.Status).Equals("KO");

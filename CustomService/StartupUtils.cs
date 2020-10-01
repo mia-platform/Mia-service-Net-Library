@@ -10,14 +10,14 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace CustomPlugin
+namespace CustomService
 {
     public class StartupUtils
     {
         private const string SwaggerDocumentName = "json";
         private const string SwaggerDocsPrefix = "documentation";
 
-        public static void ConfigureCpServices(IServiceCollection services, IConfiguration configuration)
+        public static void ConfigureMiaLibraryServices(IServiceCollection services, IConfiguration configuration)
         {
             var miaEnvConfiguration = new MiaEnvConfiguration();
             configuration.Bind(miaEnvConfiguration);

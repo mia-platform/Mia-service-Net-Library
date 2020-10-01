@@ -25,7 +25,7 @@ namespace Logging
             responseStopwatch.Start();
             var request = context.Request;
             var response = context.Response;
-            var cpRequest = new CpRequest
+            var serviceRequest = new ServiceRequest
             {
                 Method = request.Method,
                 UserAgent = new UserAgent
@@ -34,7 +34,7 @@ namespace Logging
                 }
             };
             var reqId = GetReqId(request);
-            var incomingRequestLog = BuildIncomingRequestLog(context, cpRequest, request, reqId);
+            var incomingRequestLog = BuildIncomingRequestLog(context, serviceRequest, request, reqId);
             Logger.LogRequest(incomingRequestLog);
             
             using (var buffer = new MemoryStream()) {
@@ -43,7 +43,7 @@ namespace Logging
                 await _next(context);
                 responseStopwatch.Stop();
                 var passedMicroSeconds = responseStopwatch.ElapsedMilliseconds / 1000m;
-                var cpResponse = new CpResponse
+                var serviceResponse = new ServiceResponse
                 {
                     StatusCode = response.StatusCode,
                     Body = new Body
@@ -51,7 +51,7 @@ namespace Logging
                         Bytes = response.ContentLength ?? buffer.Length
                     }
                 };
-                var completedRequestLog = BuildCompletedRequestLog(context, cpRequest, cpResponse, request, passedMicroSeconds, reqId);
+                var completedRequestLog = BuildCompletedRequestLog(context, serviceRequest, serviceResponse, request, passedMicroSeconds, reqId);
                 buffer.Position = 0;
                 await buffer.CopyToAsync(bodyStream);
                 Logger.LogRequest(completedRequestLog);
@@ -74,7 +74,7 @@ namespace Logging
             return reqId;
         }
 
-        private static IncomingRequestLog BuildIncomingRequestLog(HttpContext context, CpRequest cpRequest, HttpRequest request, long reqId)
+        private static IncomingRequestLog BuildIncomingRequestLog(HttpContext context, ServiceRequest serviceRequest, HttpRequest request, long reqId)
         {
             return new IncomingRequestLog
             {
@@ -83,7 +83,7 @@ namespace Logging
                 ReqId = reqId,
                 Http = new HttpIncoming
                 {
-                    Request = cpRequest
+                    Request = serviceRequest
                 },
                 Url = new Url
                 {
@@ -97,8 +97,8 @@ namespace Logging
             };
         }
 
-        private static CompletedRequestLog BuildCompletedRequestLog(HttpContext context, CpRequest cpRequest, 
-            CpResponse cpResponse, HttpRequest request, decimal responseTime, long reqId)
+        private static CompletedRequestLog BuildCompletedRequestLog(HttpContext context, ServiceRequest serviceRequest, 
+            ServiceResponse serviceResponse, HttpRequest request, decimal responseTime, long reqId)
         {
             return new CompletedRequestLog
             {
@@ -107,8 +107,8 @@ namespace Logging
                 ReqId = reqId,
                 Http = new Http
                 {
-                    Request = cpRequest,
-                    Response = cpResponse
+                    Request = serviceRequest,
+                    Response = serviceResponse
                 },
                 Url = new Url 
                 {

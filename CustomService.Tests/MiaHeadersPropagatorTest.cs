@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using NFluent;
 using NUnit.Framework;
 
-namespace CustomPlugin.Tests
+namespace CustomService.Tests
 {
     public class MiaHeadersPropagatorTest
     {

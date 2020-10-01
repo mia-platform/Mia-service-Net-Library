@@ -2,6 +2,10 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
+        <PackageId>MiaServiceDotNetLibrary</PackageId>
+        <Version>1.0.0</Version>
+        <Company>MiaPlatform</Company>
+        <RootNamespace>CustomPlugin</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -9,6 +13,7 @@
       <ProjectReference Include="..\Decorators\Decorators.csproj" />
       <ProjectReference Include="..\Environment\Environment.csproj" />
       <ProjectReference Include="..\Service\Service.csproj" />
+      <ProjectReference Include="..\Logging\Logging.csproj" />
     </ItemGroup>
 
     <ItemGroup>

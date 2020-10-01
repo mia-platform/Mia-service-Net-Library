@@ -5,7 +5,7 @@ using NFluent;
 using NUnit.Framework;
 using Service;
 
-namespace CustomPlugin.Tests
+namespace CustomService.Tests
 {
     public class ServiceClientFactoryTest
     {

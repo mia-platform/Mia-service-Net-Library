@@ -1,21 +1,21 @@
-namespace CustomPlugin
+namespace CustomService
 {
-    public class CpStatus
+    public class ServiceStatus
     {
         private const string OkStatus = "OK";
         private const string KoStatus = "KO";
         
-        public static CpStatusBody Ok()
+        public static ServiceStatusBody Ok()
         {
-            return new CpStatusBody
+            return new ServiceStatusBody
             {
                 Status = OkStatus
             };
         }
         
-        public static CpStatusBody Ko()
+        public static ServiceStatusBody Ko()
         {
-            return new CpStatusBody
+            return new ServiceStatusBody
             {
                 Status = KoStatus
             };

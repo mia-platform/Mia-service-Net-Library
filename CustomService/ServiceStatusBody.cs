@@ -1,8 +1,8 @@
 using System;
 
-namespace CustomPlugin
+namespace CustomService
 {
-    public class CpStatusBody
+    public class ServiceStatusBody
     {
         public string Name => System.Reflection.Assembly.GetEntryAssembly()?.GetName().Name;
 

@@ -4,6 +4,8 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
 
         <IsPackable>false</IsPackable>
+
+        <RootNamespace>CustomPlugin.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -14,7 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\CustomPlugin\CustomPlugin.csproj" />
+      <ProjectReference Include="..\CustomService\CustomService.csproj" />
     </ItemGroup>
 
 </Project>

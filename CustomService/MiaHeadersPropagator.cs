@@ -4,7 +4,7 @@ using Environment;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 
-namespace CustomPlugin
+namespace CustomService
 {
     public class MiaHeadersPropagator
     {

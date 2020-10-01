@@ -2,6 +2,6 @@
 {
     public class HttpIncoming
     {
-        public CpRequest Request { get; set; }
+        public ServiceRequest Request { get; set; }
     }
 }

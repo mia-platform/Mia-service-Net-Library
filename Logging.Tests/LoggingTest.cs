@@ -88,7 +88,7 @@ namespace Logging.Tests
                 ReqId = ReqId,
                 Http = new Http
                 {
-                    Request = new CpRequest
+                    Request = new ServiceRequest
                     {
                         Method = HttpRequestMethod,
                         UserAgent = new UserAgent
@@ -96,7 +96,7 @@ namespace Logging.Tests
                             Original = Original
                         },
                     },
-                    Response = new CpResponse
+                    Response = new ServiceResponse
                     {
                         Body = new Body
                         {

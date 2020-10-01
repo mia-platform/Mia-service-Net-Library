@@ -2,11 +2,11 @@ using Decorators;
 using Environment;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CustomPlugin.obj
+namespace CustomService
 {
-    public abstract class CpStatusController : CpController
+    public abstract class ServiceStatusController : ServiceController
     {
-        protected CpStatusController(
+        protected ServiceStatusController(
             MiaEnvConfiguration miaEnvConfiguration,
             ServiceClientFactory serviceClientFactory,
             DecoratorResponseFactory decoratorResponseFactory) :
@@ -16,38 +16,38 @@ namespace CustomPlugin.obj
 
         [HttpGet]
         [Route("/-/healthz")]
-        public CpStatusBody Healthz()
+        public ServiceStatusBody Healthz()
         {
             return HealthinessHandler();
         }
 
         [HttpGet]
         [Route("/-/ready")]
-        public CpStatusBody Ready()
+        public ServiceStatusBody Ready()
         {
             return ReadinessHandler();
         }
 
         [HttpGet]
         [Route("/-/check-up")]
-        public CpStatusBody CheckUp()
+        public ServiceStatusBody CheckUp()
         {
             return CheckUpHandler();
         }
 
-        protected virtual CpStatusBody HealthinessHandler()
+        protected virtual ServiceStatusBody HealthinessHandler()
         {
-            return CpStatus.Ok();
+            return ServiceStatus.Ok();
         }
 
-        protected virtual CpStatusBody ReadinessHandler()
+        protected virtual ServiceStatusBody ReadinessHandler()
         {
-            return CpStatus.Ok();
+            return ServiceStatus.Ok();
         }
         
-        protected virtual CpStatusBody CheckUpHandler()
+        protected virtual ServiceStatusBody CheckUpHandler()
         {
-            return CpStatus.Ok();
+            return ServiceStatus.Ok();
         }
     }
 }

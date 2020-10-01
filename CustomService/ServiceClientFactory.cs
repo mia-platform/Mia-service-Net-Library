@@ -3,7 +3,7 @@ using Crud;
 using Environment;
 using Service;
 
-namespace CustomPlugin
+namespace CustomService
 {
     public class ServiceClientFactory
     {

@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CustomPlugin\CustomPlugin.csproj" />
+    <ProjectReference Include="..\CustomService\CustomService.csproj" />
     <ProjectReference Include="..\Service\Service.csproj" />
   </ItemGroup>
 

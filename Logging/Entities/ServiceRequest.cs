@@ -1,6 +1,6 @@
 ﻿namespace Logging.Entities
 {
-    public class CpRequest
+    public class ServiceRequest
     {
         public string Method { get; set; }
         public UserAgent UserAgent { get; set; }

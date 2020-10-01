@@ -2,11 +2,11 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Service\Service.csproj", "{FD9203A3-6F5D-431E-B078-3280593DD447}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomPlugin", "CustomPlugin\CustomPlugin.csproj", "{E3C0685F-DE3C-453D-A4D3-7FB25181A768}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomService", "CustomService\CustomService.csproj", "{E3C0685F-DE3C-453D-A4D3-7FB25181A768}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service.Tests", "Service.Tests\Service.Tests.csproj", "{15C0E7D0-151E-4290-8BDE-4ECF133AA1F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomPlugin.Tests", "CustomPlugin.Tests\CustomPlugin.Tests.csproj", "{6C614046-6BF3-4E98-81DD-C67FA7F9A892}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomService.Tests", "CustomService.Tests\CustomService.Tests.csproj", "{6C614046-6BF3-4E98-81DD-C67FA7F9A892}"
 EndProject
 Project("{00000000-0000-0000-0000-000000000000}") = "Crud", "Crud\Crud.csproj", "{2DA3276E-4C2E-43D5-8276-AACD5AEF2B3A}"
 EndProject

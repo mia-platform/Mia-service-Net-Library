@@ -2,17 +2,17 @@ using Decorators;
 using Environment;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CustomPlugin
+namespace CustomService
 {
     [ApiController]
     [Route("[controller]")]
-    public abstract class CpController : ControllerBase
+    public abstract class ServiceController : ControllerBase
     {
         protected readonly MiaEnvConfiguration MiaEnvConfiguration;
         protected readonly ServiceClientFactory ServiceClientFactory;
         protected readonly DecoratorResponseFactory DecoratorResponseFactory;
 
-        public CpController(MiaEnvConfiguration miaEnvConfiguration, ServiceClientFactory serviceClientFactory,
+        public ServiceController(MiaEnvConfiguration miaEnvConfiguration, ServiceClientFactory serviceClientFactory,
             DecoratorResponseFactory decoratorResponseFactory)
         {
             MiaEnvConfiguration = miaEnvConfiguration;
