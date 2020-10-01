@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Crud;
-using CustomPlugin.Environment;
+using Environment;
 using Service;
 
 namespace CustomPlugin
@@ -27,14 +27,15 @@ namespace CustomPlugin
 
         public IServiceProxy GetServiceProxy(InitServiceOptions options)
         {
-            var microserviceNameKey = _miaEnvConfiguration.MICROSERVICE_GATEWAY_SERVICE_NAME;
-            return string.IsNullOrEmpty(microserviceNameKey)
+            var microserviceGatewayName = _miaEnvConfiguration.MICROSERVICE_GATEWAY_SERVICE_NAME;
+            
+            return string.IsNullOrEmpty(microserviceGatewayName)
                 ? null
-                : new ServiceProxy(_miaHeaders, microserviceNameKey, options);
+                : new ServiceProxy(_miaHeaders, microserviceGatewayName, options);
         }
 
         public ICrudServiceClient GetCrudServiceClient(
-            string apiPath = default(string),
+            string apiPath,
             string apiSecret = default(string), int crudVersion = default(int))
         {
             return new CrudServiceClient(_miaHeaders, apiPath, apiSecret, crudVersion); 

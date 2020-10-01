@@ -14,10 +14,9 @@ namespace Service.Tests
     {
         private WireMockServer _server;
         private ServiceProxy _sut;
-        private HttpRequestHeaders _httpRequestHeaders = null;
         private const int SUCCESS_STATUS_CODE = 200;
         private const string SUCCESS_RESPONSE_BODY = @"{ ""msg"": ""Hello world!"" }";
-        
+
         [SetUp]
         public void StartMockServer()
         {
@@ -38,7 +37,59 @@ namespace Service.Tests
                         .WithBody(SUCCESS_RESPONSE_BODY)
                 );
 
-            var response = await _sut.Get("/foo");
+            var response = await _sut.Get("foo");
+            var statusCode = (int) response.StatusCode;
+            var responseBody = await response.Content.ReadAsStringAsync();
+
+            Check.That(statusCode).IsEqualTo(SUCCESS_STATUS_CODE);
+            Check.That(responseBody).IsEqualTo(SUCCESS_RESPONSE_BODY);
+        }
+
+        [Test]
+        public async Task TestGetWithCustomInitOptions()
+        {
+            var initServiceOptions = new InitServiceOptions(_server.Ports.First(), Protocol.Http,
+                new Dictionary<string, string> {{"foo", "bar"}}, "prefix");
+            _sut = new ServiceProxy(new Dictionary<string, string>(), "localhost", initServiceOptions);
+
+            _server
+                .Given(Request.Create().WithPath("/prefix/foo").WithHeader("foo", "bar").UsingGet())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(SUCCESS_STATUS_CODE)
+                        .WithBody(SUCCESS_RESPONSE_BODY)
+                );
+
+            var response = await _sut.Get("foo");
+            var statusCode = (int) response.StatusCode;
+            var responseBody = await response.Content.ReadAsStringAsync();
+
+            Check.That(statusCode).IsEqualTo(SUCCESS_STATUS_CODE);
+            Check.That(responseBody).IsEqualTo(SUCCESS_RESPONSE_BODY);
+        }
+
+        [Test]
+        public async Task TestGetWithCustomInitOptionsAndServiceOptions()
+        {
+            var initServiceOptions = new InitServiceOptions(_server.Ports.First(), Protocol.Http,
+                new Dictionary<string, string> {{"foo", "bar"}}, "one");
+            _sut = new ServiceProxy(new Dictionary<string, string>(), "localhost", initServiceOptions);
+
+            _server
+                .Given(Request.Create()
+                    .WithPath("/one/two/foo")
+                    .WithHeader("foo", "bar")
+                    .WithHeader("baz", "bam")
+                    .UsingGet())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(SUCCESS_STATUS_CODE)
+                        .WithBody(SUCCESS_RESPONSE_BODY)
+                );
+
+            var response = await _sut.Get("foo", "", "",
+                new ServiceOptions(_server.Ports.First(), Protocol.Http,
+                    new Dictionary<string, string> {{"baz", "bam"}}, "two"));
             var statusCode = (int) response.StatusCode;
             var responseBody = await response.Content.ReadAsStringAsync();
 
@@ -62,7 +113,7 @@ namespace Service.Tests
                 );
 
             var headers = new Dictionary<string, string> {{"foo", "bar"}};
-            var response = await _sut.Get("/foo", "bar=baz", "", new ServiceOptions(port, Protocol.Http, headers));
+            var response = await _sut.Get("foo", "bar=baz", "", new ServiceOptions(port, Protocol.Http, headers));
             var statusCode = (int) response.StatusCode;
             var responseBody = await response.Content.ReadAsStringAsync();
 
@@ -86,7 +137,7 @@ namespace Service.Tests
                         .WithBody(SUCCESS_RESPONSE_BODY)
                 );
 
-            var response = await _sut.Post("/foo", "", body);
+            var response = await _sut.Post("foo", "", body);
             var statusCode = (int) response.StatusCode;
             var responseBody = await response.Content.ReadAsStringAsync();
 
@@ -111,7 +162,7 @@ namespace Service.Tests
                 );
 
             var headers = new Dictionary<string, string> {{"foo", "bar"}};
-            var response = await _sut.Post("/foo", "bar=baz", body, new ServiceOptions(port, Protocol.Http, headers));
+            var response = await _sut.Post("foo", "bar=baz", body, new ServiceOptions(port, Protocol.Http, headers));
             var statusCode = (int) response.StatusCode;
             var responseBody = await response.Content.ReadAsStringAsync();
 
@@ -135,7 +186,7 @@ namespace Service.Tests
                         .WithBody(SUCCESS_RESPONSE_BODY)
                 );
 
-            var response = await _sut.Put("/foo", "", body);
+            var response = await _sut.Put("foo", "", body);
             var statusCode = (int) response.StatusCode;
             var responseBody = await response.Content.ReadAsStringAsync();
 
@@ -160,7 +211,7 @@ namespace Service.Tests
                 );
 
             var headers = new Dictionary<string, string> {{"foo", "bar"}};
-            var response = await _sut.Put("/foo", "bar=baz", body, new ServiceOptions(port, Protocol.Http, headers));
+            var response = await _sut.Put("foo", "bar=baz", body, new ServiceOptions(port, Protocol.Http, headers));
             var statusCode = (int) response.StatusCode;
             var responseBody = await response.Content.ReadAsStringAsync();
 
@@ -168,7 +219,7 @@ namespace Service.Tests
             Check.That(statusCode).IsEqualTo(SUCCESS_STATUS_CODE);
             Check.That(responseBody).IsEqualTo(SUCCESS_RESPONSE_BODY);
         }
-        
+
         [Test]
         public async Task TestPatch()
         {
@@ -184,7 +235,7 @@ namespace Service.Tests
                         .WithBody(SUCCESS_RESPONSE_BODY)
                 );
 
-            var response = await _sut.Patch("/foo", "", body);
+            var response = await _sut.Patch("foo", "", body);
             var statusCode = (int) response.StatusCode;
             var responseBody = await response.Content.ReadAsStringAsync();
 
@@ -209,7 +260,7 @@ namespace Service.Tests
                 );
 
             var headers = new Dictionary<string, string> {{"foo", "bar"}};
-            var response = await _sut.Patch("/foo", "bar=baz", body, new ServiceOptions(port, Protocol.Http, headers));
+            var response = await _sut.Patch("foo", "bar=baz", body, new ServiceOptions(port, Protocol.Http, headers));
             var statusCode = (int) response.StatusCode;
             var responseBody = await response.Content.ReadAsStringAsync();
 
@@ -217,7 +268,7 @@ namespace Service.Tests
             Check.That(statusCode).IsEqualTo(SUCCESS_STATUS_CODE);
             Check.That(responseBody).IsEqualTo(SUCCESS_RESPONSE_BODY);
         }
-                
+
         [Test]
         public async Task TestDelete()
         {
@@ -232,7 +283,7 @@ namespace Service.Tests
                         .WithBody(SUCCESS_RESPONSE_BODY)
                 );
 
-            var response = await _sut.Delete("/foo", "foo=bar");
+            var response = await _sut.Delete("foo", "foo=bar");
             var statusCode = (int) response.StatusCode;
             var responseBody = await response.Content.ReadAsStringAsync();
 
@@ -254,9 +305,9 @@ namespace Service.Tests
                         .WithStatusCode(SUCCESS_STATUS_CODE)
                         .WithBody(SUCCESS_RESPONSE_BODY)
                 );
-            
+
             var headers = new Dictionary<string, string> {{"foo", "bar"}};
-            var response = await _sut.Delete("/foo",  "bar=baz", "", new ServiceOptions(port, Protocol.Http, headers));
+            var response = await _sut.Delete("foo", "bar=baz", "", new ServiceOptions(port, Protocol.Http, headers));
             var statusCode = (int) response.StatusCode;
             var responseBody = await response.Content.ReadAsStringAsync();
 
@@ -264,7 +315,7 @@ namespace Service.Tests
             Check.That(statusCode).IsEqualTo(SUCCESS_STATUS_CODE);
             Check.That(responseBody).IsEqualTo(SUCCESS_RESPONSE_BODY);
         }
-        
+
         [TearDown]
         public void ShutdownServer()
         {

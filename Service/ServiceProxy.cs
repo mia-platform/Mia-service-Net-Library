@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
+using Flurl;
 
 namespace Service
 {
@@ -47,12 +48,14 @@ namespace Service
             }
         }
 
-        private Uri BuildUrl(string path, string queryString, InitServiceOptions options)
+        private Uri BuildUrl(string path, string queryString, ServiceOptions options)
         {
+            var prefixedPath = Url.Combine(InitOptions.Prefix, options?.Prefix, path);
+            
             var uriBuilder = new UriBuilder
             {
                 Host = ServiceName,
-                Path = path,
+                Path = prefixedPath,
                 Port = options?.Port ?? InitOptions.Port,
                 Scheme = (options?.Protocol ?? InitOptions.Protocol).ToString(),
                 Query = queryString,

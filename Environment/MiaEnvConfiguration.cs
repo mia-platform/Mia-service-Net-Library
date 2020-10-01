@@ -1,8 +1,9 @@
-namespace CustomPlugin.Environment
+    namespace Environment
 {
     public class MiaEnvConfiguration
     {
         public string USERID_HEADER_KEY { get; set; }
+        public string USER_PROPERTIES_HEADER_KEY { get; set; }
         public string GROUPS_HEADER_KEY { get; set; }
         public string CLIENTTYPE_HEADER_KEY { get; set; }
         public string BACKOFFICE_HEADER_KEY { get; set; }

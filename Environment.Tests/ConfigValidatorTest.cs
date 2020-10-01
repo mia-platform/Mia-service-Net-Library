@@ -1,7 +1,7 @@
-using CustomPlugin.Environment;
+using Environment;
 using NUnit.Framework;
 
-namespace CustomPlugin.Tests.Environment
+namespace Environment.Tests
 {
     public class ConfigValidatorTest
     {
@@ -11,6 +11,7 @@ namespace CustomPlugin.Tests.Environment
             var config = new MiaEnvConfiguration
             {
                 USERID_HEADER_KEY = "userid",
+                USER_PROPERTIES_HEADER_KEY = "userproperties",
                 GROUPS_HEADER_KEY = "usergroups",
                 CLIENTTYPE_HEADER_KEY = "clienttype",
                 BACKOFFICE_HEADER_KEY = "isbackoffice",
@@ -35,6 +36,7 @@ namespace CustomPlugin.Tests.Environment
             var config = new MiaEnvConfiguration
             {
                 USERID_HEADER_KEY = "userid",
+                USER_PROPERTIES_HEADER_KEY = "userproperties",
                 GROUPS_HEADER_KEY = "usergroups",
                 CLIENTTYPE_HEADER_KEY = "clienttype",
                 BACKOFFICE_HEADER_KEY = "isbackoffice",

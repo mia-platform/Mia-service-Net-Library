@@ -57,7 +57,7 @@ namespace Crud.library.query
             return this;
         }
 
-        public CrudQueryBuilder Properties(List<string> value)
+        public CrudQueryBuilder Properties(IList<string> value)
         {
             _query.AddPropertiesParam(value);
             return this;

@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using Crud.library.enums;
 using Crud.library.query;
-using Crud.Tests.utils;
-using Newtonsoft.Json;
 using NFluent;
 using NUnit.Framework;
 

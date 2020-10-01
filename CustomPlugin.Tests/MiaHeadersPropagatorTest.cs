@@ -1,4 +1,4 @@
-using CustomPlugin.Environment;
+using Environment;
 using Microsoft.AspNetCore.Http;
 using NFluent;
 using NUnit.Framework;
@@ -11,6 +11,7 @@ namespace CustomPlugin.Tests
         private MiaEnvConfiguration _envConfig = new MiaEnvConfiguration
         {
             USERID_HEADER_KEY = "userid",
+            USER_PROPERTIES_HEADER_KEY = "userproperties",
             GROUPS_HEADER_KEY = "usergroups",
             CLIENTTYPE_HEADER_KEY = "clienttype",
             BACKOFFICE_HEADER_KEY = "isbackoffice",
@@ -23,7 +24,7 @@ namespace CustomPlugin.Tests
         {
             var headers = new HeaderDictionary
             {
-                {"userid", "foo"}, {"usergroups", "bar"}, {"clienttype", "baz"}, {"isbackoffice", "true"}
+                {"userid", "foo"}, {"userproperties", "bam"}, {"usergroups", "bar"}, {"clienttype", "baz"}, {"isbackoffice", "true"}
             };
             _miaHeadersPropagator = new MiaHeadersPropagator(headers, _envConfig);
         }
@@ -32,6 +33,12 @@ namespace CustomPlugin.Tests
         public void TestGetUserId()
         {
             Check.That(_miaHeadersPropagator.GetUserId()).IsEqualTo("foo");
+        }
+        
+        [Test]
+        public void TestGetUserProperties()
+        {
+            Check.That(_miaHeadersPropagator.GetUserProperties()).IsEqualTo("bam");
         }
         
         [Test]

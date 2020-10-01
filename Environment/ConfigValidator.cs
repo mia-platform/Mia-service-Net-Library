@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace CustomPlugin.Environment
+namespace Environment
 {
     public class ConfigValidator
     {
