@@ -31,3 +31,4 @@ dotnet add package MiaServiceDotNetLibrary --version 1.0.0
 * [**Access platform headers**](./docs/MIAHeaders.md)
 * [**Logging**](./docs/Logging.md)
 * [**Release steps**](./docs/Release.md)
+
