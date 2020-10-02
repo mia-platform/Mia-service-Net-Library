@@ -1,4 +1,5 @@
 [![Build Status][github-actions-svg]][github-actions]
+![Nuget](https://img.shields.io/nuget/v/MiaServiceDotNetLibrary)
 
 # Mia service .NET Library
 A library that allows you to define Mia-Platform custom services in .NET Core easily.
