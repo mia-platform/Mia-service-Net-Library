@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiaServiceDotNetLibrary", "MiaServiceDotNetLibrary\MiaServiceDotNetLibrary.csproj", "{B107BDBB-0B54-4FE7-B44B-563F1508B01E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiaServiceDotNetLibrary.Tests", "MiaServiceDotNetLibrary.Tests\MiaServiceDotNetLibrary.Tests.csproj", "{52E1B06A-94FF-4FA7-BA4F-C29D07FBA418}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B107BDBB-0B54-4FE7-B44B-563F1508B01E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B107BDBB-0B54-4FE7-B44B-563F1508B01E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B107BDBB-0B54-4FE7-B44B-563F1508B01E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B107BDBB-0B54-4FE7-B44B-563F1508B01E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52E1B06A-94FF-4FA7-BA4F-C29D07FBA418}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52E1B06A-94FF-4FA7-BA4F-C29D07FBA418}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52E1B06A-94FF-4FA7-BA4F-C29D07FBA418}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52E1B06A-94FF-4FA7-BA4F-C29D07FBA418}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
