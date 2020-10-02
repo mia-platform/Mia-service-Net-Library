@@ -6,6 +6,7 @@ When you want to release a new version, update the `CHANGELOG.md` file with the 
 ### Version increment
 Increment the release version by updating property `Version` in `MiaServiceDotNetLibrary/MiaServiceDotNetLibrary.csproj` file.
 For example:
+
 ```diff
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -18,9 +19,17 @@ For example:
 
 ### Version tag
 Create a tag for the new version with `git tag -a [new_version] -m [message]`. For example:
+
 ```bash
 git tag -a v.2.0.0 -m "Release 2.0.0"
 ```
 
-### NuGet Package
+### NuGet Package and Publish
+
 To create a NuGet package, run `dotnet pack`.
+
+To publish the library run
+
+```bash
+dotnet nuget push MiaServiceDotNetLibrary.1.0.0.nupkg --api-key YOUR_API_KEY --source https://api.nuget.org/v3/index.json
+```
