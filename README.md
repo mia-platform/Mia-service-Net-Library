@@ -36,4 +36,4 @@ dotnet add package MiaServiceDotNetLibrary --version 1.0.0
 
 
 [github-actions]: https://github.com/mia-platform/Mia-service-Net-Library/actions
-[github-actions-svg]: https://github.com/mia-platform/Mia-service-Net-Library/workflows/worflow/badge.svg
+[github-actions-svg]: https://github.com/mia-platform/Mia-service-Net-Library/workflows/.NET%20Core/badge.svg
