@@ -25,9 +25,9 @@ dotnet add package MiaServiceDotNetLibrary --version 1.0.0
 ```
 
 ## Usage documentation
-* [<b>Service proxy</b></a>](./docs/ServiceProxy.md)
-* [<b>CRUD client</b>](./docs/CRUDClient.md)
-* [<b>Decorators</b>](./docs/Decorators.md)
-* [<b>Access platform headers</b>](./docs/MIAHeaders.md)
-* [<b>Logging</b>](./docs/Logging.md)
-* [<b>Release steps</b>](./docs/Release.md)
+* [**Service proxy**](./docs/ServiceProxy.md)
+* [**CRUD client**](./docs/CRUDClient.md)
+* [**Decorators**](./docs/Decorators.md)
+* [**Access platform headers**](./docs/MIAHeaders.md)
+* [**Logging**](./docs/Logging.md)
+* [**Release steps**](./docs/Release.md)
