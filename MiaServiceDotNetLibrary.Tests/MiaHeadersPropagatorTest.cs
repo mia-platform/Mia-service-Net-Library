@@ -15,8 +15,7 @@ namespace MiaServiceDotNetLibrary.Tests
             GROUPS_HEADER_KEY = "usergroups",
             CLIENTTYPE_HEADER_KEY = "clienttype",
             BACKOFFICE_HEADER_KEY = "isbackoffice",
-            MICROSERVICE_GATEWAY_SERVICE_NAME = "microservice-gateway",
-            CRUD_PATH = "crud-path"
+            MICROSERVICE_GATEWAY_SERVICE_NAME = "microservice-gateway"
         };
         
         [SetUp]
