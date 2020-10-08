@@ -15,8 +15,7 @@ namespace MiaServiceDotNetLibrary.Tests.Environment
                 GROUPS_HEADER_KEY = "usergroups",
                 CLIENTTYPE_HEADER_KEY = "clienttype",
                 BACKOFFICE_HEADER_KEY = "isbackoffice",
-                MICROSERVICE_GATEWAY_SERVICE_NAME = "microservice-gateway",
-                CRUD_PATH = "crud-path"
+                MICROSERVICE_GATEWAY_SERVICE_NAME = "microservice-gateway"
             };
 
             Assert.DoesNotThrow(() => ConfigValidator.ValidateConfig(config));
@@ -35,7 +34,6 @@ namespace MiaServiceDotNetLibrary.Tests.Environment
         {
             var config = new MiaEnvConfiguration
             {
-                USERID_HEADER_KEY = "userid",
                 USER_PROPERTIES_HEADER_KEY = "userproperties",
                 GROUPS_HEADER_KEY = "usergroups",
                 CLIENTTYPE_HEADER_KEY = "clienttype",
