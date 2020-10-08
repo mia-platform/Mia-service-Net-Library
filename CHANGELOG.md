@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 1.0.1 - 08-10-2020
+
 - [BMP-588](https://makeitapp.atlassian.net/browse/BMP-588): removed CRUD_PATH environment variable from the required ones.
 
 ## 1.0.0 - 02-10-2020
