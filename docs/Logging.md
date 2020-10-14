@@ -3,7 +3,7 @@ You can log a message to see in DevOps console. The library uses the [log4net lo
 
 There are two types of logging:
 
- * Request Logging: logs every request related message (incoming, completed and custom ones) with the typical Mia-Platform logging format.
+ * Request Logging: logs every request related message (incoming, completed and custom ones) with the standard Mia-Platform logging format.
  * Message Logging: logs a message, along with its custom properties if there are any.
 
 ```
