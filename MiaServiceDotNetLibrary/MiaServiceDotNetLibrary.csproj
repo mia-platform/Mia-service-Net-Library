@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
-        <PackageId>MiaServiceDotNetLibrary</PackageId>
+        <PackageId>PippoServiceDotNetLibrary</PackageId>
         <Version>1.0.0</Version>
         <Company>MiaPlatform</Company>
     </PropertyGroup>

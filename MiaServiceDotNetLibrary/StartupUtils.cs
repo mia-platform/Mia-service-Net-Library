@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using MiaServiceDotNetLibrary.Decorators;
 using MiaServiceDotNetLibrary.Environment;
+using MiaServiceDotNetLibrary.Logging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using log4net;
 
 namespace MiaServiceDotNetLibrary
 {
@@ -19,6 +21,8 @@ namespace MiaServiceDotNetLibrary
 
         public static void ConfigureMiaLibraryServices(IServiceCollection services, IConfiguration configuration)
         {
+            // Aggiungere commento esplicativo con link
+            LogManager.GetLogger(typeof(Logger));
             var miaEnvConfiguration = new MiaEnvConfiguration();
             configuration.Bind(miaEnvConfiguration);
             ConfigValidator.ValidateConfig(miaEnvConfiguration);

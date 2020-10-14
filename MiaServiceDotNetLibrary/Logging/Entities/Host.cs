@@ -3,6 +3,7 @@
     public class Host
     {
         public string Hostname  { get; set; }
+        public string ForwardedHostname { get; set; }
         public string Ip  { get; set; }
     }
 }

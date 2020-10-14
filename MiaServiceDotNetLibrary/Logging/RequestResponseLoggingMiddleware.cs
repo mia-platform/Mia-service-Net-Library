@@ -5,13 +5,17 @@ using System.Threading.Tasks;
 using MiaServiceDotNetLibrary.Logging.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
+using log4net;
 
 namespace MiaServiceDotNetLibrary.Logging
 {
     public class RequestResponseLoggingMiddleware
     {
         private readonly RequestDelegate _next;
-        private long _reqIdAuto = 1;
+        internal static readonly string  RequestIdDictionaryKey = "requestId";
+        internal static readonly string  RequestIdHeaderKey = "x-request-id";
+        internal static readonly string  UserAgentHeaderKey = "User-Agent";
+        internal static readonly string  ForwardedHostHeaderKey = "x-forwarded-host";
 
         public RequestResponseLoggingMiddleware(RequestDelegate next)
         {
@@ -22,6 +26,7 @@ namespace MiaServiceDotNetLibrary.Logging
         {
             var responseStopwatch = new Stopwatch();
             responseStopwatch.Start();
+
             var request = context.Request;
             var response = context.Response;
             var serviceRequest = new ServiceRequest
@@ -29,19 +34,24 @@ namespace MiaServiceDotNetLibrary.Logging
                 Method = request.Method,
                 UserAgent = new UserAgent
                 {
-                    Original = request.Headers["User-Agent"].ToString()
+                    Original = request.Headers[UserAgentHeaderKey].ToString()
                 }
             };
-            var reqId = GetReqId(request);
-            var incomingRequestLog = BuildIncomingRequestLog(context, serviceRequest, request, reqId);
+
+            request.HttpContext.Items.Add(RequestIdDictionaryKey, GetOrGenerateReqId(request));
+
+            var incomingRequestLog = BuildIncomingRequestLog(context, serviceRequest, request);
             Logger.LogRequest(incomingRequestLog);
             
             using (var buffer = new MemoryStream()) {
                 var bodyStream = response.Body;
                 response.Body = buffer;
+
                 await _next(context);
+
                 responseStopwatch.Stop();
                 var passedMicroSeconds = responseStopwatch.ElapsedMilliseconds / 1000m;
+
                 var serviceResponse = new ServiceResponse
                 {
                     StatusCode = response.StatusCode,
@@ -50,60 +60,74 @@ namespace MiaServiceDotNetLibrary.Logging
                         Bytes = response.ContentLength ?? buffer.Length
                     }
                 };
-                var completedRequestLog = BuildCompletedRequestLog(context, serviceRequest, serviceResponse, request, passedMicroSeconds, reqId);
+                var completedRequestLog = BuildCompletedRequestLog(context, serviceRequest, serviceResponse, request, passedMicroSeconds);
                 buffer.Position = 0;
                 await buffer.CopyToAsync(bodyStream);
+
                 Logger.LogRequest(completedRequestLog);
             }
         }
 
-        private long GetReqId(HttpRequest request)
+        internal static string GetOrGenerateReqId(HttpRequest request)
         {
-            long reqId;
-            if (string.IsNullOrEmpty(request.Headers["x-request-id"]))
+            if (!string.IsNullOrEmpty(request.Headers[RequestIdHeaderKey]))
             {
-                reqId = _reqIdAuto;
-                _reqIdAuto++;
+                return (string)request.Headers[RequestIdHeaderKey];
             }
-            else
+
+            if (!string.IsNullOrEmpty(request.HttpContext.TraceIdentifier))
             {
-                reqId = int.Parse(request.Headers["x-request-id"]);
-                _reqIdAuto = 1;
+                return request.HttpContext.TraceIdentifier;
             }
-            return reqId;
+
+            return Guid.NewGuid().ToString();
         }
 
-        private static IncomingRequestLog BuildIncomingRequestLog(HttpContext context, ServiceRequest serviceRequest, HttpRequest request, long reqId)
+        private static string RemovePort(string host)
+        {
+            if (string.IsNullOrEmpty(host))
+            {
+                return "";
+            }
+            string[] HostComponents = host.Split(":");
+            return HostComponents[0];
+        }
+
+        private static IncomingRequestLog BuildIncomingRequestLog(HttpContext context, ServiceRequest serviceRequest, HttpRequest request)
         {
             return new IncomingRequestLog
             {
                 Level = (int) LogLevels.Trace,
                 Time = DateTimeOffset.Now.ToUnixTimeMilliseconds(),
-                ReqId = reqId,
+                ReqId = (string)request.HttpContext.Items[RequestIdDictionaryKey],
                 Http = new HttpIncoming
                 {
                     Request = serviceRequest
                 },
                 Url = new Url
                 {
-                    Path = request.GetDisplayUrl()
+                    Path = request.Path,
                 },
                 Host = new Host
                 {
-                    Hostname = request.Host.ToString(),
+                    Hostname = RemovePort(request.Host.ToString()),
+                    ForwardedHostname = string.IsNullOrEmpty(request.Headers[ForwardedHostHeaderKey]) 
+                    ? "" 
+                    : (string)request.Headers[ForwardedHostHeaderKey],
                     Ip = context.Connection.RemoteIpAddress.MapToIPv4().ToString()
                 },
+                Msg = "incoming request"
             };
         }
 
         private static CompletedRequestLog BuildCompletedRequestLog(HttpContext context, ServiceRequest serviceRequest, 
-            ServiceResponse serviceResponse, HttpRequest request, decimal responseTime, long reqId)
+            ServiceResponse serviceResponse, HttpRequest request, decimal responseTime)
         {
             return new CompletedRequestLog
             {
                 Level = (int) LogLevels.Info,
                 Time = DateTimeOffset.Now.ToUnixTimeMilliseconds(),
-                ReqId = reqId,
+                ReqId = (string)request.HttpContext.Items[RequestIdDictionaryKey],
                 Http = new Http
                 {
                     Request = serviceRequest,
@@ -111,14 +135,18 @@ namespace MiaServiceDotNetLibrary.Logging
                 },
                 Url = new Url 
                 {
-                    Path = request.GetDisplayUrl(),
+                    Path = request.Path,
                 },
                 Host = new Host
                 {
-                    Hostname = request.Host.ToString(),
+                    Hostname = RemovePort(request.Host.ToString()),
+                    ForwardedHostname = string.IsNullOrEmpty(request.Headers[ForwardedHostHeaderKey]) 
+                    ? "" 
+                    : (string)request.Headers[ForwardedHostHeaderKey],
                     Ip = context.Connection.RemoteIpAddress.MapToIPv4().ToString()
                 },
-                ResponseTime = responseTime
+                ResponseTime = responseTime,
+                Msg = "request completed"
             };
         }
     }
