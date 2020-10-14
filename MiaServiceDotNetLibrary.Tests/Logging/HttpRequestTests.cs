@@ -22,7 +22,7 @@ namespace MiaServiceDotNetLibrary.Tests.Logging
     {
         private MemoryStream _memoryStream;
         
-        public Mock<HttpRequest> CreateMockRequest()
+        public Mock<HttpRequest> CreateMockRequest(Dictionary <object, object> contextItems)
         {
             var headers = new HeaderDictionary(new Dictionary<string, StringValues>
             {
@@ -39,7 +39,15 @@ namespace MiaServiceDotNetLibrary.Tests.Logging
             var mockRequest = new Mock<HttpRequest>();
             mockRequest.Setup(x => x.Body).Returns(_memoryStream);
             mockRequest.Setup(x => x.Headers).Returns(headers);
+            if (contextItems != null) 
+            {
+                mockRequest.Setup(x => x.HttpContext.Items).Returns(contextItems);
+            }
             return mockRequest;
+        }
+        public Mock<HttpRequest> CreateMockRequest()
+        {
+            return CreateMockRequest(null);
         }
     }
 }

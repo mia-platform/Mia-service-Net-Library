@@ -23,10 +23,22 @@ namespace MiaServiceDotNetLibrary.Logging
             var jsonString = GetJsonLog(request, LogLevels.Trace, customProperties, message);
             _loggerInstance.Trace(jsonString);
         }
+
+        public static void Trace(string message, object customProperties = null)
+        {
+            var jsonString = GetJsonLog(null, LogLevels.Trace, customProperties, message);
+            _loggerInstance.Trace(jsonString);
+        }
         
         public static void Debug(HttpRequest request, string message, object customProperties = null)
         {
             var jsonString = GetJsonLog(request, LogLevels.Debug, customProperties, message);
+            _loggerInstance.Debug(jsonString);
+        }
+
+        public static void Debug(string message, object customProperties = null)
+        {
+            var jsonString = GetJsonLog(null, LogLevels.Debug, customProperties, message);
             _loggerInstance.Debug(jsonString);
         }
         
@@ -35,10 +47,22 @@ namespace MiaServiceDotNetLibrary.Logging
             var jsonString = GetJsonLog(request, LogLevels.Info, customProperties, message);
             _loggerInstance.Info(jsonString);
         }
+
+        public static void Info(string message, object customProperties = null)
+        {
+            var jsonString = GetJsonLog(null, LogLevels.Info, customProperties, message);
+            _loggerInstance.Info(jsonString);
+        }
         
         public static void Warn(HttpRequest request, string message, object customProperties = null)
         {
             var jsonString = GetJsonLog(request, LogLevels.Warn, customProperties, message);
+            _loggerInstance.Warn(jsonString);
+        }
+
+        public static void Warn(string message, object customProperties = null)
+        {
+            var jsonString = GetJsonLog(null, LogLevels.Warn, customProperties, message);
             _loggerInstance.Warn(jsonString);
         }
         
@@ -47,21 +71,33 @@ namespace MiaServiceDotNetLibrary.Logging
             var jsonString = GetJsonLog(request, LogLevels.Error, customProperties, message);
             _loggerInstance.Error(jsonString);
         }
+
+        public static void Error(string message, object customProperties = null)
+        {
+            var jsonString = GetJsonLog(null, LogLevels.Error, customProperties, message);
+            _loggerInstance.Error(jsonString);
+        }
         
         public static void Fatal(HttpRequest request, string message, object customProperties = null)
         {
             var jsonString = GetJsonLog(request, LogLevels.Fatal, customProperties, message);
             _loggerInstance.Fatal(jsonString);
         }
+
+        public static void Fatal(string message, object customProperties = null)
+        {
+            var jsonString = GetJsonLog(null, LogLevels.Fatal, customProperties, message);
+            _loggerInstance.Fatal(jsonString);
+        }
         
-        public static void LogRequest(CompletedRequestLog completedRequestLog)
+        internal static void LogRequest(CompletedRequestLog completedRequestLog)
         {
             CamelCaseSerialize();
             var jsonString = JsonConvert.SerializeObject(completedRequestLog, Formatting.None);
             _loggerInstance.Info(jsonString);
         }
         
-        public static void LogRequest(IncomingRequestLog incomingRequestLog)
+        internal static void LogRequest(IncomingRequestLog incomingRequestLog)
         {
             CamelCaseSerialize();
             var jsonString = JsonConvert.SerializeObject(incomingRequestLog, Formatting.None);
@@ -82,15 +118,26 @@ namespace MiaServiceDotNetLibrary.Logging
         private static string GetJsonLog(HttpRequest req, LogLevels logLevel, object customProperties, string message)
         {
             CamelCaseSerialize();
-            var headerId = req.Headers["x-request-id"];
-            var reqId = string.IsNullOrEmpty(headerId) ? 0 : int.Parse(headerId);
             var messageDictionary = new Dictionary<string, object>
             {
                 {"Level", (int) logLevel},
                 {"Time", DateTimeOffset.Now.ToUnixTimeMilliseconds()},
-                {"ReqId", reqId},
                 {"Msg", message}
             };
+            if (req != null) 
+            {
+                string reqId;
+                try 
+                {
+                    reqId = (string)req.HttpContext.Items[RequestResponseLoggingMiddleware.RequestIdDictionaryKey];
+                }
+                catch (Exception)
+                {
+                    reqId = RequestResponseLoggingMiddleware.GetOrGenerateReqId(req);
+                }
+                messageDictionary.Add("ReqId", reqId);
+            }
+
             var propsAsDict = ToDictionary(customProperties);
             var merged = messageDictionary
                 .Concat(propsAsDict)
