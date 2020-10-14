@@ -27,7 +27,7 @@ namespace MiaServiceDotNetLibrary
              * without this line every logging functionality will be disabled.
              * Follow this link to better understand how log4net configuration works: 
              * https://logging.apache.org/log4net/release/manual/configuration.html
-            */
+             */
             LogManager.GetLogger(typeof(Logger));
 
             var miaEnvConfiguration = new MiaEnvConfiguration();
