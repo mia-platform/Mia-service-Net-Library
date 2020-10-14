@@ -33,7 +33,7 @@ app.UseRequestResponseLoggingMiddleware();
             Logger.Trace("trace level message");
             Logger.Trace("trace level message with object", new CustomProps("foo"));
             Logger.Trace(HttpContext.Request, "trace level request message with no object");
-            Logger.Trace(HttpContext.Request,"trace level request message with object", new CustomProps("foo"));
+            Logger.Trace(HttpContext.Request, "trace level request message with object", new CustomProps("foo"));
 
             Logger.Debug(HttpContext.Request, "debug level request message with no object");
             Logger.Info(HttpContext.Request, "info level request message with no object");
