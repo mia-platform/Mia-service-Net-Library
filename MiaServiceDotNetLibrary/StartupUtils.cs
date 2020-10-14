@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using MiaServiceDotNetLibrary.Decorators;
 using MiaServiceDotNetLibrary.Environment;
+using MiaServiceDotNetLibrary.Logging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using log4net;
 
 namespace MiaServiceDotNetLibrary
 {
@@ -19,6 +21,15 @@ namespace MiaServiceDotNetLibrary
 
         public static void ConfigureMiaLibraryServices(IServiceCollection services, IConfiguration configuration)
         {
+
+            /* 
+             * The line below is necessary to invoke log4net and to load its configuration, 
+             * without this line every logging functionality will be disabled.
+             * Follow this link to better understand how log4net configuration works: 
+             * https://logging.apache.org/log4net/release/manual/configuration.html
+             */
+            LogManager.GetLogger(typeof(Logger));
+
             var miaEnvConfiguration = new MiaEnvConfiguration();
             configuration.Bind(miaEnvConfiguration);
             ConfigValidator.ValidateConfig(miaEnvConfiguration);
