@@ -21,8 +21,13 @@ namespace MiaServiceDotNetLibrary
 
         public static void ConfigureMiaLibraryServices(IServiceCollection services, IConfiguration configuration)
         {
-            // Aggiungere commento esplicativo con link
+            
+            /* The line below is necessary to invoke log4net and to load its configuration, 
+            without this line every logging functionality will be disabled.
+            Follow this link to better understand how log4net configuration works: 
+            https://logging.apache.org/log4net/release/manual/configuration.html */
             LogManager.GetLogger(typeof(Logger));
+
             var miaEnvConfiguration = new MiaEnvConfiguration();
             configuration.Bind(miaEnvConfiguration);
             ConfigValidator.ValidateConfig(miaEnvConfiguration);
