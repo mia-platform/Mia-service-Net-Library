@@ -23,7 +23,7 @@ namespace MiaServiceDotNetLibrary
         {
 
             /* 
-            * The line below is necessary to invoke log4net and to load its configuration, 
+             * The line below is necessary to invoke log4net and to load its configuration, 
             * without this line every logging functionality will be disabled.
             * Follow this link to better understand how log4net configuration works: 
             * https://logging.apache.org/log4net/release/manual/configuration.html
