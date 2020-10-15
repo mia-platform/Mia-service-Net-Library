@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 1.1.1 - 15-10-2020
+
 - [BMP-611](https://makeitapp.atlassian.net/browse/BMP-611): added possibility to avoid logging for routes with specific prefixes. 
 In particular, status routes can now be stopped from logging incoming and completed request logs.
 
