@@ -11,9 +11,10 @@ using log4net;
 namespace MiaServiceDotNetLibrary.Logging
 {
     public class MiddlewareOptions
-{
-    public List<string> excludedPrefixes { get; set; } = new List<string>() {"/-/"};
-}
+    {
+        public List<string> excludedPrefixes { get; set; } = new List<string>() {"/-/"};
+    }
+
     public class RequestResponseLoggingMiddleware
     {
         private readonly RequestDelegate _next;
