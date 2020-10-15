@@ -12,7 +12,7 @@ namespace MiaServiceDotNetLibrary.Logging
 {
     public class MiddlewareOptions
 {
-    public List<string> excludedPrefixes { get; set; } = new List<string>();
+    public List<string> excludedPrefixes { get; set; } = new List<string>() {"/-/"};
 }
     public class RequestResponseLoggingMiddleware
     {
@@ -41,7 +41,7 @@ namespace MiaServiceDotNetLibrary.Logging
                     return;
                 }
             }
-            
+
             var responseStopwatch = new Stopwatch();
             responseStopwatch.Start();
 
