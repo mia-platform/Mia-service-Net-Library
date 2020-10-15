@@ -5,9 +5,10 @@ namespace MiaServiceDotNetLibrary.Logging
     public static class LoggingExtensions
     {
         public static IApplicationBuilder UseRequestResponseLoggingMiddleware(
-            this IApplicationBuilder builder)
+            this IApplicationBuilder builder, MiddlewareOptions options = default)
         {
-            return builder.UseMiddleware<RequestResponseLoggingMiddleware>();
+            options = options ?? new MiddlewareOptions();
+            return builder.UseMiddleware<RequestResponseLoggingMiddleware>(options);
         }
     }
 }
