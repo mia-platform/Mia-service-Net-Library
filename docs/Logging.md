@@ -25,7 +25,7 @@ app.UseRequestResponseLoggingMiddleware(new MiddlewareOptions {excludedPrefixes 
 ```
 
 The property `excludedPrefixes` is used to avoid logging incoming and completed request's logs for routes that should not show that kind of logs.  
-In particular, calling status routes should not generate any request related logs and, since all of them begin with the "/-/" prefix, we have excluded them using that property.
+In particular, calling status routes should not generate any request related logs and, since all of them begin with the "/-/" prefix, we have excluded them using this property.
 
 ## Example
 
