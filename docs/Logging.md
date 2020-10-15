@@ -29,8 +29,7 @@ The line above will automatically exclude status routes from logging but if you 
 ```csharp
 app.UseRequestResponseLoggingMiddleware(new MiddlewareOptions {
   excludedPrefixes = new List<string>() { "/-/", "/RoutePrefixThatYouWantToExclude/" }
-  }
-);
+});
 ```
 
 The property `excludedPrefixes` is used to avoid logging incoming and completed request's logs for routes that should not show that kind of logs.  
