@@ -21,8 +21,11 @@ The library will generate two logs for each request, representing the incoming r
 To enable this logging functionality you should add the following line in the `Configure` function of `Startup.cs` file of your microservice:
 
 ```csharp
-app.UseRequestResponseLoggingMiddleware();
+app.UseRequestResponseLoggingMiddleware(new MiddlewareOptions {excludedPrefixes = new List<string>() { "/-/" }});
 ```
+
+The property `excludedPrefixes` is used to avoid logging incoming and completed request's logs for routes that should not show that kind of logs.  
+In particular, calling status routes should not generate any request related logs and, since all of them begin with the "/-/" prefix, we have excluded them using that property.
 
 ## Example
 
