@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using MiaServiceDotNetLibrary.Logging.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
@@ -9,21 +10,36 @@ using log4net;
 
 namespace MiaServiceDotNetLibrary.Logging
 {
+    public class MiddlewareOptions
+    {
+        public List<string> excludedPrefixes { get; set; } = new List<string>() {"/-/"};
+    }
+
     public class RequestResponseLoggingMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly MiddlewareOptions _options;
+
         internal static readonly string  RequestIdDictionaryKey = "requestId";
         internal static readonly string  RequestIdHeaderKey = "x-request-id";
         internal static readonly string  UserAgentHeaderKey = "User-Agent";
         internal static readonly string  ForwardedHostHeaderKey = "x-forwarded-host";
 
-        public RequestResponseLoggingMiddleware(RequestDelegate next)
+        public RequestResponseLoggingMiddleware(RequestDelegate next, MiddlewareOptions options)
         {
             _next = next;
+            _options = options;
         }
         
         public async Task Invoke(HttpContext context)
         {
+            string path = context.Request.Path;
+            if (_options.excludedPrefixes.Exists(prefix => path.StartsWith(prefix)))
+            {
+                await _next(context);
+                return;
+            }
+
             var responseStopwatch = new Stopwatch();
             responseStopwatch.Start();
 
