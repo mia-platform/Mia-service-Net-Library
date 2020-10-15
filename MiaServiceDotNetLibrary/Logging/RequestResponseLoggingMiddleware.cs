@@ -34,13 +34,10 @@ namespace MiaServiceDotNetLibrary.Logging
         public async Task Invoke(HttpContext context)
         {
             string path = context.Request.Path;
-            foreach (string prefix in _options.excludedPrefixes)
+            if (_options.excludedPrefixes.Exists(prefix => path.StartsWith(prefix)))
             {
-                if (path.StartsWith(prefix))
-                {
-                    await _next(context);
-                    return;
-                }
+                await _next(context);
+                return;
             }
 
             var responseStopwatch = new Stopwatch();
