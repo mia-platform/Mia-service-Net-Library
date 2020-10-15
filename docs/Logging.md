@@ -6,7 +6,7 @@ There are two types of logging:
  * Request Logging: logs every request related message (incoming, completed and custom ones) with the standard Mia-Platform logging format.
  * Message Logging: logs a message, along with its custom properties if there are any.
 
-```
+```csharp
 // customObject attributes will be added to the log:
 Logger.Trace(HttpContext.Request, "message with object", customObject);
 // alternatively, without custom attributes:
@@ -21,7 +21,16 @@ The library will generate two logs for each request, representing the incoming r
 To enable this logging functionality you should add the following line in the `Configure` function of `Startup.cs` file of your microservice:
 
 ```csharp
-app.UseRequestResponseLoggingMiddleware(new MiddlewareOptions {excludedPrefixes = new List<string>() { "/-/" }});
+app.UseRequestResponseLoggingMiddleware();
+```
+
+The line above will automatically exclude status routes from logging but if you want to exclude some route prefixes from this logging functionality it is necessary to pass as a parameter a MiddlewareOptions instance:
+
+```csharp
+app.UseRequestResponseLoggingMiddleware(new MiddlewareOptions {
+  excludedPrefixes = new List<string>() { "/-/", "/RoutePrefixThatYouWantToExclude/" }
+  }
+);
 ```
 
 The property `excludedPrefixes` is used to avoid logging incoming and completed request's logs for routes that should not show that kind of logs.  
