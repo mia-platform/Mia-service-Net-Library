@@ -120,20 +120,5 @@ namespace MiaServiceDotNetLibrary.Tests.Environment
 
             Assert.Throws(typeof(ValidationException), () => config.Validate());
         }
-
-        //[Test]
-        //public void TestInvalidConfigOnePropNull()
-        //{
-        //    var config = new MiaEnvConfiguration
-        //    {
-        //        USER_PROPERTIES_HEADER_KEY = "userproperties",
-        //        GROUPS_HEADER_KEY = "usergroups",
-        //        CLIENTTYPE_HEADER_KEY = "clienttype",
-        //        BACKOFFICE_HEADER_KEY = "isbackoffice",
-        //        MICROSERVICE_GATEWAY_SERVICE_NAME = "microservice-gateway",
-        //    };
-
-        //    Assert.Throws(typeof(InvalidEnvConfigurationException), () => ConfigValidator.ValidateConfig(config));
-        //}
     }
 }
