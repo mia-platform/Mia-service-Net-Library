@@ -32,7 +32,6 @@ namespace MiaServiceDotNetLibrary
 
             var miaEnvConfiguration = new MiaEnvConfiguration();
             configuration.Bind(miaEnvConfiguration);
-            ConfigValidator.ValidateConfig(miaEnvConfiguration);
 
             var serviceClientFactory = new ServiceClientFactory(miaEnvConfiguration);
             var decoratorResponseFactory = new DecoratorResponseFactory();
