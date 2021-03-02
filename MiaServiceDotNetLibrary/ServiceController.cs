@@ -8,14 +8,14 @@ namespace MiaServiceDotNetLibrary
     [Route("[controller]")]
     public abstract class ServiceController : ControllerBase
     {
-        protected readonly MiaEnvConfiguration MiaEnvConfiguration;
+        protected readonly MiaEnvsConfigurations MiaEnvsConfigurations;
         protected readonly ServiceClientFactory ServiceClientFactory;
         protected readonly DecoratorResponseFactory DecoratorResponseFactory;
 
-        public ServiceController(MiaEnvConfiguration miaEnvConfiguration, ServiceClientFactory serviceClientFactory,
+        public ServiceController(MiaEnvsConfigurations miaEnvsConfigurations, ServiceClientFactory serviceClientFactory,
             DecoratorResponseFactory decoratorResponseFactory)
         {
-            MiaEnvConfiguration = miaEnvConfiguration;
+            MiaEnvsConfigurations = miaEnvsConfigurations;
             ServiceClientFactory = serviceClientFactory;
             DecoratorResponseFactory = decoratorResponseFactory;
         }

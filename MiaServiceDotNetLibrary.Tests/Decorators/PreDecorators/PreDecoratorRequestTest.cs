@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using MiaServiceDotNetLibrary.Decorators.PreDecorators;
-using MiaServiceDotNetLibrary.Environment;
 using NFluent;
 using NUnit.Framework;
 
@@ -10,7 +9,7 @@ namespace MiaServiceDotNetLibrary.Tests.Decorators.PreDecorators
     public class PreDecoratorRequestTest
     {
         private PreDecoratorRequest _preDecoratorRequest;
-        private MiaEnvConfiguration _miaEnvConfiguration;
+        private MiaEnvsConfigurationsImpl _miaEnvConfiguration;
         private const string BackOfficeHeaderKey = "backoffice";
         private const string ClientTypeHeaderKey = "client-type";
         private const string UserIdHeaderKey = "user-id";
@@ -33,7 +32,7 @@ namespace MiaServiceDotNetLibrary.Tests.Decorators.PreDecorators
                 Body = body
             };
 
-            _miaEnvConfiguration = new MiaEnvConfiguration
+            _miaEnvConfiguration = new MiaEnvsConfigurationsImpl
             {
                 BACKOFFICE_HEADER_KEY = BackOfficeHeaderKey,
                 CLIENTTYPE_HEADER_KEY = ClientTypeHeaderKey,

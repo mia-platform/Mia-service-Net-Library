@@ -1,5 +1,4 @@
 using MiaServiceDotNetLibrary.Crud;
-using MiaServiceDotNetLibrary.Environment;
 using MiaServiceDotNetLibrary.Service;
 using Microsoft.AspNetCore.Http;
 using NFluent;
@@ -10,12 +9,12 @@ namespace MiaServiceDotNetLibrary.Tests
     public class ServiceClientFactoryTest
     {
         private ServiceClientFactory _serviceClientFactory;
-        private MiaEnvConfiguration _miaEnvConfiguration;
+        private MiaEnvsConfigurationsImpl _miaEnvConfiguration;
 
         [SetUp]
         public void SetUp()
         {
-            _miaEnvConfiguration = new MiaEnvConfiguration
+            _miaEnvConfiguration = new MiaEnvsConfigurationsImpl
             {
                 USERID_HEADER_KEY = "useridkey",
                 USER_PROPERTIES_HEADER_KEY = "userpropskey",
@@ -55,7 +54,7 @@ namespace MiaServiceDotNetLibrary.Tests
         [Test]
         public void TestGetServiceProxyWithoutEnv()
         {
-            var configWithoutMsGatewayName = new MiaEnvConfiguration
+            var configWithoutMsGatewayName = new MiaEnvsConfigurationsImpl
             {
                 USERID_HEADER_KEY = "useridkey",
                 USER_PROPERTIES_HEADER_KEY = "userpropskey",

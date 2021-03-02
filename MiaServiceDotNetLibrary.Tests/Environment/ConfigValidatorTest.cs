@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace MiaServiceDotNetLibrary.Tests.Environment
 {
-    class CustomEnvsSchema : MiaEnvsSchema
+    class CustomEnvsSchema : MiaEnvsConfigurations
     {
         [Required]
         [MinLength(10)]
@@ -18,7 +18,7 @@ namespace MiaServiceDotNetLibrary.Tests.Environment
         public int MyNumberVariable { get; set; }
     }
 
-    class CustomEnvsSchemaWithCustomValidation: MiaEnvsSchema
+    class CustomEnvsSchemaWithCustomValidation: MiaEnvsConfigurations
     {
         [Required]
         public string MyStaticString { get; set; }

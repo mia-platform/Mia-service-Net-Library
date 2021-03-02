@@ -19,7 +19,7 @@ namespace MiaServiceDotNetLibrary
         private const string SwaggerDocumentName = "json";
         private const string SwaggerDocsPrefix = "documentation";
 
-        public static void ConfigureMiaLibraryServices(IServiceCollection services, IConfiguration configuration)
+        public static void ConfigureMiaLibraryServices(IServiceCollection services, IConfiguration configuration, MiaEnvsConfigurations envsConfigurations)
         {
 
             /* 
@@ -30,15 +30,14 @@ namespace MiaServiceDotNetLibrary
              */
             LogManager.GetLogger(typeof(Logger));
 
-            var miaEnvConfiguration = new MiaEnvConfiguration();
-            configuration.Bind(miaEnvConfiguration);
+            configuration.Bind(envsConfigurations);
 
-            var serviceClientFactory = new ServiceClientFactory(miaEnvConfiguration);
+            var serviceClientFactory = new ServiceClientFactory(envsConfigurations);
             var decoratorResponseFactory = new DecoratorResponseFactory();
 
             SetupJsonSerializer();
 
-            services.AddSingleton(miaEnvConfiguration);
+            services.AddSingleton(envsConfigurations);
             services.AddSingleton(serviceClientFactory);
             services.AddSingleton(decoratorResponseFactory);
         }
@@ -88,10 +87,10 @@ namespace MiaServiceDotNetLibrary
         {
             return async (context, next) =>
             {
-                var miaEnvConfiguration =
-                    (MiaEnvConfiguration) app.ApplicationServices.GetService(typeof(MiaEnvConfiguration));
+                var envsConfigurations =
+                    (MiaEnvsConfigurations) app.ApplicationServices.GetService(typeof(MiaEnvsConfigurations));
 
-                var miaHeadersPropagator = new MiaHeadersPropagator(context.Request.Headers, miaEnvConfiguration);
+                var miaHeadersPropagator = new MiaHeadersPropagator(context.Request.Headers, envsConfigurations);
                 ServiceClientFactory.SetMiaHeaders(miaHeadersPropagator);
                 context.Items.Add("MiaHeadersPropagator", miaHeadersPropagator);
 

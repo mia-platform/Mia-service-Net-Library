@@ -2,7 +2,7 @@
 
 namespace MiaServiceDotNetLibrary.Environment
 {
-    public abstract class MiaEnvsSchema
+    public abstract class MiaEnvsConfigurations
     {
         [Required(AllowEmptyStrings = false)]
         [MinLength(1)]

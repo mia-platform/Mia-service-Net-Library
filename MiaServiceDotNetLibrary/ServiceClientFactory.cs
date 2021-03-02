@@ -7,7 +7,7 @@ namespace MiaServiceDotNetLibrary
 {
     public class ServiceClientFactory
     {
-        private readonly MiaEnvConfiguration _miaEnvConfiguration;
+        private readonly MiaEnvsConfigurations _envsConfigurations;
         private static Dictionary<string, string> _miaHeaders;
 
         public static void SetMiaHeaders(MiaHeadersPropagator miaHeadersPropagator)
@@ -15,9 +15,9 @@ namespace MiaServiceDotNetLibrary
             _miaHeaders = miaHeadersPropagator.Headers;
         }
 
-        public ServiceClientFactory(MiaEnvConfiguration miaEnvConfiguration)
+        public ServiceClientFactory(MiaEnvsConfigurations envsConfigurations)
         {
-            _miaEnvConfiguration = miaEnvConfiguration;
+            _envsConfigurations = envsConfigurations;
         }
 
         public IServiceProxy GetDirectServiceProxy(string serviceName, InitServiceOptions options)
@@ -27,7 +27,7 @@ namespace MiaServiceDotNetLibrary
 
         public IServiceProxy GetServiceProxy(InitServiceOptions options)
         {
-            var microserviceGatewayName = _miaEnvConfiguration.MICROSERVICE_GATEWAY_SERVICE_NAME;
+            var microserviceGatewayName = _envsConfigurations.MICROSERVICE_GATEWAY_SERVICE_NAME;
             
             return string.IsNullOrEmpty(microserviceGatewayName)
                 ? null
