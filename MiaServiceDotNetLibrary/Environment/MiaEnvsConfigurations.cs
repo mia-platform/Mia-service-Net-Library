@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace MiaServiceDotNetLibrary.Environment
 {
@@ -24,9 +25,8 @@ namespace MiaServiceDotNetLibrary.Environment
         [MinLength(1)]
         public string BACKOFFICE_HEADER_KEY { get; set; }
 
-        [Required(AllowEmptyStrings = false)]
         [MinLength(1)]
-        public string MICROSERVICE_GATEWAY_SERVICE_NAME { get; set; }
+        public string MICROSERVICE_GATEWAY_SERVICE_NAME { get; set; } = "microservice-gateway";
 
         public virtual void Validate()
         {

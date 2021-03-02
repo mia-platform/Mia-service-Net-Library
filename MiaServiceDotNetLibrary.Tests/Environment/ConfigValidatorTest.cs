@@ -44,13 +44,33 @@ namespace MiaServiceDotNetLibrary.Tests.Environment
                 GROUPS_HEADER_KEY = "usergroups",
                 CLIENTTYPE_HEADER_KEY = "clienttype",
                 BACKOFFICE_HEADER_KEY = "isbackoffice",
-                MICROSERVICE_GATEWAY_SERVICE_NAME = "microservice-gateway",
+                MICROSERVICE_GATEWAY_SERVICE_NAME = "custom-ms-gateway",
                 MyCustomEnvVariable = "customEnvVariable",
                 MyMandatoryVariable = "var",
                 MyNumberVariable = 54
             };
 
             Assert.DoesNotThrow(() => config.Validate());
+            Assert.AreEqual("custom-ms-gateway", config.MICROSERVICE_GATEWAY_SERVICE_NAME);
+        }
+
+        [Test]
+        public void TestValidConfigDefaultMicroserviceGateway()
+        {
+            var config = new CustomEnvsSchema
+            {
+                USERID_HEADER_KEY = "userheaderkey",
+                USER_PROPERTIES_HEADER_KEY = "userproperties",
+                GROUPS_HEADER_KEY = "usergroups",
+                CLIENTTYPE_HEADER_KEY = "clienttype",
+                BACKOFFICE_HEADER_KEY = "isbackoffice",
+                MyCustomEnvVariable = "customEnvVariable",
+                MyMandatoryVariable = "var",
+                MyNumberVariable = 54
+            };
+
+            Assert.DoesNotThrow(() => config.Validate());
+            Assert.AreEqual("microservice-gateway", config.MICROSERVICE_GATEWAY_SERVICE_NAME);
         }
 
         [Test]
