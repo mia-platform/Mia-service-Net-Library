@@ -38,27 +38,27 @@ namespace MiaServiceDotNetLibrary.Decorators.PostDecorators
             return newBody;
         }
         
-        public string GetUserId(MiaEnvConfiguration config)
+        public string GetUserId(MiaEnvsConfigurations config)
         {
             return Request.Headers[config.USERID_HEADER_KEY];
         }
 
-        public string GetUserProperties(MiaEnvConfiguration config)
+        public string GetUserProperties(MiaEnvsConfigurations config)
         {
             return Request.Headers[config.USER_PROPERTIES_HEADER_KEY];
         }
 
-        public string GetGroups(MiaEnvConfiguration config)
+        public string GetGroups(MiaEnvsConfigurations config)
         {
             return Request.Headers[config.GROUPS_HEADER_KEY];
         }
 
-        public string GetClientType(MiaEnvConfiguration config)
+        public string GetClientType(MiaEnvsConfigurations config)
         {
             return Request.Headers[config.CLIENTTYPE_HEADER_KEY];
         }
 
-        public string IsFromBackOffice(MiaEnvConfiguration config)
+        public string IsFromBackOffice(MiaEnvsConfigurations config)
         {
             return Request.Headers[config.BACKOFFICE_HEADER_KEY];
         }

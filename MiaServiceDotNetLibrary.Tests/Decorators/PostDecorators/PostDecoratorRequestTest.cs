@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Dynamic;
 using MiaServiceDotNetLibrary.Decorators;
 using MiaServiceDotNetLibrary.Decorators.PostDecorators;
-using MiaServiceDotNetLibrary.Environment;
 using NFluent;
 using NUnit.Framework;
 
@@ -11,7 +10,7 @@ namespace MiaServiceDotNetLibrary.Tests.Decorators.PostDecorators
     public class PostDecoratorRequestTest
     {
         private PostDecoratorRequest _postDecoratorRequest;
-        private MiaEnvConfiguration _miaEnvConfiguration;
+        private MiaEnvsConfigurationsImpl _miaEnvConfiguration;
         private const string BackOfficeHeaderKey = "backoffice";
         private const string ClientTypeHeaderKey = "client-type";
         private const string UserIdHeaderKey = "user-id";
@@ -42,7 +41,7 @@ namespace MiaServiceDotNetLibrary.Tests.Decorators.PostDecorators
                 Response = new DecoratorResponse(200, new Dictionary<string, string> {{"bar", "foo"}}, responseBody)
             };
             
-            _miaEnvConfiguration = new MiaEnvConfiguration
+            _miaEnvConfiguration = new MiaEnvsConfigurationsImpl
             {
                 BACKOFFICE_HEADER_KEY = BackOfficeHeaderKey,
                 CLIENTTYPE_HEADER_KEY = ClientTypeHeaderKey,

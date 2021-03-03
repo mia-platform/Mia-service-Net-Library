@@ -7,10 +7,10 @@ namespace MiaServiceDotNetLibrary
     public abstract class ServiceStatusController : ServiceController
     {
         protected ServiceStatusController(
-            MiaEnvConfiguration miaEnvConfiguration,
+            MiaEnvsConfigurations miaEnvsConfigurations,
             ServiceClientFactory serviceClientFactory,
             DecoratorResponseFactory decoratorResponseFactory) :
-            base(miaEnvConfiguration, serviceClientFactory, decoratorResponseFactory)
+            base(miaEnvsConfigurations, serviceClientFactory, decoratorResponseFactory)
         {
         }
 

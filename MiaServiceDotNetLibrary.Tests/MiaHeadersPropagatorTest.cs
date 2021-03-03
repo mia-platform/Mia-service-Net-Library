@@ -1,4 +1,3 @@
-using MiaServiceDotNetLibrary.Environment;
 using Microsoft.AspNetCore.Http;
 using NFluent;
 using NUnit.Framework;
@@ -8,7 +7,7 @@ namespace MiaServiceDotNetLibrary.Tests
     public class MiaHeadersPropagatorTest
     {
         private MiaHeadersPropagator _miaHeadersPropagator;
-        private MiaEnvConfiguration _envConfig = new MiaEnvConfiguration
+        private MiaEnvsConfigurationsImpl _envConfig = new MiaEnvsConfigurationsImpl
         {
             USERID_HEADER_KEY = "userid",
             USER_PROPERTIES_HEADER_KEY = "userproperties",

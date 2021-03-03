@@ -33,6 +33,7 @@ dotnet add package MiaServiceDotNetLibrary --version 1.0.0
 * [**Decorators**](./docs/Decorators.md)
 * [**Access platform headers**](./docs/MIAHeaders.md)
 * [**Logging**](./docs/Logging.md)
+* [**Environment variables**](./docs/EnvironmentVariables.md)
 * [**Release steps**](./docs/Release.md)
 
 
