@@ -30,8 +30,8 @@ namespace MiaServiceDotNetLibrary
              */
             LogManager.GetLogger(typeof(Logger));
 
-            envsConfigurations.Validate();
             configuration.Bind(envsConfigurations);
+            envsConfigurations.Validate();
 
             var serviceClientFactory = new ServiceClientFactory(envsConfigurations);
             var decoratorResponseFactory = new DecoratorResponseFactory();
